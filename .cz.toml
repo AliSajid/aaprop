@@ -1,0 +1,10 @@
+[tool]
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "v1.0.0-beta.1"
+version_files = ["Cargo.toml", "Cargo.lock"]
+tag_format = "v$major.$minor.$patch-$prerelease.$devrelease"
+gpg_sign = true
+update_changelog_on_bump = true
+changelog_incremental = true
+version_type = "semver"
