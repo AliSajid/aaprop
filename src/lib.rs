@@ -302,8 +302,9 @@ mod routes {
 
     use crate::models::AminoAcid;
     use crate::responses::{
-        AminoAcidNameResponse, AminoAcidResponse, AminoAcidShortNameResponse, ErrorResponse,
-        RootResponse,
+        AminoAcidAbbreviationResponse, AminoAcidCodonCountResponse, AminoAcidCodonResponse,
+        AminoAcidMolecularWeightResponse, AminoAcidNameResponse, AminoAcidResponse,
+        AminoAcidShortNameResponse, AminoAcidSideChainResponse, ErrorResponse, RootResponse,
     };
 
     fn match_amino_acid(amino_acid: String) -> Option<AminoAcid> {
@@ -382,6 +383,28 @@ mod routes {
             }
         }
     }
+
+    pub async fn get_amino_acid_abbreviation(
+        Path(amino_acid): Path<String>,
+    ) -> Result<(StatusCode, Json<AminoAcidAbbreviationResponse>), (StatusCode, Json<ErrorResponse>)>
+    {
+        let matched = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidAbbreviationResponse {
+                    name: amino_acid.get_name(),
+                    abbreviation: amino_acid.get_abbreviation(),
+                };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
+    }
 }
 
 pub mod interface {
@@ -398,10 +421,10 @@ pub mod interface {
                 "/:amino_acid/short_name",
                 get(routes::get_amino_acid_short_name),
             )
-        // .route(
-        //     "/:amino_acid/abbreviation",
-        //     get(routes::get_amino_acid_abbreviation),
-        // )
+            .route(
+                "/:amino_acid/abbreviation",
+                get(routes::get_amino_acid_abbreviation),
+            )
         // .route(
         //     "/:amino_acid/side_chain",
         //     get(routes::get_amino_acid_side_chain),
