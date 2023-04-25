@@ -1,7 +1,7 @@
 [
     {
         "abbreviation": "A",
-        "codon": [
+        "codons": [
             "GCT",
             "GCC",
             "GCA",
@@ -14,7 +14,7 @@
     },
     {
         "abbreviation": "R",
-        "codon": [
+        "codons": [
             "CGT",
             "CGC",
             "CGA",
@@ -29,7 +29,7 @@
     },
     {
         "abbreviation": "N",
-        "codon": [
+        "codons": [
             "AAT",
             "AAC"
         ],
@@ -40,7 +40,7 @@
     },
     {
         "abbreviation": "D",
-        "codon": [
+        "codons": [
             "GAU",
             "GAC"
         ],
@@ -51,7 +51,7 @@
     },
     {
         "abbreviation": "C",
-        "codon": [
+        "codons": [
             "TGT",
             "TGC"
         ],
@@ -62,7 +62,7 @@
     },
     {
         "abbreviation": "E",
-        "codon": [
+        "codons": [
             "GAA",
             "GAG"
         ],
@@ -73,7 +73,7 @@
     },
     {
         "abbreviation": "Q",
-        "codon": [
+        "codons": [
             "CAA",
             "CAG"
         ],
@@ -84,7 +84,7 @@
     },
     {
         "abbreviation": "G",
-        "codon": [
+        "codons": [
             "GGT",
             "GGC",
             "GGA",
@@ -97,7 +97,7 @@
     },
     {
         "abbreviation": "H",
-        "codon": [
+        "codons": [
             "CAT",
             "CAC"
         ],
@@ -108,7 +108,7 @@
     },
     {
         "abbreviation": "I",
-        "codon": [
+        "codons": [
             "ATT",
             "ATC",
             "ATA"
@@ -120,7 +120,7 @@
     },
     {
         "abbreviation": "L",
-        "codon": [
+        "codons": [
             "TTA",
             "CTT",
             "CTC",
@@ -134,7 +134,7 @@
     },
     {
         "abbreviation": "K",
-        "codon": [
+        "codons": [
             "AAA",
             "AAG"
         ],
@@ -145,7 +145,7 @@
     },
     {
         "abbreviation": "M",
-        "codon": [
+        "codons": [
             "ATG"
         ],
         "molecular_weight": 149.21,
@@ -155,7 +155,7 @@
     },
     {
         "abbreviation": "F",
-        "codon": [
+        "codons": [
             "TTT",
             "TTC"
         ],
@@ -166,7 +166,7 @@
     },
     {
         "abbreviation": "P",
-        "codon": [
+        "codons": [
             "CCT",
             "CCC",
             "CCA",
@@ -179,7 +179,7 @@
     },
     {
         "abbreviation": "S",
-        "codon": [
+        "codons": [
             "TCT",
             "TCC",
             "TCA",
@@ -194,7 +194,7 @@
     },
     {
         "abbreviation": "T",
-        "codon": [
+        "codons": [
             "ACT",
             "ACC",
             "ACA",
@@ -207,7 +207,7 @@
     },
     {
         "abbreviation": "W",
-        "codon": [
+        "codons": [
             "TGG"
         ],
         "molecular_weight": 204.23,
@@ -217,7 +217,7 @@
     },
     {
         "abbreviation": "Y",
-        "codon": [
+        "codons": [
             "TAT",
             "TAC"
         ],
@@ -228,7 +228,7 @@
     },
     {
         "abbreviation": "V",
-        "codon": [
+        "codons": [
             "GTT",
             "GTC",
             "GTA",
