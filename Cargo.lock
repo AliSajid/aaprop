@@ -7,8 +7,12 @@ name = "aaprop"
 version = "1.0.0-alpha.1"
 dependencies = [
  "axum",
+ "serde",
+ "serde_json",
  "shuttle-axum",
  "shuttle-runtime",
+ "strum",
+ "strum_macros",
  "tokio",
 ]
 
