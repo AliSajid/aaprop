@@ -300,8 +300,19 @@ mod routes {
     use axum::extract::Path;
     use axum::{http::StatusCode, Json};
 
-    use crate::responses::RootResponse;
-    use crate::responses::{AminoAcidResponse, ErrorResponse};
+    use crate::models::AminoAcid;
+    use crate::responses::{
+        AminoAcidNameResponse, AminoAcidResponse, AminoAcidShortNameResponse, ErrorResponse,
+        RootResponse,
+    };
+
+    fn match_amino_acid(amino_acid: String) -> Option<AminoAcid> {
+        let amino_acids = crate::data::amino_acids();
+        amino_acids
+            .iter()
+            .find(|&a| a.get_name().to_lowercase() == amino_acid.to_lowercase())
+            .cloned()
+    }
 
     pub async fn get_root() -> Result<(StatusCode, Json<RootResponse>), Json<ErrorResponse>> {
         let response = RootResponse {
@@ -312,17 +323,64 @@ mod routes {
 
     pub async fn get_amino_acid(
         Path(amino_acid): Path<String>,
-    ) -> Result<(StatusCode, Json<AminoAcidResponse>), Json<ErrorResponse>> {
-        let amino_acids = crate::data::amino_acids();
-        let matched = amino_acids
-            .iter()
-            .find(|&a| a.get_name().to_lowercase() == amino_acid.to_lowercase())
-            .unwrap()
-            .clone();
-        let response = AminoAcidResponse {
-            amino_acid: matched,
-        };
-        Ok((StatusCode::OK, Json(response)))
+    ) -> Result<(StatusCode, Json<AminoAcidResponse>), (StatusCode, Json<ErrorResponse>)> {
+        let matched: Option<AminoAcid> = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidResponse { amino_acid };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
+    }
+
+    pub async fn get_amino_acid_name(
+        Path(amino_acid): Path<String>,
+    ) -> Result<(StatusCode, Json<AminoAcidNameResponse>), (StatusCode, Json<ErrorResponse>)> {
+        let matched = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidNameResponse {
+                    name: amino_acid.get_name(),
+                    short_name: amino_acid.get_short_name(),
+                    abbreviation: amino_acid.get_abbreviation(),
+                };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
+    }
+
+    pub async fn get_amino_acid_short_name(
+        Path(amino_acid): Path<String>,
+    ) -> Result<(StatusCode, Json<AminoAcidShortNameResponse>), (StatusCode, Json<ErrorResponse>)>
+    {
+        let matched = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidShortNameResponse {
+                    name: amino_acid.get_name(),
+                    short_name: amino_acid.get_short_name(),
+                };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
     }
 }
 
@@ -335,5 +393,22 @@ pub mod interface {
         Router::new()
             .route("/", get(routes::get_root))
             .route("/:amino_acid", get(routes::get_amino_acid))
+            .route("/:amino_acid/name", get(routes::get_amino_acid_name))
+            .route(
+                "/:amino_acid/short_name",
+                get(routes::get_amino_acid_short_name),
+            )
+        // .route(
+        //     "/:amino_acid/abbreviation",
+        //     get(routes::get_amino_acid_abbreviation),
+        // )
+        // .route(
+        //     "/:amino_acid/side_chain",
+        //     get(routes::get_amino_acid_side_chain),
+        // )
+        // .route(
+        //     "/:amino_acid/molecular_weight",
+        //     get(routes::get_amino_acid_molecular_weight),
+        // )
     }
 }
