@@ -405,6 +405,30 @@ mod routes {
             }
         }
     }
+
+    pub async fn get_amino_acid_molecular_weight(
+        Path(amino_acid): Path<String>,
+    ) -> Result<
+        (StatusCode, Json<AminoAcidMolecularWeightResponse>),
+        (StatusCode, Json<ErrorResponse>),
+    > {
+        let matched = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidMolecularWeightResponse {
+                    name: amino_acid.get_name(),
+                    molecular_weight: amino_acid.get_molecular_weight(),
+                };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
+    }
 }
 
 pub mod interface {
@@ -425,13 +449,13 @@ pub mod interface {
                 "/:amino_acid/abbreviation",
                 get(routes::get_amino_acid_abbreviation),
             )
-        // .route(
-        //     "/:amino_acid/side_chain",
-        //     get(routes::get_amino_acid_side_chain),
-        // )
-        // .route(
-        //     "/:amino_acid/molecular_weight",
-        //     get(routes::get_amino_acid_molecular_weight),
-        // )
+            // .route(
+            //     "/:amino_acid/side_chain",
+            //     get(routes::get_amino_acid_side_chain),
+            // )
+            .route(
+                "/:amino_acid/molecular_weight",
+                get(routes::get_amino_acid_molecular_weight),
+            )
     }
 }
