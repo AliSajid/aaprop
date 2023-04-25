@@ -84,7 +84,7 @@ mod models {
         fn fmt(&self, f: &mut Formatter) -> fmt::Result {
             write!(
             f,
-            "Name: {}\tShort Name: {}\tAbbreviation: {}\tSide Chain: {}\tMolecular Weight: {}\tCodon: {}",
+            "Name: {}\tShort Name: {}\tAbbreviation: {}\tSide Chain: {}\tMolecular Weight: {}\tCodon: [{}]",
             self.name,
             self.short_name,
             self.abbreviation,
@@ -196,7 +196,7 @@ mod models {
             );
             assert_eq!(
             format!("{}", amino_acid),
-            "Name: Alanine\tShort Name: Ala\tAbbreviation: A\tSide Chain: Nonpolar\tMolecular Weight: 89.09\tCodon: GCT, GCC, GCA, GCG"
+            "Name: Alanine\tShort Name: Ala\tAbbreviation: A\tSide Chain: Nonpolar\tMolecular Weight: 89.09\tCodon: [GCT, GCC, GCA, GCG]"
         );
         }
     }
