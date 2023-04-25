@@ -17,7 +17,7 @@ mod models {
 
     impl Display for SideChain {
         fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-            write!(f, "{}", self.to_owned())
+            write!(f, "{:?}", self)
         }
     }
 
@@ -73,10 +73,6 @@ mod models {
         #[must_use]
         pub fn get_codon(&self) -> Vec<String> {
             self.codon.clone()
-        }
-        #[must_use]
-        pub fn get_codon_string(&self) -> String {
-            self.codon.join(", ")
         }
         #[must_use]
         pub fn get_codon_count(&self) -> usize {
@@ -174,18 +170,6 @@ mod models {
                 &["GCT", "GCC", "GCA", "GCG"],
             );
             assert_eq!(amino_acid.get_codon(), vec!["GCT", "GCC", "GCA", "GCG"]);
-        }
-        #[test]
-        fn test_get_codon_string() {
-            let amino_acid = AminoAcid::new(
-                "Alanine",
-                "Ala",
-                "A",
-                "Nonpolar",
-                89.09,
-                &["GCT", "GCC", "GCA", "GCG"],
-            );
-            assert_eq!(amino_acid.get_codon_string(), "GCT, GCC, GCA, GCG");
         }
         #[test]
         fn test_get_codon_count() {
@@ -451,6 +435,49 @@ mod routes {
             }
         }
     }
+
+    pub async fn get_amino_acid_codons(
+        Path(amino_acid): Path<String>,
+    ) -> Result<(StatusCode, Json<AminoAcidCodonResponse>), (StatusCode, Json<ErrorResponse>)> {
+        let matched = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidCodonResponse {
+                    name: amino_acid.get_name(),
+                    codon: amino_acid.get_codon(),
+                };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
+    }
+
+    pub async fn get_amino_acid_codon_count(
+        Path(amino_acid): Path<String>,
+    ) -> Result<(StatusCode, Json<AminoAcidCodonCountResponse>), (StatusCode, Json<ErrorResponse>)>
+    {
+        let matched = match_amino_acid(amino_acid);
+        match matched {
+            None => {
+                let response = ErrorResponse {
+                    error: "Amino Acid not found".to_string(),
+                };
+                Err((StatusCode::NOT_FOUND, Json(response)))
+            }
+            Some(amino_acid) => {
+                let response = AminoAcidCodonCountResponse {
+                    name: amino_acid.get_name(),
+                    codon_count: amino_acid.get_codon_count(),
+                };
+                Ok((StatusCode::OK, Json(response)))
+            }
+        }
+    }
 }
 
 pub mod interface {
@@ -478,6 +505,11 @@ pub mod interface {
             .route(
                 "/:amino_acid/molecular_weight",
                 get(routes::get_amino_acid_molecular_weight),
+            )
+            .route("/:amino_acid/codon", get(routes::get_amino_acid_codons))
+            .route(
+                "/:amino_acid/codon_count",
+                get(routes::get_amino_acid_codon_count),
             )
     }
 }
