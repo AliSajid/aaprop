@@ -7,7 +7,7 @@ mod models {
 
     #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, EnumString)]
     #[strum(ascii_case_insensitive)]
-    enum SideChain {
+    pub enum SideChain {
         Nonpolar,
         Polar,
         Acidic,
@@ -219,5 +219,121 @@ mod models {
 }
 
 mod data {
-    use super::models;
+    use super::models::AminoAcid;
+    use std::fs;
+
+    pub fn amino_acids() -> Vec<AminoAcid> {
+        let mut amino_acids: Vec<AminoAcid> = Vec::new();
+        let file = fs::read_to_string("src/amino_acid_data.json").expect("Unable to read file");
+        let all_amino_acids: Vec<AminoAcid> = serde_json::from_str(&file).unwrap();
+        for amino_acid in all_amino_acids {
+            amino_acids.push(amino_acid);
+        }
+        amino_acids
+    }
+}
+
+mod responses {
+    use super::models::AminoAcid;
+    use serde::{Deserialize, Serialize};
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidResponse {
+        pub amino_acid: AminoAcid,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidNameResponse {
+        pub name: String,
+        pub short_name: String,
+        pub abbreviation: String,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidSideChainResponse {
+        pub name: String,
+        pub side_chain: String,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidMolecularWeightResponse {
+        pub name: String,
+        pub molecular_weight: f64,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidCodonResponse {
+        pub name: String,
+        pub codon: Vec<String>,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidCodonCountResponse {
+        pub name: String,
+        pub codon_count: usize,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidShortNameResponse {
+        pub name: String,
+        pub short_name: String,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct AminoAcidAbbreviationResponse {
+        pub name: String,
+        pub abbreviation: String,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct RootResponse {
+        pub message: String,
+    }
+
+    #[derive(Serialize, Deserialize)]
+    pub struct ErrorResponse {
+        pub error: String,
+    }
+}
+
+mod routes {
+    use axum::extract::Path;
+    use axum::{http::StatusCode, Json};
+
+    use crate::responses::RootResponse;
+    use crate::responses::{AminoAcidResponse, ErrorResponse};
+
+    pub async fn get_root() -> Result<(StatusCode, Json<RootResponse>), Json<ErrorResponse>> {
+        let response = RootResponse {
+            message: "Welcome to the Amino Acid API".to_string(),
+        };
+        Ok((StatusCode::OK, Json(response)))
+    }
+
+    pub async fn get_amino_acid(
+        Path(amino_acid): Path<String>,
+    ) -> Result<(StatusCode, Json<AminoAcidResponse>), Json<ErrorResponse>> {
+        let amino_acids = crate::data::amino_acids();
+        let matched = amino_acids
+            .iter()
+            .find(|&a| a.get_name().to_lowercase() == amino_acid.to_lowercase())
+            .unwrap()
+            .clone();
+        let response = AminoAcidResponse {
+            amino_acid: matched,
+        };
+        Ok((StatusCode::OK, Json(response)))
+    }
+}
+
+pub mod interface {
+    use super::routes;
+    use axum::routing::get;
+    use axum::Router;
+
+    pub fn create_router() -> Router {
+        Router::new()
+            .route("/", get(routes::get_root))
+            .route("/:amino_acid", get(routes::get_amino_acid))
+    }
 }

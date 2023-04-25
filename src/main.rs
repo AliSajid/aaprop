@@ -1,12 +1,8 @@
-use axum::{routing::get, Router};
-
-async fn hello_world() -> &'static str {
-    "Hello, world!"
-}
+use aaprop::interface::create_router;
 
 #[shuttle_runtime::main]
 async fn axum() -> shuttle_axum::ShuttleAxum {
-    let router = Router::new().route("/hello", get(hello_world));
+    let router = create_router();
 
     Ok(router.into())
 }
