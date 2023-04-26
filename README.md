@@ -15,6 +15,9 @@ This project aims to develop a small cross-platform command line interface (CLI)
 
 - [X] Create the standard project
 - [X] Add the necessary meta files
-- [] Create the models for the data structures
-- [] Add the Amino Acid Properties Data
-- [] Set up the appropriate routes
+- [X] Create the models for the data structures
+- [X] Add the Amino Acid Properties Data
+- [X] Set up the appropriate routes
+- [X] Restructure the project
+- [] Add the tracing
+- [] Add a CLI interface
