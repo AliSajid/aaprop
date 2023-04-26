@@ -9,6 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: AliSajid/shuttle-deploy-action@b9a322d
+      - uses: AliSajid/shuttle-deploy-action@b9a322ddebb3af1e7294dd822c924b94a8671a5a
         with:
           deploy_key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
