@@ -7,21 +7,22 @@ SPDX-License-Identifier: MIT
 
 # Amino Acid Properties
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/AliSajid/aaprop)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/AliSajid/aaprop)
-[![Continuous integration](https://github.com/AliSajid/aaprop/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/AliSajid/aaprop/actions/workflows/ci.yaml)
-[![Contribute with Gitpod](https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#AliSajid/demo-app)
+![GitHub Release (w/pre-release)](https://img.shields.io/github/v/release/AliSajid/aaprop?include_prereleases&logo=semantic-release)
+![GitHub Release](https://img.shields.io/github/v/release/AliSajid/aaprop?logo=semantic-release)
+[![Continuous integration](https://github.com/AliSajid/aaprop/actions/workflows/ci.yaml/badge.svg)](https://github.com/AliSajid/aaprop/actions/workflows/ci.yaml)
+[![Contribute with Gitpod](https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/AliSajid/aaprop)
+![GitHub issues](https://img.shields.io/github/issues/AliSajid/aaprop)
+![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2FAliSajid%2Faaprop)
 
+## Introduction
+
+This project is a small server app that provides a REST API to access the properties of amino acids. The project is written in Rust and uses the `actix-web` framework to handle the HTTP requests. The project is in its initial stages of development and is not yet ready for production use. The project is also designed with dual-deployment in mind. It can either be deployed to [Shuttle](https://shuttle.dev) or to a traditional cloud provider. For traditional cloud providers, we provide both a binary and a Docker image.
 
 ## Build Status
 
 |         | Stable | Beta | Nightly | MSRV (1.72.0) |
 | ------- | ------ | ---- | ------- | ---- |
 | Linux   | ![Ubuntu x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-stable.json) | ![Ubuntu x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-beta.json) | ![Ubuntu x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-nightly.json) | ![Ubuntu x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-msrv.json) |
-| Windows | ![Windows x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-stable.json) | ![Windows x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-beta.json) | ![Windows x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-nightly.json) | ![Windows x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-msrv.json) |
-| macos   | ![macos x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-stable.json) | ![macos x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-beta.json) | ![macos x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-nightly.json) | ![macos x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-msrv.json) |
-
-Amino Acid Properties is a Rust library that provides a set of data structures and functions to work with amino acids and their properties.
 
 ## Roadmap
 
@@ -30,7 +31,7 @@ Amino Acid Properties is a Rust library that provides a set of data structures a
 - [X] Create the models for the data structures
 - [X] Add the Amino Acid Properties Data
 - [X] Set up the appropriate routes
-- [X] Restructure the project
+- [ ] Restructure the project
 - [ ] Add the tracing
 - [ ] Add a CLI interface
 
