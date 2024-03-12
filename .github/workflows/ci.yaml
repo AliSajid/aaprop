@@ -66,7 +66,7 @@ jobs:
             - name: Cargo Lint
               run: cargo clippy -- -D warnings
             - name: Wait before badge creation
-              uses: AliSajid/random-wait-action@3033f0d9277d6c9fd543d2e645c43765604dc4ef # v1.2.0
+              uses: AliSajid/random-wait-action@01b537571b90fecf98521ac9dbd3054d34dd5819 # v2.2.0
               with:
                 minimum: ${{env.MINIMUM_WAIT}}
                 maximum: ${{env.MAXIMUM_WAIT}}
