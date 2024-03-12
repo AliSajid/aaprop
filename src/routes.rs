@@ -1,12 +1,33 @@
-use axum::extract::Path;
-use axum::{http::StatusCode, Json};
-use tracing::{event, instrument, Level};
+// SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+//
+// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: MIT
 
-use crate::models::AminoAcid;
-use crate::responses::{
-    AminoAcidAbbreviationResponse, AminoAcidCodonCountResponse, AminoAcidCodonResponse,
-    AminoAcidMolecularWeightResponse, AminoAcidNameResponse, AminoAcidResponse,
-    AminoAcidShortNameResponse, AminoAcidSideChainResponse, ErrorResponse, RootResponse,
+use axum::{
+    extract::Path,
+    http::StatusCode,
+    Json,
+};
+use tracing::{
+    event,
+    instrument,
+    Level,
+};
+
+use crate::{
+    models::AminoAcid,
+    responses::{
+        AminoAcidAbbreviationResponse,
+        AminoAcidCodonCountResponse,
+        AminoAcidCodonResponse,
+        AminoAcidMolecularWeightResponse,
+        AminoAcidNameResponse,
+        AminoAcidResponse,
+        AminoAcidShortNameResponse,
+        AminoAcidSideChainResponse,
+        ErrorResponse,
+        RootResponse,
+    },
 };
 
 #[instrument]
@@ -70,8 +91,8 @@ pub async fn get_amino_acid_name(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidNameResponse {
-                name: amino_acid.get_name(),
-                short_name: amino_acid.get_short_name(),
+                name:         amino_acid.get_name(),
+                short_name:   amino_acid.get_short_name(),
                 abbreviation: amino_acid.get_abbreviation(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
@@ -102,7 +123,7 @@ pub async fn get_amino_acid_short_name(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidShortNameResponse {
-                name: amino_acid.get_name(),
+                name:       amino_acid.get_name(),
                 short_name: amino_acid.get_short_name(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
@@ -133,7 +154,7 @@ pub async fn get_amino_acid_abbreviation(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidAbbreviationResponse {
-                name: amino_acid.get_name(),
+                name:         amino_acid.get_name(),
                 abbreviation: amino_acid.get_abbreviation(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
@@ -164,7 +185,7 @@ pub async fn get_amino_acid_side_chain(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidSideChainResponse {
-                name: amino_acid.get_name(),
+                name:       amino_acid.get_name(),
                 side_chain: amino_acid.get_side_chain().to_string(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
@@ -196,7 +217,7 @@ pub async fn get_amino_acid_molecular_weight(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidMolecularWeightResponse {
-                name: amino_acid.get_name(),
+                name:             amino_acid.get_name(),
                 molecular_weight: amino_acid.get_molecular_weight(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
@@ -223,7 +244,7 @@ pub async fn get_amino_acid_codons(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidCodonResponse {
-                name: amino_acid.get_name(),
+                name:   amino_acid.get_name(),
                 codons: amino_acid.get_codons(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
@@ -254,7 +275,7 @@ pub async fn get_amino_acid_codon_count(
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidCodonCountResponse {
-                name: amino_acid.get_name(),
+                name:        amino_acid.get_name(),
                 codon_count: amino_acid.get_codon_count(),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);

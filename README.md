@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+
+SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: MIT
+-->
 
 # Amino Acid Properties
 
@@ -9,7 +15,7 @@
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#AliSajid/demo-app)
 
-This project aims to develop a small cross-platform command line interface (CLI) for ...
+Amino Acid Properties is a Rust library that provides a set of data structures and functions to work with amino acids and their properties.
 
 ## To Do List
 
@@ -19,5 +25,5 @@ This project aims to develop a small cross-platform command line interface (CLI)
 - [X] Add the Amino Acid Properties Data
 - [X] Set up the appropriate routes
 - [X] Restructure the project
-- [] Add the tracing
-- [] Add a CLI interface
+- [ ] Add the tracing
+- [ ] Add a CLI interface
