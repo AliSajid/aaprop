@@ -64,9 +64,9 @@ jobs:
         uses: taiki-e/install-action@b7add58e53e52e624966da65007ce24524f3dcf3 # v2.27.9
         with:
           tool: cargo-binstall
-      - name: Install dependencies
+      - name: Install rust dependencies
         run: cargo binstall --log-level debug --no-confirm --locked mdbook mdbook-plantuml mdbook-inline-highlighting
-      - name: Install dependencies
+      - name: Install pnpm dependencies
         run: pnpm install -g vercel@latest
       - name: Populate Preview Variables
         run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
