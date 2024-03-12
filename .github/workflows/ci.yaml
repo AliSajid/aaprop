@@ -12,7 +12,7 @@ concurrency:
     group: ${{github.event.ref}}
     cancel-in-progress: true
 env:
-    GIST_KEY: 185618f862b98debb8b034c34e83173d # pragma: allowlist secret
+    GIST_KEY: 625c1d8a63a7cbb926f8828d97d850b1 # pragma: allowlist secret
     RUST_BACKTRACE: 1
     MINIMUM_WAIT: 3
     MAXIMUM_WAIT: 10
@@ -29,19 +29,13 @@ jobs:
                     - stable
                     - beta
                     - nightly
-                    - 1.72.1 # MSRV
+                    - 1.75.0 # MSRV
                 os:
-                    - windows
                     - ubuntu
-                    - macos
                 include:
-                    - os: windows
-                      logo: windows
                     - os: ubuntu
                       logo: ubuntu
-                    - os: macos
-                      logo: apple
-                    - rust: 1.72.1 # MSRV
+                    - rust: 1.75.0 # MSRV
                       label: msrv
                     - rust: stable
                       label: stable
