@@ -1,10 +1,17 @@
+// SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+//
+// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: MIT
+
 mod data;
 mod models;
 mod responses;
 mod routes;
 
-use axum::routing::get;
-use axum::Router;
+use axum::{
+    routing::get,
+    Router,
+};
 
 pub fn create_router() -> Router {
     Router::new()

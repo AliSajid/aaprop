@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+#
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
+# Accepted licesnes by default
+accepted = ["Apache-2.0", "MIT"]
+targets = [
+    "aarch64-unknown-linux-gnu",
+    "aarch64-unknown-linux-musl",
+    "i686-unknown-linux-gnu",
+    "i686-unknown-linux-musl",
+    "x86_64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl"
+]
+
+# Do not ignore any dependencies
+ignore-build-dependencies = false
+ignore-dev-dependencies = false
+ignore-transitive-dependencies = false
+
+# Try to resolve any time clearlydefined.io marks something as NOASSERTION
+filter-noassertion = true
+
+# Specify the license from the github page:
+# BSD 3-Clause: https://github.com/phsym/prettytable-rs/blob/master/LICENSE.txt
+[prettytable-rs]
+accepted = ["BSD-3-Clause"]
+
+# Specify the triple license for `unicode-ident`
+# MIT: https://github.com/dtolnay/unicode-ident/LICENSE-MIT
+# Apache-2.0: https://github.com/dtolnay/unicode-ident/LICENSE-APACHE
+# Unicode-DFS-2016: https://github.com/dtolnay/unicode-ident/LICENSE-UNICODE
+[unicode-ident]
+accepted = ["Unicode-DFS-2016"]
+
+# Specify the license of `colored`
+# MPL-2.0: https://github.com/colored-rs/colored/blob/master/LICENSE
+[colored]
+accepted = ["MPL-2.0"]
+
+# Specify the license for `matchit`
+# MIT: https://github.com/ibraheemdev/matchit/blob/master/LICENSE
+# BSD-3-Clause: https://github.com/ibraheemdev/matchit/blob/master/LICENSE.httprouter
+[matchit]
+accepted = ["BSD-3-Clause"]
+
+# Specify the license for `anyhow`
+# MIT: https://github.com/dtolnay/anyhow/LICENSE-MIT
+# Apache-2.0: https://github.com/dtolnay/anyhow/LICENSE-APACHE
+[anyhow.clarify]
+license = "MIT OR Apache-2.0"
+
+[[anyhow.clarify.git]]
+path = "LICENSE-MIT"
+license = "MIT"
+checksum = "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3" #pragma: allowlist secret
+
+[[anyhow.clarify.git]]
+path = "LICENSE-APACHE"
+license = "Apache-2.0"
+checksum = "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a" #pragma: allowlist secret
