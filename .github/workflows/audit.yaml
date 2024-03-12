@@ -1,3 +1,4 @@
+---
 name: Security Audit
 on:
     schedule:
@@ -7,24 +8,18 @@ on:
             - '**/Cargo.toml'
             - '**/Cargo.lock'
     workflow_dispatch:
-
-
 jobs:
     security_audit:
-        if: "!contains(github.event.commits[0].message, '[skip ci]')"
+        if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
-
+              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
             - name: Install Rust
               uses: dtolnay/rust-toolchain@stable
-
-            - name: Install Security Audit
-              run: cargo install cargo-audit
-
-            - name: Cache dependencies
-              uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f # v2.2.1
-            
+            - name: Install cargo-audit
+              uses: taiki-e/install-action@b7add58e53e52e624966da65007ce24524f3dcf3 # v2.27.9
+              with:
+                tool: cargo-audit
             - name: Security Audit
               run: cargo audit

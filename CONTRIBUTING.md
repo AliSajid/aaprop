@@ -1,16 +1,25 @@
+<!--
+SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+
+SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: MIT
+-->
+<!-- vale Google.FirstPerson = NO -->
 <!-- omit in toc -->
-# Contributing to Demo App
+# Contributing to AAProp App
 
-First off, thanks for taking the time to contribute! ❤️
+<!-- vale Google.Exclamation = NO -->
+Thank you for taking your time to contribute to this project! Your efforts are greatly appreciated. ❤️
+<!-- vale Google.Exclamation = YES -->
 
-All types of contributions are encouraged and valued. See the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉
+We welcome and encourage all types of contributions. Please see the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. Following the contribution guidelines makes it a lot easier for the maintainers and smooth out the experience for all involved. The community looks forward to your contributions.
 
-And if you like the project, but just don't have time to contribute, that's fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:
+If you like the project, but just don't have time to contribute, that's fine. You can still support the project and show your appreciation in other ways, which we also appreciate:
 
 - Star the project
 - Tweet about it
 - Cite the project in your publications if you found it helpful
-- Refer this project in your project's readme
+- Refer this project in your project's README
 - Mention the project at local meetups and tell your friends/colleagues
 
 <!-- omit in toc -->
@@ -30,15 +39,15 @@ And if you like the project, but just don't have time to contribute, that's fine
 
 ## I Have a Question
 
-Before you ask a question, it is best to search for existing [Issues](https://github.com/AliSajid/aaprop/issues) that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It is also advisable to search the internet for answers first.
+Before you ask a question, it's best to search for existing [Issues](https://github.com/AliSajid/aaprop/issues) that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It's also advisable to search the internet for answers first.
 
 If you then still feel the need to ask a question and need clarification, we recommend the following:
 
 - Open an [Issue](https://github.com/AliSajid/aaprop/issues/new).
 - Provide as much context as you can about what you're running into.
-- Provide project and platform versions (nodejs, npm, etc), depending on what seems relevant.
+- Provide project and platform versions (`rustc -V`, etc), depending on what seems relevant.
 
-We will then take care of the issue as soon as possible.
+We then take care of the issue as soon as possible.
 
 ## I Want To Contribute
 
@@ -105,8 +114,8 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/AliSaj
 - Use a **clear and descriptive title** for the issue to identify the suggestion.
 - Provide a **step-by-step description of the suggested enhancement** in as many details as possible.
 - **Describe the current behavior** and **explain which behavior you expected to see instead** and why. At this point you can also tell which alternatives do not work for you.
-- You may want to **include screenshots and animated GIFs** which help you demonstrate the steps or point out the part which the suggestion is related to. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux. <!-- this should only be included if the project has a GUI -->
-- **Explain why this enhancement would be useful** to most Gainful Key users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
+- You may want to **include screenshots and animated GIFs** which help demonstrate the steps or point out the part which the suggestion is related to. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macos and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux. <!-- this should only be included if the project has a GUI -->
+- **Explain why this enhancement would be useful** to most `aaprop` users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
 ### Your First Code Contribution
 <!-- TODO
@@ -126,13 +135,17 @@ We use `rustfmt`, `clippy` and `cargo check` to ensure a consistent code style. 
 
 ### Commit Messages
 
-We use the Conventionnal Commits specification for commit messages. This leads to **more readable messages** that are easy to follow when looking through the **project history**. But also, the commit messages are used to **generate the Gainful Key change log**.
+The project adheres to the Conventional Commits specification for commit messages, which enhances readability and ease of understanding when navigating through the project history and serves as the basis for generating the Gainful Key change log.
 
 ## Join The Project Team
 
-We are always open to people joining our team. Please [open an issue](https://github.com/AliSajid/aaprop/issues) to alert the team that you are interested in joining. We will then discuss the details in the issue.
+Please [open an issue](https://github.com/AliSajid/aaprop/issues) to let the team know that of your interest in joining, and we can discuss the details in the issue.
 
 <!-- omit in toc -->
 ## Attribution
 
-This guide is based on the **contributing-gen**. [Make your own](https://github.com/bttger/contributing-gen)!
+<!-- vale write-good.Passive = NO -->
+<!-- vale Google.Passive = NO -->
+This guide is based on the **contributing-gen**. [Make your own](https://github.com/bttger/contributing-gen)
+<!-- vale Google.Passive = YES -->
+<!-- vale write-good.Passive = YES -->
