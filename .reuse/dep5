@@ -60,3 +60,7 @@ License: CC0-1.0
 Files: src/amino_acid_data.json
 Copyright: 2023 - 2024 Ali Sajid Imami
 License: CC0-1.0
+
+Files: renovate.json
+Copyright: 2023 - 2024 Ali Sajid Imami
+License: MIT AND Apache-2.0
