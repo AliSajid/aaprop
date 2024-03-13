@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: "/"
+    groups:
+      production:
+        dependency-type: production
+      development:
+        dependency-type: development
+    schedule:
+      interval: weekly
+    labels:
+      - "dependencies"
+    assignees:
+      - "AliSajid"
+    reviewers:
+      - "AliSajid"
+    target-branch: next
+    commit-message:
+      include: "scope"
+      prefix: "Cargo Dependency"
+      prefix-development: "Cargo Dev Dependency"
+  - package-ecosystem: github-actions
+    directory: "/"
+    target-branch: "next"
+    labels:
+      - "CI-Updates"
+    assignees:
+      - "AliSajid"
+    groups:
+      CI:
+        patterns:
+          - "*"
+    schedule:
+      interval: weekly
+    reviewers:
+      - "AliSajid"
+    commit-message:
+      include: "scope"
+      prefix: "CI Workflow"
