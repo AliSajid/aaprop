@@ -83,6 +83,7 @@ jobs:
           then
             echo "mdbook could not be found"
             echo "Here's the path: $PATH"
+            echo "Here's the contents of cargo bin: $(ls $HOME/.cargo/bin)"
             exit 1
           fi
       - name: Build the Book
