@@ -124,8 +124,3 @@ jobs:
         if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
         uses: ./.github/workflows/release.yaml
         secrets: inherit # pragma: allowlist secret
-    generate-docker-image:
-        needs: [semantic-release, ci]
-        if: ${{needs.semantic-release.result == 'success' || (needs.ci.result == 'success' && github.event_name == 'push' && github.ref != 'refs/heads/main')}}
-        uses: ./.github/workflows/build-container.yaml
-        secrets: inherit # pragma: allowlist secret
