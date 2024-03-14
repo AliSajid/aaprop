@@ -63,6 +63,8 @@ jobs:
         id: rust-toolchain
         with:
           toolchain: stable
+      - name: Source the Rust env vars
+        run: source $HOME/.cargo/env
       - name: Cache dependencies
         uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2.7.3
       - name: Install cargo-binstall
@@ -76,7 +78,13 @@ jobs:
       - name: Populate Preview Variables
         run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
       - name: Check if mdbook is available
-        run: mdbook --version
+        run: |
+          if ! command -v mdbook &> /dev/null
+          then
+            echo "mdbook could not be found"
+            echo "Here's the path: $PATH"
+            exit 1
+          fi
       - name: Build the Book
         if: success()
         run: mdbook build guide
