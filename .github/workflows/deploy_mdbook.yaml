@@ -70,25 +70,29 @@ jobs:
         with:
           tool: cargo-binstall
       - name: Install rust dependencies
-        run: cargo binstall --log-level debug --no-confirm --locked mdbook mdbook-plantuml mdbook-inline-highlighting
+        run: cargo binstall -no-confirm --locked mdbook mdbook-plantuml mdbook-inline-highlighting
       - name: Install pnpm dependencies
         run: pnpm install -g vercel@latest
       - name: Populate Preview Variables
         run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
+      - name: Check if mdbook is available
+        run: mdbook --version
       - name: Build the Book
+        if: success()
         run: mdbook build guide
       - name: Build for Vercel deployment -- Preview
-        if: env.PROJECT_ENVIRONMENT == 'preview'
+        if: env.PROJECT_ENVIRONMENT == 'preview' && success()
         run: vercel build --cwd guide/book -y -d --token=${{ env.VERCEL_TOKEN }}
       - name: Build for Vercel deployment -- Production
-        if: env.PROJECT_ENVIRONMENT == 'production'
+        if: env.PROJECT_ENVIRONMENT == 'production' && success()
         run: vercel build --cwd guide/book -y --prod -d --token=${{ env.VERCEL_TOKEN }}
       - name: Deploy to Vercel -- Preview
-        if: env.PROJECT_ENVIRONMENT == 'preview'
+        if: env.PROJECT_ENVIRONMENT == 'preview' && success()
         run: vercel deploy --cwd guide/book --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
       - name: Deploy to Vercel -- Production
-        if: env.PROJECT_ENVIRONMENT == 'production'
+        if: env.PROJECT_ENVIRONMENT == 'production' && success()
         run: vercel deploy --cwd guide/book --prod --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
       - name: Output Deployment URL
+        if: success()
         id: output_deployment_url
         run: echo "deployment_url=$(cat deployment_url)" >> $GITHUB_OUTPUT
