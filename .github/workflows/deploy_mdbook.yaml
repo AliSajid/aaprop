@@ -70,7 +70,7 @@ jobs:
         with:
           tool: cargo-binstall
       - name: Install rust dependencies
-        run: cargo binstall -no-confirm --locked mdbook mdbook-plantuml mdbook-inline-highlighting
+        run: cargo binstall --no-confirm --locked mdbook mdbook-plantuml mdbook-inline-highlighting
       - name: Install pnpm dependencies
         run: pnpm install -g vercel@latest
       - name: Populate Preview Variables
