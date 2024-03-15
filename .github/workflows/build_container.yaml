@@ -42,7 +42,13 @@ jobs:
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
+<<<<<<< HEAD
                   password: ${{ secrets.GHCR_TOKEN }}
+||||||| parent of a4ae642 (ci: switch to GITHUB_TOKEN for logging in)
+                  password: ${{ secrets.ACTIONS_PAT_GITHUB }}
+=======
+                  password: ${{ secrets.GITHUB_TOKEN }}
+>>>>>>> a4ae642 (ci: switch to GITHUB_TOKEN for logging in)
             - name: Build and Push Docker Images
               id: build
               uses: docker/bake-action@017aa056d6bfc9797de5a5dd354a209dc07b490e # v4.3.0
