@@ -1,3 +1,10 @@
+## [1.0.0-next.6](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.5...v1.0.0-next.6) (2024-03-15)
+
+
+### Features
+
+* get a healthcheck ([c02f48a](https://github.com/AliSajid/aaprop/commit/c02f48a22d54795f499e537e8b5bb375bbb5409c))
+
 ## [1.0.0-next.5](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.4...v1.0.0-next.5) (2024-03-15)
 
 
