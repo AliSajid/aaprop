@@ -147,7 +147,7 @@ jobs:
     get-next-version:
         uses: ./.github/workflows/get_next_version.yaml
         needs: [ci, check_changed_dirs]
-        if: ${{needs.check_changed_dirs.outputs.source_changed == 'true' && needs.ci.outputs.result == 'success'}}
+        if: ${{needs.ci.outputs.result == 'success'}}
         secrets: inherit # pragma: allowlist secret
     semantic-release:
         needs: [ci, get-next-version]
