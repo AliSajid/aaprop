@@ -1,3 +1,15 @@
+## [1.0.0-next.8](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.7...v1.0.0-next.8) (2024-03-15)
+
+
+### Features
+
+* add the teapot status ([0a3ee25](https://github.com/AliSajid/aaprop/commit/0a3ee258b9b4b6f715f76a7d6171c9497bcf8d48))
+
+
+### Bug Fixes
+
+* only build docker container for arm64 and aarch64 ([814c36e](https://github.com/AliSajid/aaprop/commit/814c36ed471acaf30717ca8287cd0a56b9545340))
+
 ## [1.0.0-next.7](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.6...v1.0.0-next.7) (2024-03-15)
 
 
