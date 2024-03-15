@@ -1,3 +1,10 @@
+## [1.0.0-next.2](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.1...v1.0.0-next.2) (2024-03-15)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate tracing to v0.1.40 [security] ([8e83799](https://github.com/AliSajid/aaprop/commit/8e83799d5a982d51f451b169e7ab103a72aa013c))
+
 ## 1.0.0-next.1 (2024-03-12)
 
 
