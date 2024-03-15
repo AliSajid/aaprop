@@ -9,6 +9,7 @@ mod responses;
 mod routes;
 
 use axum::{
+    http::StatusCode,
     routing::get,
     Router,
 };
@@ -39,5 +40,5 @@ pub fn create_router() -> Router {
             "/:amino_acid/codon_count",
             get(routes::get_amino_acid_codon_count),
         )
-        .route("/health", get(|| async { "IMNOTOK" }))
+        .route("/health", get(|| async { StatusCode::IM_A_TEAPOT }))
 }
