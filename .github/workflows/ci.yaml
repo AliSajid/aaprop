@@ -154,3 +154,8 @@ jobs:
         if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
         uses: ./.github/workflows/release.yaml
         secrets: inherit # pragma: allowlist secret
+    build-container:
+      needs: [ci, get-next-version]
+      if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
+      uses: ./.github/workflows/build_container.yaml
+      secrets: inherit # pragma: allowlist secret

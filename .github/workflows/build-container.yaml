@@ -8,15 +8,10 @@ name: Docker Image Generation
 on:
   workflow_call:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Continuous integration"]
-    types:
-      - completed
 
 jobs:
     docker-build-push:
         runs-on: ubuntu-latest
-        if: github.event_name != 'workflow_run' || (github.event.workflow_run.event == 'push' && github.ref != 'refs/heads/main')
         steps:
             - name: Checkout
               uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
