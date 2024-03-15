@@ -9,6 +9,8 @@ on:
     schedule:
         - cron: 0 0 1,15 * *
     push:
+        branches:
+            - "*"
         paths:
             - '**/Cargo.toml'
             - '**/Cargo.lock'
