@@ -54,8 +54,5 @@ jobs:
                   targets: "build"
                   provenance: true
                   sbom: true
-                  set: |
-                    *.cache-from=type=gha
-                    *.cache-to=type=gha,mode=max
             - name: Debug Build
               run: echo "${{ steps.build.outputs.metadata }}"
