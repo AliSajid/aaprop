@@ -104,7 +104,7 @@ jobs:
               run: cargo clippy -- -D warnings
             - name: Wait before badge creation
               if: ${{ needs.check_changed_dirs.outputs.source_changed == 'true' }}
-              uses: AliSajid/random-wait-action@01b537571b90fecf98521ac9dbd3054d34dd5819 # v2.2.0
+              uses: AliSajid/random-wait-action@8be67d4ccc4a050bfcbd96acee5668e6bbe6aaf2 # v2.2.0
               with:
                 minimum: ${{env.MINIMUM_WAIT}}
                 maximum: ${{env.MAXIMUM_WAIT}}
