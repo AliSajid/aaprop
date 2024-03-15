@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "aaprop"
-version = "1.0.0-next.6"
+version = "1.0.0-next.7"
 dependencies = [
  "axum 0.7.4",
  "rstest",
