@@ -1,3 +1,19 @@
+## [1.0.0-next.5](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.4...v1.0.0-next.5) (2024-03-15)
+
+
+### Features
+
+* add a server function ([2adbd22](https://github.com/AliSajid/aaprop/commit/2adbd221a13b8959e038906df0c430f6534572da))
+* add a server function ([c2d3f55](https://github.com/AliSajid/aaprop/commit/c2d3f5595be105ff4473086e3d82bfc827911339))
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to 1.0.197 ([847359f](https://github.com/AliSajid/aaprop/commit/847359f24174bbc2ce782262c0d696ddc83aaa8b))
+* **deps:** update rust crate serde_json to 1.0.114 ([0307dc9](https://github.com/AliSajid/aaprop/commit/0307dc91147f41848a6bd0db80475f3a36c42934))
+* **deps:** update rust crate tokio to 1.36.0 ([1017d3e](https://github.com/AliSajid/aaprop/commit/1017d3ea31bc14f42e884428e9372a1e2b253cb2))
+* **deps:** update rust crate tracing to v0.1.40 [security] ([d3ab639](https://github.com/AliSajid/aaprop/commit/d3ab6391bb65938b96f967bc8a4fae2825723384))
+
 ## [1.0.0-next.4](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.3...v1.0.0-next.4) (2024-03-15)
 
 
