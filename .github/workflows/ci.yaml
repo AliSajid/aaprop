@@ -43,7 +43,7 @@ jobs:
     ci:
         runs-on: ${{matrix.os}}-latest
         needs: [check_changed_dirs]
-        if: (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch') && needs.check_changed_dirs.outputs.source_changed == 'true'
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch'
         outputs:
             result: ${{steps.result.outputs.result}}
         strategy:
