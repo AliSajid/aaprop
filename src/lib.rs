@@ -39,5 +39,5 @@ pub fn create_router() -> Router {
             "/:amino_acid/codon_count",
             get(routes::get_amino_acid_codon_count),
         )
-        .route("/health", get(|| async { "OK" }))
+        .route("/health", get(|| async { "IMNOTOK" }))
 }
