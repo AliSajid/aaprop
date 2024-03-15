@@ -59,6 +59,7 @@ jobs:
         uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
         with:
           name: book
+          path: /opt/book
       - name: Setup NodeJS
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
@@ -74,16 +75,16 @@ jobs:
         run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
       - name: Build for Vercel deployment -- Preview
         if: env.PROJECT_ENVIRONMENT == 'preview'
-        run: vercel build --cwd book -y -d --token=${{ env.VERCEL_TOKEN }}
+        run: vercel build --cwd /opt/book -y -d --token=${{ env.VERCEL_TOKEN }}
       - name: Deploy to Vercel -- Preview
         if: env.PROJECT_ENVIRONMENT == 'preview'
-        run: vercel deploy --cwd guide/book --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
+        run: vercel deploy --cwd /opt/book --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
       - name: Build for Vercel deployment -- Production
         if: env.PROJECT_ENVIRONMENT == 'production'
-        run: vercel build --cwd book -y --prod -d --token=${{ env.VERCEL_TOKEN }}
+        run: vercel build --cwd /opt/book -y --prod -d --token=${{ env.VERCEL_TOKEN }}
       - name: Deploy to Vercel -- Production
         if: env.PROJECT_ENVIRONMENT == 'production'
-        run: vercel deploy --cwd guide/book --prod --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
+        run: vercel deploy --cwd /opt/book --prod --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
       - name: Output Deployment URL
         id: output_deployment_url
         run: echo "deployment_url=$(cat deployment_url)" >> $GITHUB_OUTPUT
