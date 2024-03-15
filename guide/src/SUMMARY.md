@@ -7,4 +7,7 @@ SPDX-License-Identifier: MIT
 
 # Summary
 
-- [Chapter 1](./chapter_1.md)
+- [Introduction](./01-introduction.md)
+- [Quick Start](./02-quick-start.md)
+- [Getting Started](./03-getting-started.md)
+- [Command Line Reference](./04-command-line-reference.md)
