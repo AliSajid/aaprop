@@ -1,3 +1,10 @@
+## [1.0.0-next.4](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.3...v1.0.0-next.4) (2024-03-15)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate tokio to 1.36.0 ([16f96c9](https://github.com/AliSajid/aaprop/commit/16f96c9a2c6a8234ab7f62cf88b1fb98adaa6b5f))
+
 ## [1.0.0-next.3](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.2...v1.0.0-next.3) (2024-03-15)
 
 
