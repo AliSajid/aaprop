@@ -71,8 +71,8 @@ jobs:
           run_install: false
       - name: Install pnpm dependencies
         run: pnpm install -g vercel@latest
-      - name: Populate Preview Variables
-        run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
+      - name: Populate Vercel Variables
+        run: vercel pull --cwd /opt/book --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
       - name: Build for Vercel deployment -- Preview
         if: env.PROJECT_ENVIRONMENT == 'preview'
         run: vercel build --cwd /opt/book -y -d --token=${{ env.VERCEL_TOKEN }}
