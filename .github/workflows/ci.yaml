@@ -140,7 +140,7 @@ jobs:
         secrets: inherit # pragma: allowlist secret
     generate_mdbook:
         uses: ./.github/workflows/deploy_mdbook.yaml
-        needs: [ci, check_changed_dirs]
+        needs: [check_changed_dirs]
         if: ${{needs.check_changed_dirs.outputs.book_changed == 'true'}}
         secrets: inherit # pragma: allowlist secret
     get-next-version:
