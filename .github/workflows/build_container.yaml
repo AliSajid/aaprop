@@ -41,8 +41,8 @@ jobs:
               uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
               with:
                   registry: ghcr.io
-                  username: ${{ secrets.GITHUB_ACTOR }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.ACTIONS_PAT_GITHUB }}
             - name: Build and Push Docker Images
               id: build
               uses: docker/bake-action@017aa056d6bfc9797de5a5dd354a209dc07b490e # v4.3.0
@@ -54,5 +54,8 @@ jobs:
                   targets: "build"
                   provenance: true
                   sbom: true
+                  set: |
+                    *.cache-from=type=gha
+                    *.cache-to=type=gha,mode=max
             - name: Debug Build
               run: echo "${{ steps.build.outputs.metadata }}"
