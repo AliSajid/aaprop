@@ -37,6 +37,10 @@ jobs:
             filters: |
               source:
                 - "src/**/*"
+                - "tests/**/*"
+                - "examples/**/*"
+                - "Cargo.toml"
+                - "Cargo.lock"
               book:
                 - "guide/src/*.md"
                 - "guide/book.toml"
