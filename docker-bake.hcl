@@ -12,7 +12,6 @@ target "build" {
   dockerfile = "Dockerfile"
   platforms = [
     "linux/amd64",
-    "linux/arm64",
-    "linux/i386"
+    "linux/arm64"
   ]
 }
