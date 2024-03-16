@@ -20,6 +20,7 @@ concurrency:
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+  DOCKER_REPOSITORY_NAME: ${{ vars.DOCKER_REPOSITORY_NAME }}
   REPOSITORY_NAME: ${{ github.event.repository.name }}
   COSIGN_RELEASE_VERSION: v2.2.3
 jobs:
@@ -33,7 +34,7 @@ jobs:
               uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
               with:
                   images: |
-                    ${{env.DOCKER_USERNAME}}/${{env.REPOSITORY_NAME}}
+                    ${{env.DOCKER_REPOSITORY_NAME}}/${{env.REPOSITORY_NAME}}
                     ghcr.io/${{ github.repository}}
                   tags: |
                     type=ref,event=branch
