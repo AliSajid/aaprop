@@ -79,6 +79,8 @@ jobs:
                 SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
               with:
                   push: true
+                  provenance: true
+                  sbom: true
                   annotations: ${{ steps.meta.outputs.annotations }}
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
