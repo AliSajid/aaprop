@@ -21,6 +21,7 @@ concurrency:
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
   REPOSITORY_NAME: ${{ github.event.repository.name }}
+  COSIGN_RELEASE_VERSION: v2.2.3
 jobs:
     docker-build-push:
         runs-on: ubuntu-latest
@@ -78,3 +79,30 @@ jobs:
                   platforms: linux/amd64,linux/arm64,linux/i386
             - name: Debug Build
               run: echo "${{join(steps.build.outputs.*, '\n')}}"
+            - name: Install cosign
+              uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4 # v3.4.0
+              with:
+                cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
+            - name: Sign and Push
+              env:
+                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+              run: |
+                images=""
+                for tag in ${IMAGE_TAGS}; do
+                  images+="${tag}@${IMAGE_DIGEST} "
+                  echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
+                done
+                cosign sign --yes ${images}
+              shell: bash
+            - name: Verify Signatures
+              env:
+                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+              run: |
+                for tag in ${IMAGE_TAGS}; do
+                  image="${tag}@${IMAGE_DIGEST}"
+                  echo "Verifying ${image}"
+                  cosign verify ${image}
+                done
+              shell: bash
