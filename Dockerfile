@@ -43,7 +43,7 @@ RUN rm target/release/deps/aaprop*
 ADD src src
 
 # Build the Rust project with the actual source code
-RUN cargo build --release
+RUN cargo build --release --locked
 
 # Use the official distroless image as the base image
 FROM gcr.io/distroless/cc-debian12
