@@ -77,4 +77,4 @@ jobs:
                   labels: ${{ steps.meta.outputs.labels }}
                   platforms: linux/amd64,linux/arm64,linux/i386
             - name: Debug Build
-              run: echo "${{ steps.build.outputs }}"
+              run: echo "${{join(steps.build.outputs.*, '\n')}}"
