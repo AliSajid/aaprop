@@ -1,3 +1,10 @@
+## [1.0.0-next.9](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.8...v1.0.0-next.9) (2024-03-15)
+
+
+### Bug Fixes
+
+* move to build-push-action ([9a42db2](https://github.com/AliSajid/aaprop/commit/9a42db2c0151d076e8fd238633e35f85c767d5b4))
+
 ## [1.0.0-next.8](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.7...v1.0.0-next.8) (2024-03-15)
 
 
