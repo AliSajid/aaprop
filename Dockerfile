@@ -45,8 +45,8 @@ ADD src src
 # Build the Rust project with the actual source code
 RUN cargo build --release
 
-# Use the official Debian image as the base image
-FROM debian:bookworm-slim
+# Use the official distroless image as the base image
+FROM gcr.io/distroless/cc-debian12
 
 # Copy the binary from the builder image to the base image
 COPY --from=builder /usr/src/aaprop/target/release/aaprop /usr/local/bin/aaprop
