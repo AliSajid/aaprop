@@ -23,12 +23,15 @@ env:
   DOCKER_REPOSITORY_NAME: ${{ vars.DOCKER_REPOSITORY_NAME }}
   REPOSITORY_NAME: ${{ github.event.repository.name }}
   COSIGN_RELEASE_VERSION: v2.2.3
+  SOURCE_DATE_EPOCH: 0
 jobs:
     docker-build-push:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+            - name: Get Last Commit Date/Time for reproducible builds
+              run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
             - name: Generate Docker Metadata
               id: meta
               uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
@@ -68,12 +71,10 @@ jobs:
             - name: Build and Push Docker Images
               id: build
               uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
+              env:
+                SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
               with:
                   push: true
-                  provenance: true
-                  sbom: true
-                  cache-from: type=registry,ref=banseljaj/aaprop:latest
-                  cache-to: type=inline
                   annotations: ${{ steps.meta.outputs.annotations }}
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
