@@ -24,7 +24,7 @@ RUN USER=root cargo new aaprop
 WORKDIR /usr/src/aaprop
 
 # Copy the Cargo.toml and Cargo.lock files to the aaprop directory
-COPY Cargo.toml Cargo.lock ./
+# COPY Cargo.toml Cargo.lock ./
 
 # Build the Rust project
 # This step is done separately to take advantage of Docker's layer caching
@@ -33,17 +33,17 @@ RUN cargo build --release
 
 # Remove the auto-generated main.rs file
 # This file will be replaced with the actual source code
-RUN rm src/*.rs
+# RUN rm src/*.rs
 
 # Remove the auto-generated binary and dependencies
 # These will be replaced with the actual binary and dependencies
-RUN rm target/release/deps/aaprop*
+# RUN rm target/release/deps/aaprop*
 
 # Add the actual source code to the src directory
-ADD src src
+# ADD src src
 
 # Build the Rust project with the actual source code
-RUN cargo build --release --locked
+# RUN cargo build --release --locked
 
 # Use the official distroless image as the base image
 FROM gcr.io/distroless/cc-debian12
