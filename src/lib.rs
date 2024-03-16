@@ -42,4 +42,5 @@ pub fn create_router() -> Router {
         )
         .route("/health", get(|| async { StatusCode::OK }))
         .route("/teapot", get(|| async { StatusCode::IM_A_TEAPOT }))
+        .route("/coffeemaker", get(|| async { StatusCode::GONE }))
 }
