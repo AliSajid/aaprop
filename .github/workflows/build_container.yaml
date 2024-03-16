@@ -94,12 +94,17 @@ jobs:
                 IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
                 IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
               run: |
-                images=""
                 for tag in ${IMAGE_TAGS}; do
-                  images+="${tag}@${IMAGE_DIGEST} "
+                  image="${tag}@${IMAGE_DIGEST}"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
+                  cosign sign --yes ${image}
+                  echo "Generating Software Bill of Materials for ${image}"
+                  syft ${image} -o sbom-${tag}.json
+                  echo "Attesting the Software Bill of Materials for ${image}"
+                  cosign attest -y --predicate "sbom-${tag}.json" ${image}
+                  echo "Done signing and pushing ${tag}@${IMAGE_DIGEST}"
                 done
-                cosign sign --yes ${images}
+
               shell: bash
             - name: Verify Signatures
               env:
@@ -110,5 +115,8 @@ jobs:
                   image="${tag}@${IMAGE_DIGEST}"
                   echo "Verifying ${image}"
                   cosign verify ${image}
+                  echo "Verifying SBOM Attestation for ${image}"
+                  cosign verify-attestation ${image}
+                  echo "Done verifying ${image}"
                 done
               shell: bash
