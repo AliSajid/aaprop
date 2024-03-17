@@ -103,15 +103,19 @@ jobs:
               run: |
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
+                  original_name="sbom-${tag}.json"
+                  sanitized_name=$(echo "$original_name" | tr '_-' '-_')
+                  echo "Signing the image: ${image}"
+                  echo "Using the original name: $original_name"
+                  echo "Using the sanitized name: $sanitized_name"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
                   cosign sign --yes ${image}
                   echo "Generating Software Bill of Materials for ${image}"
-                  syft ${image} -o sbom-${tag}.json
+                  syft ${image} -o ${sanitized_name}
                   echo "Attesting the Software Bill of Materials for ${image}"
-                  cosign attest -y --predicate "sbom-${tag}.json" ${image}
-                  echo "Done signing and pushing ${tag}@${IMAGE_DIGEST}"
+                  cosign attest -y --predicate ${sanitized_name} ${image}
+                  echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
-
               shell: bash
             - name: Verify Signatures
               env:
