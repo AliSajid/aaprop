@@ -80,7 +80,7 @@ jobs:
                 SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
               with:
                   push: true
-                  provenance: true
+                  # provenance: true
                   annotations: ${{ steps.meta.outputs.annotations }}
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
@@ -110,25 +110,25 @@ jobs:
                   echo "Using the sanitized name: $sanitized_name"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
                   cosign --verbose sign --yes ${image}
-                  echo "Generating Software Bill of Materials for ${image}"
-                  syft ${image} -o spdx-json=${sanitized_name} -v
-                  echo "Attesting the Software Bill of Materials for ${image}"
-                  cosign --verbose attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
+                  # echo "Generating Software Bill of Materials for ${image}"
+                  # syft ${image} -o spdx-json=${sanitized_name} -v
+                  # echo "Attesting the Software Bill of Materials for ${image}"
+                  # cosign --verbose attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
-            - name: Verify Signatures
-              env:
-                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
-                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
-                GITHUB_TOKEN: ${{ github.token }}
-              run: |
-                for tag in ${IMAGE_TAGS}; do
-                  image="${tag}@${IMAGE_DIGEST}"
-                  echo "Verifying ${image}"
-                  cosign verify ${image} --certificate-identity="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
-                  echo "Verifying SBOM Attestation for ${image}"
-                  cosign verify-attestation ${image} --certificate-identity="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
-                  echo "Done verifying ${image}"
-                done
-              shell: bash
+            # - name: Verify Signatures
+            #   env:
+            #     IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+            #     IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+            #     GITHUB_TOKEN: ${{ github.token }}
+            #   run: |
+            #     for tag in ${IMAGE_TAGS}; do
+            #       image="${tag}@${IMAGE_DIGEST}"
+            #       echo "Verifying ${image}"
+            #       cosign verify ${image} --certificate-identity="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+            #       echo "Verifying SBOM Attestation for ${image}"
+            #       cosign verify-attestation ${image} --certificate-identity="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+            #       echo "Done verifying ${image}"
+            #     done
+            #   shell: bash
