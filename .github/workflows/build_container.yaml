@@ -111,10 +111,10 @@ jobs:
                   echo "Using the sanitized name: $sanitized_name"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
                   cosign sign --yes ${image}
-                  # echo "Generating Software Bill of Materials for ${image}"
-                  # syft ${image} -o spdx-json=${sanitized_name} -v
-                  # echo "Attesting the Software Bill of Materials for ${image}"
-                  # cosign attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
+                  echo "Generating Software Bill of Materials for ${image}"
+                  syft ${image} -o spdx-json=${sanitized_name} -v
+                  echo "Attesting the Software Bill of Materials for ${image}"
+                  cosign attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
@@ -129,8 +129,8 @@ jobs:
                   image="${tag}@${IMAGE_DIGEST}"
                   echo "Verifying ${image}"
                   cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
-                  # echo "Verifying SBOM Attestation for ${image}"
-                  # cosign verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
+                  echo "Verifying SBOM Attestation for ${image}"
+                  cosign verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
                   echo "Done verifying ${image}"
                 done
               shell: bash
