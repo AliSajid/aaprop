@@ -1,3 +1,10 @@
+## [1.0.0-next.10](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.9...v1.0.0-next.10) (2024-03-17)
+
+
+### Features
+
+* add an extra route ([893ceee](https://github.com/AliSajid/aaprop/commit/893ceee94986befc49e6a9e05dd69cd6d09978fa))
+
 ## [1.0.0-next.9](https://github.com/AliSajid/aaprop/compare/v1.0.0-next.8...v1.0.0-next.9) (2024-03-15)
 
 
