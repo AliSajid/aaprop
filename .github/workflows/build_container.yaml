@@ -99,6 +99,7 @@ jobs:
               env:
                 IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
                 IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+                GITHUB_TOKEN: ${{ github.token }}
               run: |
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
@@ -116,6 +117,7 @@ jobs:
               env:
                 IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
                 IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+                GITHUB_TOKEN: ${{ github.token }}
               run: |
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
