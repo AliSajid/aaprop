@@ -80,7 +80,6 @@ jobs:
               with:
                   push: true
                   provenance: true
-                  sbom: true
                   annotations: ${{ steps.meta.outputs.annotations }}
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
@@ -109,11 +108,11 @@ jobs:
                   echo "Using the original name: $original_name"
                   echo "Using the sanitized name: $sanitized_name"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
-                  cosign sign --yes ${image}
+                  cosign --verbose sign --recursive --yes ${image}
                   echo "Generating Software Bill of Materials for ${image}"
-                  syft ${image} -o ${sanitized_name}
+                  syft ${image} -o spdx-json=${sanitized_name} -v
                   echo "Attesting the Software Bill of Materials for ${image}"
-                  cosign attest -y --predicate ${sanitized_name} ${image}
+                  cosign --verbose attest --recursive --type="spdx-json" --yes --predicate ${sanitized_name} ${image}
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
