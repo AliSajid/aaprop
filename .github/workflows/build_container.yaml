@@ -110,11 +110,11 @@ jobs:
                   echo "Using the original name: $original_name"
                   echo "Using the sanitized name: $sanitized_name"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
-                  cosign --verbose sign --yes ${image}
+                  cosign sign --yes ${image}
                   # echo "Generating Software Bill of Materials for ${image}"
                   # syft ${image} -o spdx-json=${sanitized_name} -v
                   # echo "Attesting the Software Bill of Materials for ${image}"
-                  # cosign --verbose attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
+                  # cosign attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
@@ -128,9 +128,10 @@ jobs:
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
                   echo "Verifying ${image}"
-                  cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+                  echo cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+                  cosign --verbose verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
                   # echo "Verifying SBOM Attestation for ${image}"
-                  # cosign verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+                  # cosign --verbose verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
                   echo "Done verifying ${image}"
                 done
               shell: bash
