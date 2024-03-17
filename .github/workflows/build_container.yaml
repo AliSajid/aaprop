@@ -128,10 +128,9 @@ jobs:
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
                   echo "Verifying ${image}"
-                  echo cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
-                  cosign --verbose verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+                  cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
                   # echo "Verifying SBOM Attestation for ${image}"
-                  # cosign --verbose verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
+                  # cosign verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
                   echo "Done verifying ${image}"
                 done
               shell: bash
