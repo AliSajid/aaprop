@@ -109,11 +109,11 @@ jobs:
                   echo "Using the original name: $original_name"
                   echo "Using the sanitized name: $sanitized_name"
                   echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
-                  cosign --verbose sign --recursive --yes ${image}
+                  cosign --verbose sign --yes ${image}
                   echo "Generating Software Bill of Materials for ${image}"
                   syft ${image} -o spdx-json=${sanitized_name} -v
                   echo "Attesting the Software Bill of Materials for ${image}"
-                  cosign --verbose attest --recursive --type=spdxjson --yes --predicate ${sanitized_name} ${image}
+                  cosign --verbose attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
