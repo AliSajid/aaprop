@@ -104,7 +104,7 @@ jobs:
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
                   original_name="sbom-${tag}.json"
-                  sanitized_name=$(echo "$original_name" | tr '_-' '-_')
+                  sanitized_name=$(echo "$original_name" | sed 's|[/:]|_|g' | tr '_-' '-_')
                   echo "Signing the image: ${image}"
                   echo "Using the original name: $original_name"
                   echo "Using the sanitized name: $sanitized_name"
