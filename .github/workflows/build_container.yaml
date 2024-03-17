@@ -17,7 +17,6 @@ on:
 concurrency:
   group: docker
   cancel-in-progress: false
-
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
   DOCKER_REPOSITORY_NAME: ${{ vars.DOCKER_REPOSITORY_NAME }}
@@ -125,9 +124,9 @@ jobs:
                 for tag in ${IMAGE_TAGS}; do
                   image="${tag}@${IMAGE_DIGEST}"
                   echo "Verifying ${image}"
-                  cosign verify ${image}
+                  cosign verify ${image} --certificate-identity="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
                   echo "Verifying SBOM Attestation for ${image}"
-                  cosign verify-attestation ${image}
+                  cosign verify-attestation ${image} --certificate-identity="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer="${{vars.COSIGN_CERTIFICATE_IDENTITY}}"
                   echo "Done verifying ${image}"
                 done
               shell: bash
