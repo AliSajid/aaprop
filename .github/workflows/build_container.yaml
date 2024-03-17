@@ -112,7 +112,7 @@ jobs:
                   echo "Generating Software Bill of Materials for ${image}"
                   syft ${image} -o spdx-json=${sanitized_name} -v
                   echo "Attesting the Software Bill of Materials for ${image}"
-                  cosign --verbose attest --recursive --type="spdx-json" --yes --predicate ${sanitized_name} ${image}
+                  cosign --verbose attest --recursive --type=spdxjson --yes --predicate ${sanitized_name} ${image}
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
