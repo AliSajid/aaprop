@@ -130,7 +130,7 @@ jobs:
                   echo "Verifying ${image}"
                   cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
                   echo "Verifying SBOM Attestation for ${image}"
-                  cosign verify-attestation ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
+                  cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
                   echo "Done verifying ${image}"
                 done
               shell: bash
