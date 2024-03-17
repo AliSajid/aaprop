@@ -49,6 +49,8 @@ jobs:
                     type=semver,pattern={{major}}.{{minor}}
                     type=semver,pattern={{major}}
                     type=sha
+                  labels: |
+                    org.opencontainers.image.licenses="MIT AND Apache-2.0"
             - name: Debug Metadata
               run: echo "${{ steps.meta.outputs.json }}"
             - name: Setup Buildx
