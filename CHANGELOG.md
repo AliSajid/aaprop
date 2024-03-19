@@ -1,3 +1,29 @@
+## [1.1.0](https://github.com/AliSajid/aaprop/compare/v1.0.0...v1.1.0) (2024-03-19)
+
+
+### Features
+
+* add a server function ([2adbd22](https://github.com/AliSajid/aaprop/commit/2adbd221a13b8959e038906df0c430f6534572da))
+* add a server function ([c2d3f55](https://github.com/AliSajid/aaprop/commit/c2d3f5595be105ff4473086e3d82bfc827911339))
+* add an extra route ([893ceee](https://github.com/AliSajid/aaprop/commit/893ceee94986befc49e6a9e05dd69cd6d09978fa))
+* add the teapot status ([0a3ee25](https://github.com/AliSajid/aaprop/commit/0a3ee258b9b4b6f715f76a7d6171c9497bcf8d48))
+* get a healthcheck ([c02f48a](https://github.com/AliSajid/aaprop/commit/c02f48a22d54795f499e537e8b5bb375bbb5409c))
+* update the healthcheck ([7b2336c](https://github.com/AliSajid/aaprop/commit/7b2336c37b735a908c8f6d168f835fb275d629d8))
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to 1.0.197 ([847359f](https://github.com/AliSajid/aaprop/commit/847359f24174bbc2ce782262c0d696ddc83aaa8b))
+* **deps:** update rust crate serde to 1.0.197 ([e975c80](https://github.com/AliSajid/aaprop/commit/e975c80a07d036deaf3a05ee7c07827e27a322c8))
+* **deps:** update rust crate serde_json to 1.0.114 ([0307dc9](https://github.com/AliSajid/aaprop/commit/0307dc91147f41848a6bd0db80475f3a36c42934))
+* **deps:** update rust crate serde_json to 1.0.114 ([3942bc4](https://github.com/AliSajid/aaprop/commit/3942bc4162e400c7d041c2d469cf9e75d8acb52a))
+* **deps:** update rust crate tokio to 1.36.0 ([1017d3e](https://github.com/AliSajid/aaprop/commit/1017d3ea31bc14f42e884428e9372a1e2b253cb2))
+* **deps:** update rust crate tokio to 1.36.0 ([16f96c9](https://github.com/AliSajid/aaprop/commit/16f96c9a2c6a8234ab7f62cf88b1fb98adaa6b5f))
+* **deps:** update rust crate tracing to v0.1.40 [security] ([d3ab639](https://github.com/AliSajid/aaprop/commit/d3ab6391bb65938b96f967bc8a4fae2825723384))
+* **deps:** update rust crate tracing to v0.1.40 [security] ([8e83799](https://github.com/AliSajid/aaprop/commit/8e83799d5a982d51f451b169e7ab103a72aa013c))
+* move to build-push-action ([9a42db2](https://github.com/AliSajid/aaprop/commit/9a42db2c0151d076e8fd238633e35f85c767d5b4))
+* only build docker container for arm64 and aarch64 ([814c36e](https://github.com/AliSajid/aaprop/commit/814c36ed471acaf30717ca8287cd0a56b9545340))
+
 ## 1.0.0 (2024-03-15)
 
 
