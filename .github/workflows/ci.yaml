@@ -37,6 +37,10 @@ jobs:
             filters: |
               source:
                 - "src/**/*"
+                - "tests/**/*"
+                - "examples/**/*"
+                - "Cargo.toml"
+                - "Cargo.lock"
               book:
                 - "guide/src/*.md"
                 - "guide/book.toml"
@@ -104,7 +108,7 @@ jobs:
               run: cargo clippy -- -D warnings
             - name: Wait before badge creation
               if: ${{ needs.check_changed_dirs.outputs.source_changed == 'true' }}
-              uses: AliSajid/random-wait-action@01b537571b90fecf98521ac9dbd3054d34dd5819 # v2.2.0
+              uses: AliSajid/random-wait-action@01b537571b90fecf98521ac9dbd3054d34dd5819 # v2.2.1
               with:
                 minimum: ${{env.MINIMUM_WAIT}}
                 maximum: ${{env.MAXIMUM_WAIT}}
@@ -155,7 +159,9 @@ jobs:
         uses: ./.github/workflows/release.yaml
         secrets: inherit # pragma: allowlist secret
     build-container:
-      needs: [ci, get-next-version]
-      if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
+      permissions:
+        id-token: write
+        packages: write
+      needs: [ci]
       uses: ./.github/workflows/build_container.yaml
       secrets: inherit # pragma: allowlist secret

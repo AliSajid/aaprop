@@ -27,7 +27,7 @@ Apache License 2.0
 
 - [pin-project]( https://github.com/taiki-e/pin-project ) 1.0.12
 - [pin-project-internal]( https://github.com/taiki-e/pin-project ) 1.0.12
-- [pin-project-lite]( https://github.com/taiki-e/pin-project-lite ) 0.2.9
+- [pin-project-lite]( https://github.com/taiki-e/pin-project-lite ) 0.2.13
 - [sync_wrapper]( https://github.com/Actyx/sync_wrapper ) 0.1.2
 
 #### License
@@ -1311,7 +1311,7 @@ Apache License 2.0
 - [semver]( https://github.com/dtolnay/semver ) 1.0.22
 - [serde]( https://github.com/serde-rs/serde ) 1.0.197
 - [serde_derive]( https://github.com/serde-rs/serde ) 1.0.197
-- [serde_json]( https://github.com/serde-rs/json ) 1.0.96
+- [serde_json]( https://github.com/serde-rs/json ) 1.0.114
 - [serde_path_to_error]( https://github.com/dtolnay/path-to-error ) 0.1.11
 - [serde_urlencoded]( https://github.com/nox/serde_urlencoded ) 0.7.1
 - [syn]( https://github.com/dtolnay/syn ) 2.0.52
@@ -4357,7 +4357,7 @@ Apache License 2.0
 
 #### Used by
 
-- [aaprop]( https://crates.io/crates/aaprop ) 1.0.0-next.1
+- [aaprop]( https://crates.io/crates/aaprop ) 1.0.0-next.10
 - [relative-path]( https://github.com/udoprog/relative-path ) 1.9.2
 - [shuttle-axum]( https://crates.io/crates/shuttle-axum ) 0.41.0
 - [shuttle-codegen]( https://github.com/shuttle-hq/shuttle ) 0.41.0
@@ -4754,7 +4754,7 @@ MIT License
 
 #### Used by
 
-- [mio]( https://github.com/tokio-rs/mio ) 0.8.6
+- [mio]( https://github.com/tokio-rs/mio ) 0.8.11
 
 #### License
 
@@ -5258,9 +5258,9 @@ MIT License
 
 #### Used by
 
-- [tracing]( https://github.com/tokio-rs/tracing ) 0.1.38
-- [tracing-attributes]( https://github.com/tokio-rs/tracing ) 0.1.24
-- [tracing-core]( https://github.com/tokio-rs/tracing ) 0.1.30
+- [tracing]( https://github.com/tokio-rs/tracing ) 0.1.40
+- [tracing-attributes]( https://github.com/tokio-rs/tracing ) 0.1.27
+- [tracing-core]( https://github.com/tokio-rs/tracing ) 0.1.32
 - [tracing-log]( https://github.com/tokio-rs/tracing ) 0.1.3
 - [tracing-log]( https://github.com/tokio-rs/tracing ) 0.2.0
 - [tracing-opentelemetry]( https://github.com/tokio-rs/tracing-opentelemetry ) 0.22.0
@@ -5411,7 +5411,7 @@ MIT License
 
 #### Used by
 
-- [tokio]( https://github.com/tokio-rs/tokio ) 1.27.0
+- [tokio]( https://github.com/tokio-rs/tokio ) 1.36.0
 - [tokio-stream]( https://github.com/tokio-rs/tokio ) 0.1.12
 - [tokio-util]( https://github.com/tokio-rs/tokio ) 0.7.7
 
@@ -5452,7 +5452,7 @@ MIT License
 
 #### Used by
 
-- [tokio-macros]( https://github.com/tokio-rs/tokio ) 2.0.0
+- [tokio-macros]( https://github.com/tokio-rs/tokio ) 2.2.0
 
 #### License
 
@@ -5773,7 +5773,7 @@ MIT License
 
 #### Used by
 
-- [tracing-core]( https://github.com/tokio-rs/tracing ) 0.1.30
+- [tracing-core]( https://github.com/tokio-rs/tracing ) 0.1.32
 
 #### License
 
