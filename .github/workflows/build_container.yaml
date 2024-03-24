@@ -60,8 +60,8 @@ jobs:
                 buildkitd-flags: --debug
             - name: Setup QEMU
               uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
-              with:
-                platforms: aarch64,linux/arm64,linux/amd64
+              # with:
+              #   platforms: aarch64,linux/arm64,linux/amd64
             - name: Login to DockerHub
               uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
               with:
