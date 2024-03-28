@@ -1,4 +1,4 @@
-## [1.1.0](https://github.com/AliSajid/aaprop/compare/v1.0.0...v1.1.0) (2024-03-19)
+## [1.1.0-next.1](https://github.com/AliSajid/aaprop/compare/v1.0.0...v1.1.0-next.1) (2024-03-19)
 
 
 ### Features

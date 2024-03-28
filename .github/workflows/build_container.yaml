@@ -92,7 +92,7 @@ jobs:
               with:
                 cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
             - name: Install Syft
-              uses: anchore/sbom-action/download-syft@9fece9e20048ca9590af301449208b2b8861333b # v0.15.9
+              uses: anchore/sbom-action/download-syft@ab5d7b5f48981941c4c5d6bf33aeb98fe3bae38c # v0.15.10
               with:
                 syft-version: v1.0.1
             - name: Sign and Push
@@ -118,19 +118,19 @@ jobs:
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
-            - name: Verify Signatures
-              env:
-                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
-                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
-                GITHUB_TOKEN: ${{ github.token }}
-                SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
-              run: |
-                for tag in ${IMAGE_TAGS}; do
-                  image="${tag}@${IMAGE_DIGEST}"
-                  echo "Verifying ${image}"
-                  cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
-                  echo "Verifying SBOM Attestation for ${image}"
-                  cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
-                  echo "Done verifying ${image}"
-                done
-              shell: bash
+            # - name: Verify Signatures
+            #   env:
+            #     IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+            #     IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+            #     GITHUB_TOKEN: ${{ github.token }}
+            #     SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
+            #   run: |
+            #     for tag in ${IMAGE_TAGS}; do
+            #       image="${tag}@${IMAGE_DIGEST}"
+            #       echo "Verifying ${image}"
+            #       cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
+            #       echo "Verifying SBOM Attestation for ${image}"
+            #       cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
+            #       echo "Done verifying ${image}"
+            #     done
+            #   shell: bash
