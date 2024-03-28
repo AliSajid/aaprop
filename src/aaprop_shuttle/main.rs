@@ -11,8 +11,3 @@ async fn axum() -> shuttle_axum::ShuttleAxum {
 
     Ok(router.into())
 }
-
-#[allow(dead_code)]
-fn server() {
-    println!("This is a server.")
-}
