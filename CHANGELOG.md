@@ -1,3 +1,11 @@
+## [1.1.1-next.1](https://github.com/AliSajid/aaprop/compare/v1.1.0...v1.1.1-next.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate axum to 0.7.5 ([6633f4e](https://github.com/AliSajid/aaprop/commit/6633f4e57dad96f275de3b6fc761040befb4532d))
+* **deps:** update rust crate serde_json to 1.0.115 ([320dbd1](https://github.com/AliSajid/aaprop/commit/320dbd1e66281e771ce603d7826741b7174510d1))
+
 ## [1.1.0-next.1](https://github.com/AliSajid/aaprop/compare/v1.0.0...v1.1.0-next.1) (2024-03-19)
 
 
