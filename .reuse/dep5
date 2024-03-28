@@ -57,7 +57,7 @@ Files: CHANGELOG.md
 Copyright: 2023 - 2024 Ali Sajid Imami
 License: CC0-1.0
 
-Files: src/amino_acid_data.json
+Files: src/aaprop_lib/amino_acid_data.json
 Copyright: 2023 - 2024 Ali Sajid Imami
 License: CC0-1.0
 
