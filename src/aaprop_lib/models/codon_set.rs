@@ -22,6 +22,7 @@ pub struct CodonSet {
 }
 
 impl CodonSet {
+    #[must_use]
     pub const fn new(codons: &'static [&'static str]) -> Self {
         let num_codons = codons.len();
         let first = if codons.is_empty() {

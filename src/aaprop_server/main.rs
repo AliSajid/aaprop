@@ -4,5 +4,5 @@
 // SPDX-License-Identifier: MIT
 
 fn main() {
-    println!("This is a server.")
+    println!("This is a server.");
 }

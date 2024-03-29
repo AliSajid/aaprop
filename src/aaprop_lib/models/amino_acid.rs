@@ -30,6 +30,7 @@ pub struct AminoAcid {
 }
 
 impl AminoAcid {
+    #[must_use]
     pub const fn new(
         name: &'static str,
         short_name: &'static str,
