@@ -9,17 +9,12 @@ use std::fmt::{
     Formatter,
 };
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
-
 use crate::{
     CodonSet,
     SideChain,
 };
 
-#[derive(Debug, PartialEq, Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub struct AminoAcid {
     name:             &'static str,
     short_name:       &'static str,
@@ -76,8 +71,8 @@ impl AminoAcid {
     }
 
     #[must_use]
-    pub const fn get_codons(&self) -> CodonSet {
-        self.codons
+    pub const fn get_codons(&self) -> [&str; 6] {
+        self.codons.get_all()
     }
 
     #[must_use]
@@ -146,7 +141,7 @@ mod tests {
     }
     #[rstest]
     fn test_get_codons(amino_acid: AminoAcid) {
-        let codon_set = CodonSet::new(&["GCU", "GCC", "GCA", "GCG"]);
+        let codon_set = ["GCU", "GCC", "GCA", "GCG", "", ""];
         assert_eq!(amino_acid.get_codons(), codon_set);
     }
     #[rstest]

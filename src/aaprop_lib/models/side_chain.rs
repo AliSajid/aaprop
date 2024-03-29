@@ -9,12 +9,7 @@ use std::fmt::{
     Formatter,
 };
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Copy)]
+#[derive(Debug, Clone, PartialEq, Eq, Copy)]
 pub enum SideChain {
     Nonpolar,
     Polar,
