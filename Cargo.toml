@@ -27,7 +27,7 @@ server = []
 axum = "0.7.5"
 serde = { version = "1.0.197", features = ["derive", "rc"] }
 serde_json = "1.0.115"
-shuttle-axum = "0.41.0"
+shuttle-axum = "0.42.0"
 shuttle-runtime = "0.41.0"
 strum = { version = "0.26.2", features = ["derive", "strum_macros"] }
 strum_macros = "0.26.2"
