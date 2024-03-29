@@ -59,5 +59,4 @@ pub fn create_router() -> Router {
             get(routes::get_amino_acid_codon_count),
         )
         .route("/health", get(|| async { StatusCode::OK }))
-        .route("/coffeemaker", get(|| async { StatusCode::GONE }))
 }
