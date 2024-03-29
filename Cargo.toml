@@ -31,7 +31,7 @@ shuttle-axum = "0.41.0"
 shuttle-runtime = "0.41.0"
 strum = { version = "0.26.2", features = ["derive", "strum_macros"] }
 strum_macros = "0.26.2"
-tokio = "1.36.0"
+tokio = "1.37.0"
 tracing = { version = "0.1.38", features = ["async-await"] }
 
 [dev-dependencies]
