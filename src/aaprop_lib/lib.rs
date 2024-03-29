@@ -13,6 +13,10 @@ use axum::{
     routing::get,
     Router,
 };
+use models::{
+    AminoAcid,
+    SideChain,
+};
 
 pub fn create_router() -> Router {
     Router::new()

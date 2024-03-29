@@ -13,23 +13,8 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use strum_macros::EnumString;
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, EnumString)]
-#[strum(ascii_case_insensitive)]
-pub enum SideChain {
-    Nonpolar,
-    Polar,
-    Acidic,
-    Basic,
-    Positive,
-}
-
-impl Display for SideChain {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
+use crate::SideChain;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct AminoAcid {

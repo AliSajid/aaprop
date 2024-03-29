@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
-use crate::models::AminoAcid;
+use crate::AminoAcid;
 
 const AMINO_ACID_DATA: &str = include_str!("amino_acid_data.json");
 
