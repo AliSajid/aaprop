@@ -13,7 +13,13 @@ use axum::{
     routing::get,
     Router,
 };
-use models::{
+pub use data::{
+    find_by_abbreviation,
+    find_by_name,
+    find_by_short_name,
+    AMINO_ACID_DATA,
+};
+pub use models::{
     AminoAcid,
     CodonSet,
     SideChain,
