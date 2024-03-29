@@ -15,29 +15,23 @@ use tracing::{
 };
 
 use crate::{
-    models::AminoAcid,
+    find_by_abbreviation,
+    find_by_name,
+    find_by_short_name,
     responses::{
-        AminoAcidAbbreviationResponse,
-        AminoAcidCodonCountResponse,
-        AminoAcidCodonResponse,
-        AminoAcidMolecularWeightResponse,
-        AminoAcidNameResponse,
-        AminoAcidResponse,
-        AminoAcidShortNameResponse,
-        AminoAcidSideChainResponse,
+        AminoAcidDetailResponse,
         ErrorResponse,
         RootResponse,
     },
+    AminoAcid,
 };
 
 #[instrument]
-fn match_amino_acid(amino_acid: &String) -> Option<AminoAcid> {
-    event!(Level::INFO, "Matching amino acid: {}", amino_acid);
-    let amino_acids = crate::data::amino_acids();
-    amino_acids
-        .iter()
-        .find(|&a| a.get_name().to_lowercase() == amino_acid.to_lowercase())
-        .cloned()
+fn match_amino_acid(amino_acid: &str) -> Option<AminoAcid> {
+    event!(Level::INFO, "Matching amino acid: {}", &amino_acid);
+    find_by_name(amino_acid)
+        .or_else(|| find_by_short_name(amino_acid))
+        .or_else(|| find_by_abbreviation(amino_acid))
 }
 
 #[instrument]
@@ -53,7 +47,7 @@ pub async fn get_root() -> Result<(StatusCode, Json<RootResponse>), Json<ErrorRe
 #[instrument]
 pub async fn get_amino_acid(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(Level::INFO, "GET /amino_acid/{} called", &amino_acid);
     let matched: Option<AminoAcid> = match_amino_acid(&amino_acid);
     match matched {
@@ -67,7 +61,22 @@ pub async fn get_amino_acid(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidResponse { amino_acid };
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                side_chain:       Some(amino_acid.get_side_chain().to_string()),
+                molecular_weight: Some(amino_acid.get_molecular_weight()),
+                codons:           Some(
+                    amino_acid
+                        .get_codons()
+                        .into_iter()
+                        .filter(|s| !s.is_empty())
+                        .map(|s| s.to_string())
+                        .collect(),
+                ),
+                codon_count:      Some(amino_acid.get_codon_count()),
+            };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
         }
@@ -77,7 +86,7 @@ pub async fn get_amino_acid(
 #[instrument]
 pub async fn get_amino_acid_name(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidNameResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(Level::INFO, "GET /amino_acid/{}/name called", &amino_acid);
     let matched = match_amino_acid(&amino_acid);
     match matched {
@@ -90,10 +99,14 @@ pub async fn get_amino_acid_name(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidNameResponse {
-                name:         amino_acid.get_name(),
-                short_name:   amino_acid.get_short_name(),
-                abbreviation: amino_acid.get_abbreviation(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                side_chain:       None,
+                molecular_weight: None,
+                codons:           None,
+                codon_count:      None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
@@ -104,7 +117,7 @@ pub async fn get_amino_acid_name(
 #[instrument]
 pub async fn get_amino_acid_short_name(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidShortNameResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(
         Level::INFO,
         "GET /amino_acid/{}/short_name called",
@@ -122,9 +135,14 @@ pub async fn get_amino_acid_short_name(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidShortNameResponse {
-                name:       amino_acid.get_name(),
-                short_name: amino_acid.get_short_name(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                side_chain:       None,
+                molecular_weight: None,
+                codons:           None,
+                codon_count:      None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
@@ -135,7 +153,7 @@ pub async fn get_amino_acid_short_name(
 #[instrument]
 pub async fn get_amino_acid_abbreviation(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidAbbreviationResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(
         Level::INFO,
         "GET /amino_acid/{}/abbreviation called",
@@ -153,9 +171,14 @@ pub async fn get_amino_acid_abbreviation(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidAbbreviationResponse {
-                name:         amino_acid.get_name(),
-                abbreviation: amino_acid.get_abbreviation(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                side_chain:       None,
+                molecular_weight: None,
+                codons:           None,
+                codon_count:      None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
@@ -166,7 +189,7 @@ pub async fn get_amino_acid_abbreviation(
 #[instrument]
 pub async fn get_amino_acid_side_chain(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidSideChainResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(
         Level::INFO,
         "GET /amino_acid/{}/side_chain called",
@@ -184,9 +207,14 @@ pub async fn get_amino_acid_side_chain(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidSideChainResponse {
-                name:       amino_acid.get_name(),
-                side_chain: amino_acid.get_side_chain().to_string(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                side_chain:       Some(amino_acid.get_side_chain().to_string()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                molecular_weight: None,
+                codons:           None,
+                codon_count:      None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
@@ -197,8 +225,7 @@ pub async fn get_amino_acid_side_chain(
 #[instrument]
 pub async fn get_amino_acid_molecular_weight(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidMolecularWeightResponse>), (StatusCode, Json<ErrorResponse>)>
-{
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(
         Level::INFO,
         "GET /amino_acid/{}/molecular_weight called",
@@ -216,9 +243,14 @@ pub async fn get_amino_acid_molecular_weight(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidMolecularWeightResponse {
-                name:             amino_acid.get_name(),
-                molecular_weight: amino_acid.get_molecular_weight(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                molecular_weight: Some(amino_acid.get_molecular_weight()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                side_chain:       None,
+                codons:           None,
+                codon_count:      None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
@@ -229,7 +261,7 @@ pub async fn get_amino_acid_molecular_weight(
 #[instrument]
 pub async fn get_amino_acid_codons(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidCodonResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(Level::INFO, "GET /amino_acid/{}/codons called", &amino_acid);
     let matched = match_amino_acid(&amino_acid);
     match matched {
@@ -243,9 +275,20 @@ pub async fn get_amino_acid_codons(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidCodonResponse {
-                name:   amino_acid.get_name(),
-                codons: amino_acid.get_codons(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                codons:           Some(
+                    amino_acid
+                        .get_codons()
+                        .iter()
+                        .map(|s| s.to_string())
+                        .collect(),
+                ),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                side_chain:       None,
+                molecular_weight: None,
+                codon_count:      None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
@@ -256,7 +299,7 @@ pub async fn get_amino_acid_codons(
 #[instrument]
 pub async fn get_amino_acid_codon_count(
     Path(amino_acid): Path<String>,
-) -> Result<(StatusCode, Json<AminoAcidCodonCountResponse>), (StatusCode, Json<ErrorResponse>)> {
+) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(
         Level::INFO,
         "GET /amino_acid/{}/codon_count called",
@@ -274,9 +317,14 @@ pub async fn get_amino_acid_codon_count(
         }
         Some(amino_acid) => {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
-            let response = AminoAcidCodonCountResponse {
-                name:        amino_acid.get_name(),
-                codon_count: amino_acid.get_codon_count(),
+            let response = AminoAcidDetailResponse {
+                name:             Some(amino_acid.get_name().to_owned()),
+                codon_count:      Some(amino_acid.get_codon_count()),
+                short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
+                side_chain:       None,
+                molecular_weight: None,
+                codons:           None,
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))

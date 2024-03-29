@@ -5,12 +5,12 @@
 
 // use aaprop::create_router;
 
+use aaprop::create_router;
 use shuttle_axum::ShuttleAxum;
 
 #[shuttle_runtime::main]
-async fn axum() -> shuttle_axum::ShuttleAxum {
-    // let router = create_router();
+async fn axum() -> ShuttleAxum {
+    let router = create_router();
 
-    // Ok(router.into())
-    Ok(axum::Router::new().into())
+    Ok(router.into())
 }
