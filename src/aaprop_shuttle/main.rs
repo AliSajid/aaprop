@@ -3,11 +3,14 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
-use aaprop::create_router;
+// use aaprop::create_router;
+
+use shuttle_axum::ShuttleAxum;
 
 #[shuttle_runtime::main]
 async fn axum() -> shuttle_axum::ShuttleAxum {
-    let router = create_router();
+    // let router = create_router();
 
-    Ok(router.into())
+    // Ok(router.into())
+    Ok(axum::Router::new().into())
 }

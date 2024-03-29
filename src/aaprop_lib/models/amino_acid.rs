@@ -14,37 +14,59 @@ use serde::{
     Serialize,
 };
 
-use crate::SideChain;
+use crate::{
+    CodonSet,
+    SideChain,
+};
 
-#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone, Copy)]
 pub struct AminoAcid {
-    name:             String,
-    short_name:       String,
-    abbreviation:     String,
+    name:             &'static str,
+    short_name:       &'static str,
+    abbreviation:     &'static str,
     side_chain:       SideChain,
     molecular_weight: f64,
-    codons:           Vec<String>,
+    codons:           CodonSet,
 }
 
 impl AminoAcid {
-    #[must_use]
-    pub fn get_name(&self) -> String {
-        self.name.clone()
+    pub const fn new(
+        name: &'static str,
+        short_name: &'static str,
+        abbreviation: &'static str,
+        side_chain: SideChain,
+        molecular_weight: f64,
+        codons: &'static [&'static str],
+    ) -> Self {
+        let codons = CodonSet::new(codons);
+        Self {
+            name,
+            short_name,
+            abbreviation,
+            side_chain,
+            molecular_weight,
+            codons,
+        }
     }
 
     #[must_use]
-    pub fn get_short_name(&self) -> String {
-        self.short_name.clone()
+    pub const fn get_name(&self) -> &'static str {
+        self.name
     }
 
     #[must_use]
-    pub fn get_abbreviation(&self) -> String {
-        self.abbreviation.clone()
+    pub const fn get_short_name(&self) -> &'static str {
+        self.short_name
     }
 
     #[must_use]
-    pub fn get_side_chain(&self) -> SideChain {
-        self.side_chain.clone()
+    pub const fn get_abbreviation(&self) -> &'static str {
+        self.abbreviation
+    }
+
+    #[must_use]
+    pub const fn get_side_chain(&self) -> SideChain {
+        self.side_chain
     }
 
     #[must_use]
@@ -53,13 +75,13 @@ impl AminoAcid {
     }
 
     #[must_use]
-    pub fn get_codons(&self) -> Vec<String> {
-        self.codons.clone()
+    pub const fn get_codons(&self) -> CodonSet {
+        self.codons
     }
 
     #[must_use]
-    pub fn get_codon_count(&self) -> usize {
-        self.codons.len()
+    pub const fn get_codon_count(&self) -> usize {
+        self.codons.get_num_codons()
     }
 }
 
@@ -74,134 +96,65 @@ impl Display for AminoAcid {
             self.abbreviation,
             self.side_chain,
             self.molecular_weight,
-            self.codons.join(", ")
+            self.codons
         )
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use rstest::{
+        fixture,
+        rstest,
+    };
+
     use super::*;
 
-    #[test]
-    fn test_get_name() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
+    #[fixture]
+    fn amino_acid() -> AminoAcid {
+        let codon_set = CodonSet::new(&["GCU", "GCC", "GCA", "GCG"]);
+        AminoAcid {
+            name:             "Alanine",
+            short_name:       "Ala",
+            abbreviation:     "A",
             side_chain:       SideChain::Nonpolar,
             molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+            codons:           codon_set,
+        }
+    }
+
+    #[rstest]
+    fn test_get_name(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_name(), "Alanine");
     }
-    #[test]
-    fn test_get_short_name() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+    #[rstest]
+    fn test_get_short_name(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_short_name(), "Ala");
     }
-    #[test]
-    fn test_get_abbreviation() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+    #[rstest]
+    fn test_get_abbreviation(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_abbreviation(), "A");
     }
-    #[test]
-    fn test_get_side_chain() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+    #[rstest]
+    fn test_get_side_chain(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_side_chain(), SideChain::Nonpolar);
     }
-    #[test]
-    fn test_get_molecular_weight() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+    #[rstest]
+    fn test_get_molecular_weight(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_molecular_weight(), 89.09);
     }
-    #[test]
-    fn test_get_codons() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
-        assert_eq!(amino_acid.get_codons(), vec!["GCU", "GCC", "GCA", "GCG"]);
+    #[rstest]
+    fn test_get_codons(amino_acid: AminoAcid) {
+        let codon_set = CodonSet::new(&["GCU", "GCC", "GCA", "GCG"]);
+        assert_eq!(amino_acid.get_codons(), codon_set);
     }
-    #[test]
-    fn test_get_codon_count() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+    #[rstest]
+    fn test_get_codon_count(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_codon_count(), 4);
     }
 
-    #[test]
-    fn test_fmt() {
-        let amino_acid = AminoAcid {
-            name:             "Alanine".to_owned(),
-            short_name:       "Ala".to_owned(),
-            abbreviation:     "A".to_owned(),
-            side_chain:       SideChain::Nonpolar,
-            molecular_weight: 89.09,
-            codons:           vec!["GCU", "GCC", "GCA", "GCG"]
-                .into_iter()
-                .map(|s| s.to_owned())
-                .collect(),
-        };
+    #[rstest]
+    fn test_fmt(amino_acid: AminoAcid) {
         assert_eq!(
             format!("{}", amino_acid),
             "Name: Alanine\tShort Name: Ala\tAbbreviation: A\tSide Chain: Nonpolar\tMolecular \

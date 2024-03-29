@@ -14,7 +14,7 @@ use serde::{
     Serialize,
 };
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Copy)]
 pub enum SideChain {
     Nonpolar,
     Polar,
@@ -25,7 +25,7 @@ pub enum SideChain {
 
 impl Display for SideChain {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
+        write!(f, "{self:?}")
     }
 }
 
