@@ -52,11 +52,11 @@ RUN cargo build --bin aaprop-server --release --locked
 FROM gcr.io/distroless/cc-debian12
 
 # Copy the binary from the builder image to the base image
-COPY --from=builder /usr/src/aaprop/target/release/aaprop-server /usr/local/bin/aaprop
+COPY --from=builder /usr/src/aaprop/target/release/aaprop-server /usr/local/bin/aaprop-server
 
 # Change the user to a non-root user for security
 USER 1000
 
 # Set the binary as the entry point of the container
 # When the container starts, it will execute this binary
-ENTRYPOINT [ "/usr/local/bin/aaprop" ]
+ENTRYPOINT [ "/usr/local/bin/aaprop-server" ]
