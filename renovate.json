@@ -9,7 +9,6 @@
     "extends": [
         "config:recommended"
     ],
-    "gitAuthor": "Imamiland CI Bot <152510784+imamiland-bot@users.noreply.github.com>",
     "labels": [
         "dependencies",
         "renovate"
