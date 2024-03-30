@@ -29,12 +29,6 @@ path = "src/aaprop_server/main.rs"
 name = "aaprop"
 path = "src/aaprop_shuttle/main.rs"
 
-[features]
-shuttle = ["tracing"]
-tracing = []
-static = []
-server = []
-
 [dependencies]
 axum = "0.7.5"
 clap = { version = "4.5.4", features = ["derive", "env"] }
