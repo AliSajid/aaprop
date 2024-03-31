@@ -18,32 +18,35 @@ FROM rust:1.75 as builder
 WORKDIR /usr/src
 
 # Create a new Rust project named aaprop
-RUN USER=root cargo new aaprop
+RUN USER=root cargo new --lib aaprop
 
 # Change the working directory to the aaprop directory
 WORKDIR /usr/src/aaprop
 
+# Create the appropriate directory structure for the first build
+RUN mkdir -p src/aaprop_lib && mv -v src/lib.rs src/aaprop_lib/lib.rs
+
 # Copy the Cargo.toml and Cargo.lock files to the aaprop directory
-# COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml Cargo.lock ./
 
 # Build the Rust project
 # This step is done separately to take advantage of Docker's layer caching
 # Any changes in the source code will not invalidate the cached dependencies
-RUN cargo build --release
+RUN cargo build --lib --no-default-features --release
 
 # Remove the auto-generated main.rs file
 # This file will be replaced with the actual source code
-# RUN rm src/*.rs
+RUN rm -rfv src/*
 
 # Remove the auto-generated binary and dependencies
 # These will be replaced with the actual binary and dependencies
-# RUN rm target/release/deps/aaprop*
+RUN rm -rfv target/release/deps/aaprop*
 
 # Add the actual source code to the src directory
-# ADD src src
+ADD src src
 
 # Build the Rust project with the actual source code
-# RUN cargo build --release --locked
+RUN cargo build --features standalone --no-default-features --release --locked
 
 # Use the official distroless image as the base image
 FROM gcr.io/distroless/cc-debian12
@@ -56,4 +59,4 @@ USER 1000
 
 # Set the binary as the entry point of the container
 # When the container starts, it will execute this binary
-ENTRYPOINT [ "/usr/local/bin/aaprop" ]
+ENTRYPOINT [ "/usr/local/bin/aaprop", "--bind", "0.0.0.0" ]
