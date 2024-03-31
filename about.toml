@@ -45,6 +45,16 @@ accepted = ["MPL-2.0"]
 [matchit]
 accepted = ["BSD-3-Clause"]
 
+# Specify the license for `cfg_block`
+# Apache-2.0: https://github.com/pluots/cfg_block/blob/main/LICENSE
+[cfg_block.clarify]
+license = "Apache-2.0"
+
+[[cfg_block.clarify.git]]
+path = "LICENSE"
+license = "Apache-2.0"
+checksum = "408bbc4d10bdf74d8c9b74b64ea4910603257e24133da18edc4d16198e3b4010" #pragma: allowlist secret
+
 # Specify the license for `anyhow`
 # MIT: https://github.com/dtolnay/anyhow/LICENSE-MIT
 # Apache-2.0: https://github.com/dtolnay/anyhow/LICENSE-APACHE

@@ -138,6 +138,7 @@ repos:
       rev: 0.6.4
       hooks:
         - id: fix-smartquotes
+          exclude: "licenses_report.json"
         - id: fix-ligatures
         - id: forbid-bidi-controls
     - repo: https://github.com/zricethezav/gitleaks
