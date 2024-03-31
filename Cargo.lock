@@ -7,16 +7,16 @@ name = "aaprop"
 version = "1.1.1-next.2"
 dependencies = [
  "axum 0.7.5",
+ "cfg_block",
  "clap",
  "rstest",
  "serde",
  "serde_json",
  "shuttle-axum",
  "shuttle-runtime",
- "strum 0.26.2",
- "strum_macros 0.26.2",
  "tokio",
  "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
@@ -307,6 +307,12 @@ name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
+
+[[package]]
+name = "cfg_block"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8f16895abeb4fd800dcd4e7916b690d79b33a964ae3272d51510623b76aa7108"
 
 [[package]]
 name = "chrono"
