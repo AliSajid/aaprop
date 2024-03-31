@@ -1,3 +1,33 @@
+## [2.0.0](https://github.com/AliSajid/aaprop/compare/v1.1.1...v2.0.0) (2024-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* 
+
+### Features
+
+* **aaprop-server:** have a functioning standalone binary ([4fe615b](https://github.com/AliSajid/aaprop/commit/4fe615be829632765accb11cb3abbf83c597006b))
+* **aaprop:** add working routing to the project ([f7c6b1a](https://github.com/AliSajid/aaprop/commit/f7c6b1aabbd60f326b896228d57a503be981f0bd))
+* **CodonSet:** add a CodonSet model ([7ba7048](https://github.com/AliSajid/aaprop/commit/7ba7048fe3e178198c0bec425c591d00d97cb7af))
+* **Data:** add amino acid data ([656380b](https://github.com/AliSajid/aaprop/commit/656380b459f3b48dd4f5a640eab7f1e15e8439a5))
+* **models:** refactor the models into their own files ([a849eb4](https://github.com/AliSajid/aaprop/commit/a849eb47320ad1aaaf7c928eefe2f86b2f832a02))
+* **models:** remove unnecessary serde calls from all models ([807e967](https://github.com/AliSajid/aaprop/commit/807e967c7c55d3734a8daafe3c0750486590b2ad))
+* refactor to a single binary output ([67c2ae7](https://github.com/AliSajid/aaprop/commit/67c2ae73a43b99ff5b5a8f578d9903e8e21adcd0))
+* restructure the project into separate binaries and library ([808aa23](https://github.com/AliSajid/aaprop/commit/808aa2350118524e7365555ae8a91b552a05565d))
+
+
+### Bug Fixes
+
+* applied all clippy optimizations ([8718157](https://github.com/AliSajid/aaprop/commit/871815756e99a87f4ae07cc779b7f3f166829535))
+* **clippy:** fix clippy-related nags ([f492b66](https://github.com/AliSajid/aaprop/commit/f492b6675637f17b44b41c147df45ee8df0f6507))
+* **data-json:** remove the json data file ([fd000a0](https://github.com/AliSajid/aaprop/commit/fd000a0c4c7ba9790f73d7e2363416d2e54731e7))
+* **deps:** update rust crate tokio to 1.37.0 ([a691fdb](https://github.com/AliSajid/aaprop/commit/a691fdbc575b1a134097527a9505b75c6a68c775))
+* **deps:** update rust crate tokio to 1.37.0 ([4c502a5](https://github.com/AliSajid/aaprop/commit/4c502a5d9a1653eedbe75179a20713ac4896b701))
+* **Dockerfile:** fix the binary name for the Dockerfile ([e761db3](https://github.com/AliSajid/aaprop/commit/e761db3a65c7d3b0f77cd9dbdca3fac4846ca093))
+* remove the coffeemaker route ([2c821d9](https://github.com/AliSajid/aaprop/commit/2c821d9fb8ac5269990ae9f4d7040bfd115b58fa))
+* **shuttle-binary:** remove dead code from the shuttle binary ([bddeaf5](https://github.com/AliSajid/aaprop/commit/bddeaf5b99fcbbea09e9c69bc8bc0719b250f0f1))
+
 ## [2.0.0-next.1](https://github.com/AliSajid/aaprop/compare/v1.1.1-next.2...v2.0.0-next.1) (2024-03-31)
 
 

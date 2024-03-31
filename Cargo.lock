@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "aaprop"
-version = "2.0.0-next.1"
+version = "2.0.0"
 dependencies = [
  "axum 0.7.5",
  "cfg_block",
