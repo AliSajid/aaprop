@@ -158,6 +158,11 @@ jobs:
         if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
         uses: ./.github/workflows/release.yaml
         secrets: inherit # pragma: allowlist secret
+    shuttle-deploy:
+        needs: [ci, get-next-version]
+        if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
+        uses: ./.github/workflows/shuttle_deploy.yaml
+        secrets: inherit # pragma: allowlist secret
     build-container:
       permissions:
         id-token: write
