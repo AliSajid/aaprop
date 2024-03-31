@@ -60,8 +60,14 @@ cfg_block! {
         use shuttle_axum::ShuttleAxum;
 
 
+        #[allow(clippy::unused_async)]
         #[shuttle_runtime::main]
         pub async fn app() -> ShuttleAxum {
+            //! This is a server.
+            //!
+            //! # Errors
+            //!
+            //! If the server fails to start, an error will be returned.
             let router = create_router();
 
             Ok(router.into())

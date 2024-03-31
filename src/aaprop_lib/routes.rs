@@ -49,17 +49,16 @@ pub async fn get_amino_acid(
     Path(amino_acid): Path<String>,
 ) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(Level::INFO, "GET /amino_acid/{} called", &amino_acid);
-    let matched: Option<AminoAcid> = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -72,15 +71,15 @@ pub async fn get_amino_acid(
                         .get_codons()
                         .into_iter()
                         .filter(|s| !s.is_empty())
-                        .map(|s| s.to_string())
+                        .map(std::string::ToString::to_string)
                         .collect(),
                 ),
                 codon_count:      Some(amino_acid.get_codon_count()),
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -88,16 +87,16 @@ pub async fn get_amino_acid_name(
     Path(amino_acid): Path<String>,
 ) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(Level::INFO, "GET /amino_acid/{}/name called", &amino_acid);
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
+            event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -110,8 +109,8 @@ pub async fn get_amino_acid_name(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -123,17 +122,16 @@ pub async fn get_amino_acid_short_name(
         "GET /amino_acid/{}/short_name called",
         &amino_acid
     );
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -146,8 +144,8 @@ pub async fn get_amino_acid_short_name(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -159,22 +157,21 @@ pub async fn get_amino_acid_abbreviation(
         "GET /amino_acid/{}/abbreviation called",
         &amino_acid
     );
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
-                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
                 short_name:       Some(amino_acid.get_short_name().to_owned()),
+                abbreviation:     Some(amino_acid.get_abbreviation().to_owned()),
                 side_chain:       None,
                 molecular_weight: None,
                 codons:           None,
@@ -182,8 +179,8 @@ pub async fn get_amino_acid_abbreviation(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -195,17 +192,16 @@ pub async fn get_amino_acid_side_chain(
         "GET /amino_acid/{}/side_chain called",
         &amino_acid
     );
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -218,8 +214,8 @@ pub async fn get_amino_acid_side_chain(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -231,17 +227,16 @@ pub async fn get_amino_acid_molecular_weight(
         "GET /amino_acid/{}/molecular_weight called",
         &amino_acid
     );
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -254,8 +249,8 @@ pub async fn get_amino_acid_molecular_weight(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -263,17 +258,16 @@ pub async fn get_amino_acid_codons(
     Path(amino_acid): Path<String>,
 ) -> Result<(StatusCode, Json<AminoAcidDetailResponse>), (StatusCode, Json<ErrorResponse>)> {
     event!(Level::INFO, "GET /amino_acid/{}/codons called", &amino_acid);
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -281,7 +275,7 @@ pub async fn get_amino_acid_codons(
                     amino_acid
                         .get_codons()
                         .iter()
-                        .map(|s| s.to_string())
+                        .map(std::string::ToString::to_string)
                         .collect(),
                 ),
                 short_name:       Some(amino_acid.get_short_name().to_owned()),
@@ -292,8 +286,8 @@ pub async fn get_amino_acid_codons(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
 
 #[instrument]
@@ -305,17 +299,16 @@ pub async fn get_amino_acid_codon_count(
         "GET /amino_acid/{}/codon_count called",
         &amino_acid
     );
-    let matched = match_amino_acid(&amino_acid);
-    match matched {
-        None => {
+    match_amino_acid(&amino_acid).map_or_else(
+        || {
             let response = ErrorResponse {
                 error: "Amino Acid not found".to_string(),
             };
             event!(Level::INFO, "Amino Acid {} not found", &amino_acid);
             event!(Level::DEBUG, "Response: {:?}", &response);
             Err((StatusCode::NOT_FOUND, Json(response)))
-        }
-        Some(amino_acid) => {
+        },
+        |amino_acid| {
             event!(Level::INFO, "Amino Acid {} found", &amino_acid.get_name());
             let response = AminoAcidDetailResponse {
                 name:             Some(amino_acid.get_name().to_owned()),
@@ -328,6 +321,6 @@ pub async fn get_amino_acid_codon_count(
             };
             event!(Level::DEBUG, "Response: {:?}", &response);
             Ok((StatusCode::OK, Json(response)))
-        }
-    }
+        },
+    )
 }
