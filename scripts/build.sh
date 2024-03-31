@@ -10,7 +10,7 @@ set -x
 # Set the necessary variables
 
 # Set the prefix for the binary
-PREFIX="gh-bofh"
+PREFIX="aaprop"
 
 # Check the files in the source folder
 tree artifacts
@@ -18,7 +18,7 @@ tree artifacts
 # Check the files in the dist folder
 mkdir -p dist
 
-# Copy binaries with the rust triple and go arch names to the dist folder
+# Copy binaries with the rust triple to the dist folder
 for arch in $(ls artifacts); do
   filename=$PREFIX-$arch
   if [ -f "artifacts/$arch/$filename" ]; then
