@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+#
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
+---
+name: Deploy to Shuttle
+on:
+    workflow_call:
+
+jobs:
+    shuttle-deployment:
+        name: Shuttle Deployment
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+            - uses: shuttle-hq/deploy-action@main
+              with:
+                deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
