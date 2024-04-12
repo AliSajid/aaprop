@@ -25,7 +25,7 @@ jobs:
             - name: Install Rust
               uses: dtolnay/rust-toolchain@stable
             - name: Install cargo-audit
-              uses: taiki-e/install-action@b4dcdef61e7e685329dbaf34f279d78257287dad # v2.32.13
+              uses: taiki-e/install-action@dd9c3a30915700b12ff7aa4d9e2492417156fde1 # v2.32.15
               with:
                 tool: cargo-audit
             - name: Security Audit
