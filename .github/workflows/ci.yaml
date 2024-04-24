@@ -159,7 +159,7 @@ jobs:
         uses: ./.github/workflows/release.yaml
         secrets: inherit # pragma: allowlist secret
     shuttle-deploy:
-        needs: [ci, get-next-version]
+        needs: [ci, get-next-version, semantic-release]
         if: ${{needs.get-next-version.outputs.new-release-published == 'true'}}
         uses: ./.github/workflows/shuttle_deploy.yaml
         secrets: inherit # pragma: allowlist secret
