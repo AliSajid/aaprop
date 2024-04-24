@@ -25,7 +25,7 @@ pub use models::{
     SideChain,
 };
 
-pub fn create_router() -> Router {
+fn create_router_v1() -> Router {
     Router::new()
         .route("/", get(routes::get_root))
         .route("/amino_acid", get(routes::get_root))
@@ -59,4 +59,8 @@ pub fn create_router() -> Router {
             get(routes::get_amino_acid_codon_count),
         )
         .route("/health", get(|| async { StatusCode::OK }))
+}
+
+pub fn create_router() -> Router {
+    Router::new().nest("/v1", create_router_v1())
 }
