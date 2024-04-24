@@ -79,6 +79,7 @@ jobs:
               env:
                 SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
               with:
+                  context: .
                   push: true
                   provenance: true
                   annotations: ${{ steps.meta.outputs.annotations }}
