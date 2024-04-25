@@ -1,0 +1,241 @@
+<!--
+SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+
+SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: MIT
+-->
+
+# Open API Specification
+
+```yaml
+openapi: 3.0.0
+info:
+  title: AAProp API
+  description: API reference for AAProp API
+  version: 1.0.0
+servers:
+  - url: https://aaprop.shuttleapp.rs
+paths:
+  /amino_acid/{amino_acid}:
+    get:
+      summary: Get Amino Acid Information
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Amino acid information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidResponse'
+  /amino_acid/{amino_acid}/side_chain:
+    get:
+      summary: Get Amino Acid Side Chain Information
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Side chain information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidSideChainResponse'
+  /amino_acid/{amino_acid}/molecular_weight:
+    get:
+      summary: Get Amino Acid Molecular Weight
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Molecular weight retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidMolecularWeightResponse'
+  /amino_acid/{amino_acid}/codon:
+    get:
+      summary: Get Amino Acid Codons
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Codons retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidCodonsResponse'
+  /amino_acid/{amino_acid}/abbreviation:
+    get:
+      summary: Get Amino Acid Abbreviation
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Abbreviation retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidAbbreviationResponse'
+  /amino_acid/{amino_acid}/short_name:
+    get:
+      summary: Get Amino Acid Short Name
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Short name retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidShortNameResponse'
+  /amino_acid/{amino_acid}/codon_count:
+    get:
+      summary: Get Amino Acid Codons Count
+      parameters:
+        - name: amino_acid
+          in: path
+          required: true
+          description: The name, three-letter code, or one-letter code of the amino acid.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Codon count retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AminoAcidCodonCountResponse'
+  /health:
+    get:
+      summary: Check the health of the API
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+
+components:
+  schemas:
+    AminoAcid:
+      type: object
+      properties:
+        name:
+          type: string
+        short_name:
+          type: string
+        abbreviation:
+          type: string
+        side_chain:
+          type: string
+        molecular_weight:
+          type: number
+        codons:
+          type: array
+          items:
+            type: string
+    AminoAcidResponse:
+      type: object
+      properties:
+        amino_acid:
+          $ref: '#/components/schemas/AminoAcid'
+    AminoAcidSideChainResponse:
+      type: object
+      properties:
+        amino_acid:
+          type: object
+          properties:
+            name:
+              type: string
+            side_chain:
+              type: string
+    AminoAcidMolecularWeightResponse:
+      type: object
+      properties:
+        amino_acid:
+          type: object
+          properties:
+            name:
+              type: string
+            short_name:
+              type: string
+            abbreviation:
+              type: string
+            molecular_weight:
+              type: number
+    AminoAcidCodonsResponse:
+      type: object
+      properties:
+        amino_acid:
+          $ref: '#/components/schemas/AminoAcid'
+    AminoAcidAbbreviationResponse:
+      type: object
+      properties:
+        amino_acid:
+          type: object
+          properties:
+            name:
+              type: string
+            short_name:
+              type: string
+            abbreviation:
+              type: string
+    AminoAcidShortNameResponse:
+      type: object
+      properties:
+        amino_acid:
+          type: object
+          properties:
+            name:
+              type: string
+            short_name:
+              type: string
+            abbreviation:
+              type: string
+    AminoAcidCodonCountResponse:
+      type: object
+      properties:
+        amino_acid:
+          type: object
+          properties:
+            name:
+              type: string
+            short_name:
+              type: string
+            abbreviation:
+              type: string
+            codon_count:
+              type: integer
+```
