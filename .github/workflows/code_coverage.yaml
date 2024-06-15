@@ -16,12 +16,12 @@ jobs:
             options: --security-opt seccomp=unconfined
         steps:
             - name: Checkout repository
-              uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
             # Nightly Rust is required for cargo llvm-cov --doc.
             - uses: dtolnay/rust-toolchain@nightly
               with:
                 components: llvm-tools-preview
-            - uses: taiki-e/install-action@6261d093c5f01aa48722a4640a5b00a02a358aac # v2.33.7
+            - uses: taiki-e/install-action@3e3b2689562788ff0688ff66465875746ff47e73 # v2.38.6
               with:
                 tool: cargo-llvm-cov,nextest
             - name: Collect coverage data (including doctests)
@@ -30,7 +30,7 @@ jobs:
                 cargo llvm-cov --no-report --doc
                 cargo llvm-cov report --doctests --lcov --output-path lcov.info
             - name: Upload to codecov.io
-              uses: codecov/codecov-action@125fc84a9a348dbcf27191600683ec096ec9021c # v4.4.1
+              uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
               with:
                 file: lcov.info
                 token: ${{ secrets.CODECOV_TOKEN }}

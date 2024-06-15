@@ -45,7 +45,7 @@ jobs:
                       cross: false
         steps:
             - name: Checkout
-              uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
             - name: Install tree
               if: runner.os == 'Linux'
               run: sudo apt install tree
@@ -61,7 +61,7 @@ jobs:
             - name: Cache dependencies
               uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2.7.3
             - name: Install cross
-              uses: taiki-e/install-action@6261d093c5f01aa48722a4640a5b00a02a358aac # v2.33.7
+              uses: taiki-e/install-action@3e3b2689562788ff0688ff66465875746ff47e73 # v2.38.6
               with:
                 tool: cross
             - name: Configure cross
@@ -107,7 +107,7 @@ jobs:
             new_release_channel: ${{steps.semantic.outputs.new_release_channel}}
         steps:
             - name: Checkout
-              uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
               with:
                 fetch-depth: 0
                 persist-credentials: false
@@ -128,11 +128,11 @@ jobs:
             - name: Install dependencies
               run: sudo apt install tree
             - name: Install semantic-release-cargo
-              uses: taiki-e/install-action@6261d093c5f01aa48722a4640a5b00a02a358aac # v2.33.7
+              uses: taiki-e/install-action@3e3b2689562788ff0688ff66465875746ff47e73 # v2.38.6
               with:
                 tool: semantic-release-cargo@${{env.SEMREL_RUST_VERSION}}
             - name: Download release artifacts
-              uses: actions/download-artifact@9c19ed7fe5d278cd354c7dfd5d3b88589c7e2395 # v4.1.6
+              uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
               with:
                 path: artifacts
             - name: ls artifacts

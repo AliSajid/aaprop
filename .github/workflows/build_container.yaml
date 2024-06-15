@@ -31,7 +31,7 @@ jobs:
           packages: write
         steps:
             - name: Checkout
-              uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
             - name: Get Last Commit Date/Time for reproducible builds
               run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
             - name: Generate Docker Metadata
@@ -63,12 +63,12 @@ jobs:
               with:
                 platforms: aarch64,amd64
             - name: Login to DockerHub
-              uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
+              uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
               with:
                   username: ${{ env.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_TOKEN }}
             - name: Login to GitHub Container Registry
-              uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
+              uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
