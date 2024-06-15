@@ -57,8 +57,9 @@
         "enabled": true
     },
     "schedule": [
-        "after 10pm and before 5am every weekday",
-        "every weekend"
+        "after 10pm every weekday",
+        "every weekend",
+        "before 5am every weekday"
     ],
     "semanticCommits": "enabled"
 }
