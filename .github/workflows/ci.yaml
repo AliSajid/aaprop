@@ -28,7 +28,7 @@ jobs:
         source_changed: ${{steps.changed_dirs.outputs.source}}
         book_changed: ${{steps.changed_dirs.outputs.book}}
       steps:
-        - uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
+        - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         - name: Check changed directories
           id: changed_dirs
           uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
@@ -78,7 +78,7 @@ jobs:
                     - rust: nightly
                       label: nightly
         steps:
-            - uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
+            - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
             - name: Install Rust
               if: ${{ needs.check_changed_dirs.outputs.source_changed == 'true' }}
               uses: dtolnay/rust-toolchain@master
@@ -108,7 +108,7 @@ jobs:
               run: cargo clippy -- -D warnings
             - name: Wait before badge creation
               if: ${{ needs.check_changed_dirs.outputs.source_changed == 'true' }}
-              uses: AliSajid/random-wait-action@e64e2d7024f9adae6633b7599abe5e766a4a75a3 # v2.3.1
+              uses: AliSajid/random-wait-action@52790b4519573b00e7cf49d1270f1358ca431436 # v2.3.2
               with:
                 minimum: ${{env.MINIMUM_WAIT}}
                 maximum: ${{env.MAXIMUM_WAIT}}

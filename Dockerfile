@@ -12,7 +12,7 @@
 
 # Use the official Rust image as the builder image
 # Use the 1.75 version of the Rust image since it's the MSRV (Minimum Supported Rust Version) for the aaprop project
-FROM rust:1.75 as builder
+FROM rust:1.75@sha256:87f3b2f93b82995443a1a558c234212dafe79cfdc3af956539610560369ddcd0 as builder
 
 # Set the working directory in the builder image to /usr/src
 WORKDIR /usr/src
@@ -49,7 +49,7 @@ ADD src src
 RUN cargo build --features standalone --no-default-features --release --locked
 
 # Use the official distroless image as the base image
-FROM gcr.io/distroless/cc-debian12
+FROM gcr.io/distroless/cc-debian12@sha256:e1065a1d58800a7294f74e67c32ec4146d09d6cbe471c1fa7ed456b2d2bf06e0
 
 # Copy the binary from the builder image to the base image
 COPY --from=builder /usr/src/aaprop/target/release/aaprop /usr/local/bin/aaprop

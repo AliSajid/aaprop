@@ -194,3 +194,114 @@ pub fn find_by_short_name(short_name: &str) -> Option<AminoAcid> {
         .find(|amino_acid| amino_acid.get_short_name() == short_name)
         .copied()
 }
+
+#[cfg(test)]
+mod tests {
+    use rstest::rstest;
+
+    use super::*;
+
+    #[rstest]
+    #[case::alanine("A", "Alanine", "Ala")]
+    #[case::arginine("R", "Arginine", "Arg")]
+    #[case::asparagine("N", "Asparagine", "Asn")]
+    #[case::aspartic_acid("D", "Aspartic Acid", "Asp")]
+    #[case::cysteine("C", "Cysteine", "Cys")]
+    #[case::glutamic_acid("E", "Glutamic Acid", "Glu")]
+    #[case::glutamine("Q", "Glutamine", "Gln")]
+    #[case::glycine("G", "Glycine", "Gly")]
+    #[case::histidine("H", "Histidine", "His")]
+    #[case::isoleucine("I", "Isoleucine", "Ile")]
+    #[case::leucine("L", "Leucine", "Leu")]
+    #[case::lysine("K", "Lysine", "Lys")]
+    #[case::methionine("M", "Methionine", "Met")]
+    #[case::phenylalanine("F", "Phenylalanine", "Phe")]
+    #[case::proline("P", "Proline", "Pro")]
+    #[case::serine("S", "Serine", "Ser")]
+    #[case::threonine("T", "Threonine", "Thr")]
+    #[case::tryptophan("W", "Tryptophan", "Trp")]
+    #[case::tyrosine("Y", "Tyrosine", "Tyr")]
+    #[case::valine("V", "Valine", "Val")]
+    fn test_find_by_abbreviation(
+        #[case] abbreviation: &str,
+        #[case] name: &str,
+        #[case] short_name: &str,
+    ) {
+        let alanine = find_by_abbreviation(abbreviation);
+        assert!(alanine.is_some());
+        assert_eq!(alanine.unwrap().get_name(), name);
+        assert_eq!(alanine.unwrap().get_short_name(), short_name);
+        assert_eq!(alanine.unwrap().get_abbreviation(), abbreviation);
+
+        let unknown = find_by_abbreviation("X");
+        assert!(unknown.is_none());
+    }
+
+    #[rstest]
+    #[case::alanine("A", "Alanine", "Ala")]
+    #[case::arginine("R", "Arginine", "Arg")]
+    #[case::asparagine("N", "Asparagine", "Asn")]
+    #[case::aspartic_acid("D", "Aspartic Acid", "Asp")]
+    #[case::cysteine("C", "Cysteine", "Cys")]
+    #[case::glutamic_acid("E", "Glutamic Acid", "Glu")]
+    #[case::glutamine("Q", "Glutamine", "Gln")]
+    #[case::glycine("G", "Glycine", "Gly")]
+    #[case::histidine("H", "Histidine", "His")]
+    #[case::isoleucine("I", "Isoleucine", "Ile")]
+    #[case::leucine("L", "Leucine", "Leu")]
+    #[case::lysine("K", "Lysine", "Lys")]
+    #[case::methionine("M", "Methionine", "Met")]
+    #[case::phenylalanine("F", "Phenylalanine", "Phe")]
+    #[case::proline("P", "Proline", "Pro")]
+    #[case::serine("S", "Serine", "Ser")]
+    #[case::threonine("T", "Threonine", "Thr")]
+    #[case::tryptophan("W", "Tryptophan", "Trp")]
+    #[case::tyrosine("Y", "Tyrosine", "Tyr")]
+    #[case::valine("V", "Valine", "Val")]
+    fn test_find_by_name(#[case] abbreviation: &str, #[case] name: &str, #[case] short_name: &str) {
+        let alanine = find_by_name(name);
+        assert!(alanine.is_some());
+        assert_eq!(alanine.unwrap().get_name(), name);
+        assert_eq!(alanine.unwrap().get_short_name(), short_name);
+        assert_eq!(alanine.unwrap().get_abbreviation(), abbreviation);
+
+        let unknown = find_by_name("Xyz");
+        assert!(unknown.is_none());
+    }
+
+    #[rstest]
+    #[case::alanine("A", "Alanine", "Ala")]
+    #[case::arginine("R", "Arginine", "Arg")]
+    #[case::asparagine("N", "Asparagine", "Asn")]
+    #[case::aspartic_acid("D", "Aspartic Acid", "Asp")]
+    #[case::cysteine("C", "Cysteine", "Cys")]
+    #[case::glutamic_acid("E", "Glutamic Acid", "Glu")]
+    #[case::glutamine("Q", "Glutamine", "Gln")]
+    #[case::glycine("G", "Glycine", "Gly")]
+    #[case::histidine("H", "Histidine", "His")]
+    #[case::isoleucine("I", "Isoleucine", "Ile")]
+    #[case::leucine("L", "Leucine", "Leu")]
+    #[case::lysine("K", "Lysine", "Lys")]
+    #[case::methionine("M", "Methionine", "Met")]
+    #[case::phenylalanine("F", "Phenylalanine", "Phe")]
+    #[case::proline("P", "Proline", "Pro")]
+    #[case::serine("S", "Serine", "Ser")]
+    #[case::threonine("T", "Threonine", "Thr")]
+    #[case::tryptophan("W", "Tryptophan", "Trp")]
+    #[case::tyrosine("Y", "Tyrosine", "Tyr")]
+    #[case::valine("V", "Valine", "Val")]
+    fn test_find_by_short_name(
+        #[case] abbreviation: &str,
+        #[case] name: &str,
+        #[case] short_name: &str,
+    ) {
+        let alanine = find_by_short_name(short_name);
+        assert!(alanine.is_some());
+        assert_eq!(alanine.unwrap().get_name(), name);
+        assert_eq!(alanine.unwrap().get_short_name(), short_name);
+        assert_eq!(alanine.unwrap().get_abbreviation(), abbreviation);
+
+        let unknown = find_by_short_name("Xyz");
+        assert!(unknown.is_none());
+    }
+}

@@ -120,6 +120,19 @@ mod tests {
     }
 
     #[rstest]
+    fn test_new(amino_acid: AminoAcid) {
+        let new_amino_acid = AminoAcid::new(
+            "Alanine",
+            "Ala",
+            "A",
+            SideChain::Nonpolar,
+            89.09,
+            &["GCU", "GCC", "GCA", "GCG"],
+        );
+        assert_eq!(new_amino_acid, amino_acid);
+    }
+
+    #[rstest]
     fn test_get_name(amino_acid: AminoAcid) {
         assert_eq!(amino_acid.get_name(), "Alanine");
     }

@@ -79,7 +79,7 @@ impl CodonSet {
                 3 => self.fourth,
                 4 => self.fifth,
                 5 => self.sixth,
-                _ => None,
+                _ => unreachable!(),
             };
             if let Some(codon) = codon {
                 result[i] = codon;
@@ -101,7 +101,7 @@ impl Display for CodonSet {
                 3 => self.fourth,
                 4 => self.fifth,
                 5 => self.sixth,
-                _ => None,
+                _ => unreachable!(),
             };
             if let Some(codon) = codon {
                 codons.push_str(codon);
@@ -114,29 +114,49 @@ impl Display for CodonSet {
 
 #[cfg(test)]
 mod tests {
-    use rstest::{
-        fixture,
-        rstest,
-    };
+    use rstest::rstest;
 
     use super::*;
 
-    #[fixture]
-    fn codons() -> &'static [&'static str] {
-        &["AUG", "GCU", "UAA", "UAG", "UGA"]
+    #[rstest]
+    #[case::zero_codons(&[], 0)]
+    #[case::one_codon(&["AUG"], 1)]
+    #[case::two_codons(&["AUG", "GCU"], 2)]
+    #[case::three_codons(&["AUG", "GCU", "UAA"], 3)]
+    #[case::four_codons(&["AUG", "GCU", "UAA", "UAG"], 4)]
+    #[case::five_codons(&["AUG", "GCU", "UAA", "UAG", "UGA"], 5)]
+    #[case::six_codons(&["AUG", "GCU", "UAA", "UAG", "UGA", "UCC"], 6)]
+    fn test_new(#[case] codons: &'static [&'static str], #[case] codons_len: usize) {
+        let codon_set = CodonSet::new(codons);
+
+        assert_eq!(codon_set.get_num_codons(), codons_len);
     }
 
     #[rstest]
-    fn test_new(codons: &'static [&'static str]) {
+    #[case::zero_codons(&[], ["", "", "", "", "", ""])]
+    #[case::one_codon(&["AUG"], ["AUG", "", "", "", "", ""])]
+    #[case::two_codons(&["AUG", "GCU"], ["AUG", "GCU", "", "", "", ""])]
+    #[case::three_codons(&["AUG", "GCU", "UAA"], ["AUG", "GCU", "UAA", "", "", ""])]
+    #[case::four_codons(&["AUG", "GCU", "UAA", "UAG"], ["AUG", "GCU", "UAA", "UAG", "", ""])]
+    #[case::five_codons(&["AUG", "GCU", "UAA", "UAG", "UGA"], ["AUG", "GCU", "UAA", "UAG", "UGA", ""])]
+    #[case::six_codons(&["AUG", "GCU", "UAA", "UAG", "UGA", "UCC"], ["AUG", "GCU", "UAA", "UAG", "UGA", "UCC"])]
+    fn test_get_all(#[case] codons: &'static [&'static str], #[case] expected: [&'static str; 6]) {
         let codon_set = CodonSet::new(codons);
 
-        assert_eq!(codon_set.get_num_codons(), 5);
+        assert_eq!(codon_set.get_all(), expected);
     }
 
     #[rstest]
-    fn test_display(codons: &'static [&'static str]) {
+    #[case::zero_codons(&[], "")]
+    #[case::one_codon(&["AUG"], "AUG")]
+    #[case::two_codons(&["AUG", "GCU"], "AUG, GCU")]
+    #[case::three_codons(&["AUG", "GCU", "UAA"], "AUG, GCU, UAA")]
+    #[case::four_codons(&["AUG", "GCU", "UAA", "UAG"], "AUG, GCU, UAA, UAG")]
+    #[case::five_codons(&["AUG", "GCU", "UAA", "UAG", "UGA"], "AUG, GCU, UAA, UAG, UGA")]
+    #[case::six_codons(&["AUG", "GCU", "UAA", "UAG", "UGA", "UCC"], "AUG, GCU, UAA, UAG, UGA, UCC")]
+    fn test_display(#[case] codons: &'static [&'static str], #[case] expected: &str) {
         let codon_set = CodonSet::new(codons);
 
-        assert_eq!(codon_set.to_string(), "AUG, GCU, UAA, UAG, UGA");
+        assert_eq!(codon_set.to_string(), expected);
     }
 }

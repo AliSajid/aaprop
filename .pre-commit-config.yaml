@@ -142,10 +142,10 @@ repos:
         - id: fix-ligatures
         - id: forbid-bidi-controls
     - repo: https://github.com/zricethezav/gitleaks
-      rev: v8.18.2
+      rev: v8.18.4
       hooks:
         - id: gitleaks
     - repo: https://github.com/fsfe/reuse-tool
-      rev: v3.0.1
+      rev: v3.0.2
       hooks:
         - id: reuse
