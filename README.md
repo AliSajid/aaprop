@@ -25,8 +25,8 @@ This project is a small server app that provides a REST API to access the proper
 |         | Stable | Beta | Nightly | MSRV (1.75.0) |
 | ------- | ------ | ---- | ------- | ---- |
 | Linux   | ![Ubuntu x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-stable.json) | ![Ubuntu x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-beta.json) | ![Ubuntu x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-nightly.json) | ![Ubuntu x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-msrv.json) |
-| Windows | ![Windows x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-stable.json) | ![Windows x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-beta.json) | ![Windows x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-nightly.json) | ![Windows x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/windows-msrv.json) |
-| macos   | ![macos x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-stable.json) | ![macos x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-beta.json) | ![macos x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-nightly.json) | ![macos x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/macos-msrv.json) |
+
+__Note: We have stopped testing builds on Windows and macos for expediency. We recommend you use the docker image should you need to run the project on these platforms.__
 
 ## Roadmap
 
@@ -35,9 +35,9 @@ This project is a small server app that provides a REST API to access the proper
 - [X] Create the models for the data structures
 - [X] Add the Amino Acid Properties Data
 - [X] Set up the appropriate routes
-- [ ] Restructure the project
-- [ ] Add the tracing
-- [ ] Add a CLI interface
+- [X] Restructure the project
+- [X] Add the tracing
+- [X] Add a CLI interface
 
 ## Contributing
 
