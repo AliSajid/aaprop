@@ -24,6 +24,15 @@
             ]
         },
         {
+            "enabled": false,
+            "matchFileNames": [
+                "Dockerfile"
+            ],
+            "matchManagers": [
+                "docker"
+            ]
+        },
+        {
             "groupName": "Shuttle",
             "groupSlug": "shuttle",
             "matchPackageNames": [
