@@ -15,8 +15,8 @@ on:
       - prereleased
 
 concurrency:
-  group: docker
-  cancel-in-progress: false
+  group: docker-{github.event.ref}
+
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
   DOCKER_REPOSITORY_NAME: ${{ vars.DOCKER_REPOSITORY_NAME }}
