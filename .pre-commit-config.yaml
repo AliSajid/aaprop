@@ -54,11 +54,11 @@ repos:
           types: [markdown]
           files: "^(README.md|CONTRIBUTING.md|CODE_OF_CONDUCT.md|guide/src/.*.md)$"
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v3.15.0
+      rev: v3.27.0
       hooks:
         - id: commitizen
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.5.0
+      rev: v4.6.0
       hooks:
         - id: check-json
           exclude: ".vscode/.*json"
@@ -89,7 +89,7 @@ repos:
           args:
             - --markdown-linebreak-ext=md
     - repo: https://github.com/compilerla/conventional-pre-commit
-      rev: v3.1.0
+      rev: v3.2.0
       hooks:
         - args:
             - build
@@ -115,19 +115,19 @@ repos:
         - id: forbid-tabs
         - id: remove-tabs
     - repo: https://github.com/google/yamlfmt
-      rev: v0.11.0
+      rev: v0.12.1
       hooks:
         - id: yamlfmt
           exclude: ".github/workflows/.*\\.ya?ml"
     - repo: https://github.com/igorshubovych/markdownlint-cli
-      rev: v0.39.0
+      rev: v0.41.0
       hooks:
         - id: markdownlint
           args:
             - --ignore
             - CHANGELOG.md
     - repo: https://github.com/Yelp/detect-secrets
-      rev: v1.4.0
+      rev: v1.5.0
       hooks:
         - id: detect-secrets
           args:
@@ -135,7 +135,7 @@ repos:
             - ".secrets.baseline"
           exclude: "meta/licenses.*"
     - repo: https://github.com/sirosen/texthooks
-      rev: 0.6.4
+      rev: 0.6.6
       hooks:
         - id: fix-smartquotes
           exclude: "licenses_report.json"
