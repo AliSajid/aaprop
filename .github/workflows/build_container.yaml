@@ -8,11 +8,6 @@ name: Docker Image Generation
 on:
   workflow_call:
   workflow_dispatch:
-  release:
-    types:
-      - created
-      - published
-      - prereleased
 
 concurrency:
   group: docker-{github.event.ref}
