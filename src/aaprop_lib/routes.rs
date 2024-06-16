@@ -324,3 +324,260 @@ pub async fn get_amino_acid_codon_count(
         },
     )
 }
+
+#[cfg(test)]
+mod tests {
+    use rstest::rstest;
+    use shuttle_runtime::tokio;
+
+    use super::*;
+
+    #[rstest]
+    #[case("Alanine")]
+    #[case("Ala")]
+    #[case("A")]
+    fn test_match_amino_acid(#[case] input: &str) {
+        let result = match_amino_acid(input);
+        assert_eq!(result.unwrap().get_name(), "Alanine");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_root() {
+        let (status, response) = get_root().await.unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.message, "Welcome to the Amino Acid API");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid() {
+        let (status, response) = get_amino_acid(Path("Alanine".to_string())).await.unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, Some("Nonpolar".to_string()));
+        assert_eq!(response.molecular_weight, Some(89.09));
+        assert_eq!(
+            response.codons,
+            Some(vec![
+                "GCU".to_string(),
+                "GCC".to_string(),
+                "GCA".to_string(),
+                "GCG".to_string()
+            ])
+        );
+        assert_eq!(response.codon_count, Some(4));
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_error() {
+        let (status, response) = get_amino_acid(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_name() {
+        let (status, response) = get_amino_acid_name(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, None);
+        assert_eq!(response.molecular_weight, None);
+        assert_eq!(response.codons, None);
+        assert_eq!(response.codon_count, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_name_error() {
+        let (status, response) = get_amino_acid_name(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_short_name() {
+        let (status, response) = get_amino_acid_short_name(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, None);
+        assert_eq!(response.molecular_weight, None);
+        assert_eq!(response.codons, None);
+        assert_eq!(response.codon_count, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_short_name_error() {
+        let (status, response) = get_amino_acid_short_name(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_abbreviation() {
+        let (status, response) = get_amino_acid_abbreviation(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, None);
+        assert_eq!(response.molecular_weight, None);
+        assert_eq!(response.codons, None);
+        assert_eq!(response.codon_count, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_abbreviation_error() {
+        let (status, response) = get_amino_acid_abbreviation(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_side_chain() {
+        let (status, response) = get_amino_acid_side_chain(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.side_chain, Some("Nonpolar".to_string()));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.molecular_weight, None);
+        assert_eq!(response.codons, None);
+        assert_eq!(response.codon_count, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_side_chain_error() {
+        let (status, response) = get_amino_acid_side_chain(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_molecular_weight() {
+        let (status, response) = get_amino_acid_molecular_weight(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.molecular_weight, Some(89.09));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, None);
+        assert_eq!(response.codons, None);
+        assert_eq!(response.codon_count, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_molecular_weight_error() {
+        let (status, response) = get_amino_acid_molecular_weight(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_codons() {
+        let (status, response) = get_amino_acid_codons(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(
+            response.codons,
+            Some(vec![
+                "GCU".to_string(),
+                "GCC".to_string(),
+                "GCA".to_string(),
+                "GCG".to_string(),
+                "".to_string(),
+                "".to_string()
+            ])
+        );
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, None);
+        assert_eq!(response.molecular_weight, None);
+        assert_eq!(response.codon_count, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_codons_error() {
+        let (status, response) = get_amino_acid_codons(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_codon_count() {
+        let (status, response) = get_amino_acid_codon_count(Path("Alanine".to_string()))
+            .await
+            .unwrap();
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(response.name, Some("Alanine".to_string()));
+        assert_eq!(response.codon_count, Some(4));
+        assert_eq!(response.short_name, Some("Ala".to_string()));
+        assert_eq!(response.abbreviation, Some("A".to_string()));
+        assert_eq!(response.side_chain, None);
+        assert_eq!(response.molecular_weight, None);
+        assert_eq!(response.codons, None);
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_get_amino_acid_codon_count_error() {
+        let (status, response) = get_amino_acid_codon_count(Path("Alamo".to_string()))
+            .await
+            .err()
+            .unwrap();
+        assert_eq!(status, StatusCode::NOT_FOUND);
+        assert_eq!(response.error, "Amino Acid not found");
+    }
+}
