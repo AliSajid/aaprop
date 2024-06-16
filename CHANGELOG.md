@@ -1,3 +1,17 @@
+## [2.1.0](https://github.com/AliSajid/aaprop/compare/v2.0.0...v2.1.0) (2024-04-25)
+
+
+### Features
+
+* nest the main api under a version tag ([a03de84](https://github.com/AliSajid/aaprop/commit/a03de841f7562b1226c300db583609419096f8bb))
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to 1.0.198 ([df5d7ee](https://github.com/AliSajid/aaprop/commit/df5d7eeb41a0b1db17c68f09ac22bc2227e21c44))
+* **deps:** update rust crate serde_json to 1.0.116 ([b8e7330](https://github.com/AliSajid/aaprop/commit/b8e7330ce0eecfb7e6fa6bceada684591254772b))
+* update shuttle runtime ([8343c63](https://github.com/AliSajid/aaprop/commit/8343c633254cb28c853b4e4b1e58113861e5ef22))
+
 ## [2.0.1-next.1](https://github.com/AliSajid/aaprop/compare/v2.0.0...v2.0.1-next.1) (2024-04-24)
 
 

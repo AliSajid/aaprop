@@ -7,16 +7,59 @@
         "next"
     ],
     "extends": [
-        "config:recommended"
+        "config:best-practices",
+        "group:githubArtifactActions",
+        ":rebaseStalePrs"
     ],
     "labels": [
         "dependencies",
         "renovate"
     ],
+    "packageRules": [
+        {
+            "automerge": true,
+            "matchManagers": [
+                "pre-commit",
+                "github-actions"
+            ]
+        },
+        {
+            "groupName": "Shuttle",
+            "groupSlug": "shuttle",
+            "matchPackageNames": [
+                "shuttle-*"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ]
+        },
+        {
+            "groupName": "serde",
+            "groupSlug": "serde",
+            "matchPackageNames": [
+                "serde-*"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ]
+        },
+        {
+            "automerge": true,
+            "matchDepTypes": [
+                "devDependencies"
+            ]
+        }
+    ],
     "platformCommit": true,
+    "pre-commit": {
+        "enabled": true
+    },
     "schedule": [
-        "after 10pm and before 5am every weekday",
-        "every weekend"
+        "after 10pm every weekday",
+        "every weekend",
+        "before 5am every weekday"
     ],
     "semanticCommits": "enabled"
 }

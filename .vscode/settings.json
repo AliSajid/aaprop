@@ -2,6 +2,7 @@
     "cSpell.words": [
         "aaprop",
         "Aspartic",
+        "automerge",
         "cicd",
         "cimg",
         "Cloudant",
@@ -9,6 +10,7 @@
         "Hmac",
         "Mailchimp",
         "rstest",
+        "serde",
         "Struct"
     ]
 }
