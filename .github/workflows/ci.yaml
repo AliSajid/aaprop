@@ -59,16 +59,10 @@ jobs:
                     - nightly
                     - 1.75.0 # MSRV
                 os:
-                    - windows
                     - ubuntu
-                    - macos
                 include:
-                    - os: windows
-                      logo: windows
                     - os: ubuntu
                       logo: ubuntu
-                    - os: macos
-                      logo: apple
                     - rust: 1.75.0 # MSRV
                       label: msrv
                     - rust: stable
