@@ -114,19 +114,26 @@ jobs:
                   echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
                 done
               shell: bash
-            # - name: Verify Signatures
-            #   env:
-            #     IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
-            #     IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
-            #     GITHUB_TOKEN: ${{ github.token }}
-            #     SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
-            #   run: |
-            #     for tag in ${IMAGE_TAGS}; do
-            #       image="${tag}@${IMAGE_DIGEST}"
-            #       echo "Verifying ${image}"
-            #       cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
-            #       echo "Verifying SBOM Attestation for ${image}"
-            #       cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}"
-            #       echo "Done verifying ${image}"
-            #     done
-            #   shell: bash
+            - name: Verify Signatures
+              env:
+                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+                GITHUB_TOKEN: ${{ github.token }}
+                SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
+              run: |
+                for tag in ${IMAGE_TAGS}; do
+                  mkdir -p /tmp/cosign-verifications
+                  image="${tag}@${IMAGE_DIGEST}"
+                  echo "Verifying ${image}"
+                  cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" --output-file="/tmp/cosign-verifications/cosign-verify.json"
+                  echo "Verifying SBOM Attestation for ${image}"
+                  cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" --output-file="/tmp/cosign-verifications/cosign-verify-attestation.json"
+                  echo "Done verifying ${image}"
+                done
+              shell: bash
+            - name: Upload verification results
+              uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+              with:
+                path: /tmp/cosign-verifications
+                name: cosign-verifications
+                compression-level: 9
