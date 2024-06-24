@@ -115,7 +115,7 @@ repos:
         - id: forbid-tabs
         - id: remove-tabs
     - repo: https://github.com/google/yamlfmt
-      rev: v0.12.1
+      rev: v0.13.0
       hooks:
         - id: yamlfmt
           exclude: ".github/workflows/.*\\.ya?ml"
