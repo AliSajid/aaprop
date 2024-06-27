@@ -1,3 +1,18 @@
+## [2.1.1](https://github.com/AliSajid/aaprop/compare/v2.1.0...v2.1.1) (2024-06-27)
+
+### Bug Fixes
+
+* **deps:** update rust crate axum-test to v15.2.0 ([d3df857](https://github.com/AliSajid/aaprop/commit/d3df8579f6af1f068231a4a8ccf88af20a68bba5))
+* **deps:** update rust crate axum-test to v15.2.0 ([3b09aa2](https://github.com/AliSajid/aaprop/commit/3b09aa2f944ed91cf54d971db03cdcb0d0a24b46))
+* **deps:** update rust crate clap to v4.5.7 ([1d299b6](https://github.com/AliSajid/aaprop/commit/1d299b63cb899f7086fe82048e6d265c0b4d6bef))
+* **deps:** update rust crate clap to v4.5.7 ([f9a7bd7](https://github.com/AliSajid/aaprop/commit/f9a7bd76ccb1cf8cb31b416a766c05922e2a6ece))
+* **deps:** update rust crate serde to v1.0.203 ([d4f41ce](https://github.com/AliSajid/aaprop/commit/d4f41ce57fbc8774c7d3d082bde7cef5992486c8))
+* **deps:** update rust crate serde_json to v1.0.118 ([b59d610](https://github.com/AliSajid/aaprop/commit/b59d610d1902c777ccac78fcb241d6d987c6936c))
+* **deps:** update rust crate tokio to v1.38.0 ([f8d7804](https://github.com/AliSajid/aaprop/commit/f8d78048bfa9485eb56a9b6f90a78dba52740ae1))
+* **deps:** update serde ([b1d27c9](https://github.com/AliSajid/aaprop/commit/b1d27c9550ec6e386079972898e55127657f4ac6))
+* ensure the shuttle deploy only happens from the `main` branch ([bd012f0](https://github.com/AliSajid/aaprop/commit/bd012f0f29cf55bf1b77519f0d7390fb95593a89))
+* Update to latest dependencies ([#145](https://github.com/AliSajid/aaprop/issues/145)) ([f209be8](https://github.com/AliSajid/aaprop/commit/f209be8c0e480dff8fdcbe3500611c28993ad4f7))
+
 ## [2.1.1-next.1](https://github.com/AliSajid/aaprop/compare/v2.1.0...v2.1.1-next.1) (2024-06-27)
 
 ### Bug Fixes
