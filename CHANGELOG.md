@@ -1,3 +1,10 @@
+## [2.1.2-next.1](https://github.com/AliSajid/aaprop/compare/v2.1.1...v2.1.2-next.1) (2024-07-01)
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to v4.5.8 ([45f1e75](https://github.com/AliSajid/aaprop/commit/45f1e75ada3c01daece9fa36e8b29fef893a7d57))
+* **deps:** update rust crate serde_json to v1.0.120 ([c770dc9](https://github.com/AliSajid/aaprop/commit/c770dc9cb035114785702615b0bffb699bc7de8c))
+
 ## [2.1.1](https://github.com/AliSajid/aaprop/compare/v2.1.0...v2.1.1) (2024-06-27)
 
 ### Bug Fixes
