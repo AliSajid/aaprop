@@ -1,3 +1,9 @@
+## [2.1.2-next.2](https://github.com/AliSajid/aaprop/compare/v2.1.2-next.1...v2.1.2-next.2) (2024-07-08)
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to v1.0.204 ([6b11220](https://github.com/AliSajid/aaprop/commit/6b112207f44cf57b69d7ab8b064ce27c3cd1fd1e))
+
 ## [2.1.2-next.1](https://github.com/AliSajid/aaprop/compare/v2.1.1...v2.1.2-next.1) (2024-07-01)
 
 ### Bug Fixes
