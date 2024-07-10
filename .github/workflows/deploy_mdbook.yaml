@@ -26,7 +26,7 @@ jobs:
       - name: Checkout the Repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install mdbook
-        uses: taiki-e/install-action@64e4e2f995104968c78bd697b253d55bf557af66 # v2.41.11
+        uses: taiki-e/install-action@b28eee2bb643cb4606a986e802770206f53c5259 # v2.41.12
         with:
           tool: mdbook
       - name: Build the Book
@@ -61,7 +61,7 @@ jobs:
           name: book
           path: /opt/book
       - name: Setup NodeJS
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version: '18'
       - name: Install pnpm
