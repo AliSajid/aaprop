@@ -1,3 +1,10 @@
+## [2.1.2-next.3](https://github.com/AliSajid/aaprop/compare/v2.1.2-next.2...v2.1.2-next.3) (2024-07-12)
+
+### Bug Fixes
+
+* **deps:** update rust crate axum-test to v15.3.0 ([ff97bdc](https://github.com/AliSajid/aaprop/commit/ff97bdc581539d5bf2dbcf42dce106cb009effbf))
+* **deps:** update rust crate clap to v4.5.9 ([197946b](https://github.com/AliSajid/aaprop/commit/197946b9286256b2bcfc3021d4983931b2e75fb8))
+
 ## [2.1.2-next.2](https://github.com/AliSajid/aaprop/compare/v2.1.2-next.1...v2.1.2-next.2) (2024-07-08)
 
 ### Bug Fixes
