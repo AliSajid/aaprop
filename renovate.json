@@ -63,7 +63,7 @@
             ]
         }
     ],
-    "platformCommit": true,
+    "platformCommit": "enabled",
     "pre-commit": {
         "enabled": true
     },
