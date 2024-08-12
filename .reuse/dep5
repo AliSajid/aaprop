@@ -64,3 +64,8 @@ License: CC0-1.0
 Files: renovate.json
 Copyright: 2023 - 2024 Ali Sajid Imami
 License: MIT AND Apache-2.0
+
+Files: CHANGELOG.md
+Copyright: 2023 - 2024 Ali Sajid Imami
+License: Apache-2.0 AND MIT
+
