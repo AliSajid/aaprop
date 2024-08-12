@@ -49,7 +49,7 @@
             "groupName": "serde",
             "groupSlug": "serde",
             "matchPackageNames": [
-                "serde-*"
+                "serde*"
             ],
             "matchUpdateTypes": [
                 "minor",
