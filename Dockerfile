@@ -4,59 +4,92 @@
 # SPDX-License-Identifier: MIT
 
 # This Dockerfile is used to build a Docker image for the aaprop project
-# The image is built in two stages:
-# 1. The first stage uses the official Rust image as the builder image
-#    It builds the Rust project and creates a binary
-# 2. The second stage uses the official Debian image as the base image
-#    It copies the binary from the builder image and sets it as the entry point of the container
+# The image is built in two phases:
+# 1. The Preparation phase starts fromn the official Rust image to prepare
+#    the environment for the final build.
+# 2. The Build phase finally builds the binary of the aaprop project.
+#    It copies the binary from the builder image to a distroless image and
+#    sets it as the entry point of the container
+# All in all, this results in the total process of building the Docker image
+# consisting of four stages:
+# 1. The `chef` stage installs the `cargo-chef` tool in the official Rust image
+# 2. The `planner` stage examines the project and builds a minimal recipe for
+#    project.
+# 3. The `builder` stage uses the recipe from the `planner` stage to build the
+#    dependencies and the final binary.
+# 4. The `distroless` stage copies the binary from the `builder` stage to distroless
+#    image and readies it for production.
+
+# ===================================================================================
+# Preparation phase
+# ===================================================================================
+
+# -----------------------------------------------------------------------------------
+# chef stage
+# -----------------------------------------------------------------------------------
 
 # Use the official Rust image as the builder image
-# Use the 1.75 version of the Rust image since it's the MSRV (Minimum Supported Rust Version) for the aaprop project
-FROM rust:1.75@sha256:87f3b2f93b82995443a1a558c234212dafe79cfdc3af956539610560369ddcd0 AS builder
+# Use the 1.78 version of the Rust image since it's the MSRV (Minimum Supported Rust Version) for the aaprop project
+FROM rust:1.78.0 AS chef
 
-# Set the working directory in the builder image to /usr/src
+# Install the `cargo-chef` tool
+RUN cargo install cargo-chef
+
+# -----------------------------------------------------------------------------------
+# planner stage
+# -----------------------------------------------------------------------------------
+
+# Use the previous stage as the base image
+FROM chef AS planner
+
+# Set the working directory to a known location
 WORKDIR /usr/src
 
-# Create a new Rust project named aaprop
-RUN USER=root cargo new --lib aaprop
+# Copy the project files to the image
+COPY . .
 
-# Change the working directory to the aaprop directory
-WORKDIR /usr/src/aaprop
+# Use `cargo-chef prepare` to generate a minimal recipe for the project
+RUN cargo chef prepare --recipe-path recipe.json
 
-# Create the appropriate directory structure for the first build
-RUN mkdir -p src/aaprop_lib && mv -v src/lib.rs src/aaprop_lib/lib.rs
+# ===================================================================================
+# Build phase
+# ===================================================================================
 
-# Copy the Cargo.toml and Cargo.lock files to the aaprop directory
-COPY Cargo.toml Cargo.lock ./
+# -----------------------------------------------------------------------------------
+# builder stage
+# -----------------------------------------------------------------------------------
 
-# Build the Rust project
-# This step is done separately to take advantage of Docker's layer caching
-# Any changes in the source code will not invalidate the cached dependencies
-RUN cargo build --lib --features standalone --no-default-features --release
+# Use the previous stage as the base image
+FROM chef AS builder
 
-# Remove the auto-generated main.rs file
-# This file will be replaced with the actual source code
-RUN rm -rfv src/*
+# Set the working directory to a known location
+WORKDIR /usr/src
 
-# Remove the auto-generated binary and dependencies
-# These will be replaced with the actual binary and dependencies
-RUN rm -rfv target/release/deps/aaprop*
+# Copy the `cargo-chef` recipe from the `planner` stage to the current image
+COPY --from=planner /usr/src/recipe.json .
 
-# Add the actual source code to the src directory
-ADD src src
+# Use `cargo-chef cook` to build the dependencies of the project
+RUN cargo chef cook --release --recipe-path recipe.json
+
+# Copy the project files to the image
+COPY . .
 
 # Build the Rust project with the actual source code
 RUN cargo build --features standalone --no-default-features --release --locked
 
+# -----------------------------------------------------------------------------------
+# distroless stage
+# -----------------------------------------------------------------------------------
+
 # Use the official distroless image as the base image
-FROM gcr.io/distroless/cc-debian12@sha256:e1065a1d58800a7294f74e67c32ec4146d09d6cbe471c1fa7ed456b2d2bf06e0
+FROM gcr.io/distroless/cc-debian12@sha256:e1065a1d58800a7294f74e67c32ec4146d09d6cbe471c1fa7ed456b2d2bf06e0 AS distroless
 
 # Copy the binary from the builder image to the base image
-COPY --from=builder /usr/src/aaprop/target/release/aaprop /usr/local/bin/aaprop
+COPY --from=builder /usr/src/target/release/aaprop /usr/local/bin/aaprop
 
 # Change the user to a non-root user for security
 USER 1000
 
 # Set the binary as the entry point of the container
 # When the container starts, it will execute this binary
-ENTRYPOINT [ "/usr/local/bin/aaprop", "--bind", "0.0.0.0" ]
+ENTRYPOINT [ "/usr/local/bin/aaprop", "--bind", "0.0.0.0", "--port", "80" ]
