@@ -82,6 +82,8 @@ jobs:
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
                   platforms: linux/amd64,linux/arm64
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
             - name: Debug Build
               run: echo "${{join(steps.build.outputs.*, '\n')}}"
             - name: Install cosign
