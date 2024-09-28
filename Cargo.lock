@@ -6,7 +6,7 @@ version = 3
 name = "aaprop"
 version = "2.1.2-next.4"
 dependencies = [
- "axum 0.7.5",
+ "axum 0.7.7",
  "axum-test",
  "cfg_block",
  "clap",
@@ -115,6 +115,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "86fdf8605db99b54d3cd748a44c6d04df638eb5dafb219b135d0149bd0db01f6"
 
 [[package]]
+name = "assert-json-diff"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "47e4f2b81832e72834d7518d8487a0396a28cc408186a2e8854c0f98011faf12"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "async-stream"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -189,12 +199,12 @@ dependencies = [
 
 [[package]]
 name = "axum"
-version = "0.7.5"
+version = "0.7.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3a6c9af12842a67734c9a2e355436e5d03b22383ed60cf13cd0c18fbfe3dcbcf"
+checksum = "504e3947307ac8326a5437504c517c4b56716c9d98fac0028c2acc7ca47d70ae"
 dependencies = [
  "async-trait",
- "axum-core 0.4.3",
+ "axum-core 0.4.5",
  "bytes",
  "futures-util",
  "http 1.1.0",
@@ -215,7 +225,7 @@ dependencies = [
  "serde_urlencoded",
  "sync_wrapper 1.0.1",
  "tokio",
- "tower 0.4.13",
+ "tower 0.5.1",
  "tower-layer",
  "tower-service",
  "tracing",
@@ -240,9 +250,9 @@ dependencies = [
 
 [[package]]
 name = "axum-core"
-version = "0.4.3"
+version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a15c63fd72d41492dc4f497196f5da1fb04fb7529e631d73630d1b491e47a2e3"
+checksum = "09f2bd6146b97ae3359fa0cc6d6b376d9539582c7b4220f041a33ec24c226199"
 dependencies = [
  "async-trait",
  "bytes",
@@ -253,7 +263,7 @@ dependencies = [
  "mime",
  "pin-project-lite",
  "rustversion",
- "sync_wrapper 0.1.2",
+ "sync_wrapper 1.0.1",
  "tower-layer",
  "tower-service",
  "tracing",
@@ -261,13 +271,14 @@ dependencies = [
 
 [[package]]
 name = "axum-test"
-version = "15.7.1"
+version = "16.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05de9a36258224d347fb3c474737dee7543fe4c7ccebabd472d9151f730f5dcd"
+checksum = "12c0f9630ccb2d9c9f877bbcbea0406f7d438254062f7f76c0c00a1c1a38cfd5"
 dependencies = [
  "anyhow",
+ "assert-json-diff",
  "auto-future",
- "axum 0.7.5",
+ "axum 0.7.7",
  "bytes",
  "cookie",
  "http 1.1.0",
@@ -1580,7 +1591,7 @@ version = "0.47.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1806f4f5c6add7321d9820b234b5e41910d36a1689a2be7e5ff59708cf4450e6"
 dependencies = [
- "axum 0.7.5",
+ "axum 0.7.7",
  "shuttle-runtime",
 ]
 
@@ -2032,6 +2043,7 @@ dependencies = [
  "tokio",
  "tower-layer",
  "tower-service",
+ "tracing",
 ]
 
 [[package]]
