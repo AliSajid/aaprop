@@ -261,9 +261,9 @@ dependencies = [
 
 [[package]]
 name = "axum-test"
-version = "15.7.1"
+version = "15.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05de9a36258224d347fb3c474737dee7543fe4c7ccebabd472d9151f730f5dcd"
+checksum = "ac63648e380fd001402a02ec804e7686f9c4751f8cad85b7de0b53dae483a128"
 dependencies = [
  "anyhow",
  "auto-future",
