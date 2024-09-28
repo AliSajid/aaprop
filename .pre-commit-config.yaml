@@ -54,7 +54,7 @@ repos:
           types: [markdown]
           files: "^(README.md|CONTRIBUTING.md|CODE_OF_CONDUCT.md|guide/src/.*.md)$"
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v3.29.0
+      rev: v3.29.1
       hooks:
         - id: commitizen
     - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -142,7 +142,7 @@ repos:
         - id: fix-ligatures
         - id: forbid-bidi-controls
     - repo: https://github.com/zricethezav/gitleaks
-      rev: v8.19.2
+      rev: v8.19.3
       hooks:
         - id: gitleaks
     - repo: https://github.com/fsfe/reuse-tool
