@@ -22,22 +22,22 @@ This project is a small server app that provides a REST API to access the proper
 
 ## Build Status
 
-|         | Stable | Beta | Nightly | MSRV (1.75.0) |
-| ------- | ------ | ---- | ------- | ---- |
-| Linux   | ![Ubuntu x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-stable.json) | ![Ubuntu x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-beta.json) | ![Ubuntu x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-nightly.json) | ![Ubuntu x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-msrv.json) |
+|       | Stable                                                                                                                                                           | Beta                                                                                                                                                         | Nightly                                                                                                                                                            | MSRV (1.78.0)                                                                                                                                                |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Linux | ![Ubuntu x Stable Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-stable.json) | ![Ubuntu x Beta Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-beta.json) | ![Ubuntu x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-nightly.json) | ![Ubuntu x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-msrv.json) |
 
-__Note: We have stopped testing builds on Windows and macos for expediency. We recommend you use the docker image should you need to run the project on these platforms.__
+**Note: We have stopped testing builds on Windows and macos for expediency. We recommend you use the docker image should you need to run the project on these platforms.**
 
 ## Roadmap
 
-- [X] Create the standard project
-- [X] Add the necessary meta files
-- [X] Create the models for the data structures
-- [X] Add the Amino Acid Properties Data
-- [X] Set up the appropriate routes
-- [X] Restructure the project
-- [X] Add the tracing
-- [X] Add a CLI interface
+- [x] Create the standard project
+- [x] Add the necessary meta files
+- [x] Create the models for the data structures
+- [x] Add the Amino Acid Properties Data
+- [x] Set up the appropriate routes
+- [x] Restructure the project
+- [x] Add the tracing
+- [x] Add a CLI interface
 
 ## Contributing
 
@@ -56,8 +56,11 @@ This project is REUSE compliant. You can find more information about REUSE [here
 ## Code of Conduct
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+
 <!-- vale write-good.Passive = NO -->
 <!-- vale Google.Passive = NO -->
+
 This project adheres to the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, You are expected to uphold this code.
+
 <!-- vale Google.Passive = YES -->
 <!-- vale write-good.Passive = YES -->

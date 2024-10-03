@@ -54,7 +54,7 @@ repos:
           types: [markdown]
           files: "^(README.md|CONTRIBUTING.md|CODE_OF_CONDUCT.md|guide/src/.*.md)$"
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v3.27.0
+      rev: v3.29.1
       hooks:
         - id: commitizen
     - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -89,7 +89,7 @@ repos:
           args:
             - --markdown-linebreak-ext=md
     - repo: https://github.com/compilerla/conventional-pre-commit
-      rev: v3.2.0
+      rev: v3.4.0
       hooks:
         - args:
             - build
@@ -120,7 +120,7 @@ repos:
         - id: yamlfmt
           exclude: ".github/workflows/.*\\.ya?ml"
     - repo: https://github.com/igorshubovych/markdownlint-cli
-      rev: v0.41.0
+      rev: v0.42.0
       hooks:
         - id: markdownlint
           args:
@@ -135,17 +135,17 @@ repos:
             - ".secrets.baseline"
           exclude: "meta/licenses.*"
     - repo: https://github.com/sirosen/texthooks
-      rev: 0.6.6
+      rev: 0.6.7
       hooks:
         - id: fix-smartquotes
           exclude: "licenses_report.json"
         - id: fix-ligatures
         - id: forbid-bidi-controls
     - repo: https://github.com/zricethezav/gitleaks
-      rev: v8.18.4
+      rev: v8.19.3
       hooks:
         - id: gitleaks
     - repo: https://github.com/fsfe/reuse-tool
-      rev: v3.0.2
+      rev: v4.0.3
       hooks:
         - id: reuse

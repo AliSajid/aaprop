@@ -1,3 +1,29 @@
+## [2.1.2-next.4](https://github.com/AliSajid/aaprop/compare/v2.1.2-next.3...v2.1.2-next.4) (2024-07-17)
+
+### Bug Fixes
+
+* **deps:** update rust crate tokio to v1.38.1 ([56ed028](https://github.com/AliSajid/aaprop/commit/56ed028fd5df1d5faf221a9256fb5d44d065c18c))
+
+## [2.1.2-next.3](https://github.com/AliSajid/aaprop/compare/v2.1.2-next.2...v2.1.2-next.3) (2024-07-12)
+
+### Bug Fixes
+
+* **deps:** update rust crate axum-test to v15.3.0 ([ff97bdc](https://github.com/AliSajid/aaprop/commit/ff97bdc581539d5bf2dbcf42dce106cb009effbf))
+* **deps:** update rust crate clap to v4.5.9 ([197946b](https://github.com/AliSajid/aaprop/commit/197946b9286256b2bcfc3021d4983931b2e75fb8))
+
+## [2.1.2-next.2](https://github.com/AliSajid/aaprop/compare/v2.1.2-next.1...v2.1.2-next.2) (2024-07-08)
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to v1.0.204 ([6b11220](https://github.com/AliSajid/aaprop/commit/6b112207f44cf57b69d7ab8b064ce27c3cd1fd1e))
+
+## [2.1.2-next.1](https://github.com/AliSajid/aaprop/compare/v2.1.1...v2.1.2-next.1) (2024-07-01)
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to v4.5.8 ([45f1e75](https://github.com/AliSajid/aaprop/commit/45f1e75ada3c01daece9fa36e8b29fef893a7d57))
+* **deps:** update rust crate serde_json to v1.0.120 ([c770dc9](https://github.com/AliSajid/aaprop/commit/c770dc9cb035114785702615b0bffb699bc7de8c))
+
 ## [2.1.1](https://github.com/AliSajid/aaprop/compare/v2.1.0...v2.1.1) (2024-06-27)
 
 ### Bug Fixes
