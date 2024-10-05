@@ -61,7 +61,7 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GHCR_TOKEN }}
             - name: Setup Buildx
-              uses: docker/setup-buildx-action@8026d2bc3645ea78b0d2544766a1225eb5691f89 # v3.7.0
+              uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
               with:
                 version: "lab:latest"
                 driver: cloud
@@ -89,7 +89,7 @@ jobs:
             - name: Debug Build
               run: echo "${{join(steps.build.outputs.*, '\n')}}"
             - name: Install cosign
-              uses: sigstore/cosign-installer@4959ce089c160fddf62f7b42464195ba1a56d382 # v3.6.0
+              uses: sigstore/cosign-installer@dc72c7d5c4d10cd6bcb8cf6e3fd625a9e5e537da # v3.7.0
               with:
                 cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
             - name: Install Syft
