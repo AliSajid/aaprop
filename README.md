@@ -12,7 +12,6 @@ SPDX-License-Identifier: MIT
 [![Continuous integration](https://github.com/AliSajid/aaprop/actions/workflows/ci.yaml/badge.svg)](https://github.com/AliSajid/aaprop/actions/workflows/ci.yaml)
 [![Security Audit](https://github.com/AliSajid/aaprop/actions/workflows/audit.yaml/badge.svg?branch=main)](https://github.com/AliSajid/aaprop/actions/workflows/audit.yaml)
 
-[![Contribute with Gitpod](https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/AliSajid/aaprop)
 ![GitHub issues](https://img.shields.io/github/issues/AliSajid/aaprop)
 ![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2FAliSajid%2Faaprop)
 
