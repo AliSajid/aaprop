@@ -19,10 +19,18 @@ env:
   GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT_GITHUB }}
   BRANCH: ${{ github.ref_name }}
 
+permissions:
+  contents: read
+
 jobs:
   build_book:
     runs-on: ubuntu-latest
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
+
       - name: Checkout the Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Install mdbook
@@ -47,6 +55,11 @@ jobs:
     outputs:
       deployment_url: ${{ steps.output_deployment_url.outputs.deployment_url }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
+
       - name: Decide Deployment Environment
         id: deployment_environment
         run: |

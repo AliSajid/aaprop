@@ -13,8 +13,13 @@ jobs:
         name: Shuttle Deployment
         runs-on: ubuntu-latest
         steps:
+            - name: Harden Runner
+              uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+              with:
+                egress-policy: audit
+
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-            - uses: shuttle-hq/deploy-action@main
+            - uses: shuttle-hq/deploy-action@a499e4ebcb4b486a0e34d9af9ee2f28e7ee16501 # main
               with:
                 deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}

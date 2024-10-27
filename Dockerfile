@@ -30,7 +30,7 @@
 
 # Use the official Rust image as the builder image
 # Use the 1.78 version of the Rust image since it's the MSRV (Minimum Supported Rust Version) for the aaprop project
-FROM rust:1.78.0 AS chef
+FROM rust:1.78.0@sha256:5907e96b0293eb53bcc8f09b4883d71449808af289862950ede9a0e3cca44ff5 AS chef
 
 # Install the `cargo-chef` tool
 RUN cargo install cargo-chef
