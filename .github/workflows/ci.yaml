@@ -91,7 +91,7 @@ jobs:
                 components: rustfmt, clippy
             - name: Install nightly Rust
               if: ${{ needs.check_changed_dirs.outputs.source_changed == 'true' }}
-              uses: dtolnay/rust-toolchain@83bdede770b06329615974cf8c786f845d824dfb # nightly
+              uses: dtolnay/rust-toolchain@7b1c307e0dcbda6122208f10795a713336a9b35a # nightly
               with:
                 toolchain: nightly
                 components: rustfmt, clippy
