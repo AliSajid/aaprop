@@ -12,7 +12,7 @@ jobs:
         name: Generate Coverage
         runs-on: ubuntu-latest
         container:
-            image: xd009642/tarpaulin:develop-nightly@sha256:32f9a0c71777625e0676562a7459289d8f743467aad351f7edb27de946ffc0d1
+            image: xd009642/tarpaulin:develop-nightly@sha256:3268caad6c6f61bb563b9e4c2a7f132af9a9611425c066cf375295f4e890e62a
             options: --security-opt seccomp=unconfined
         steps:
             - name: Harden Runner
@@ -26,7 +26,7 @@ jobs:
             - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # nightly
               with:
                 components: llvm-tools-preview
-            - uses: taiki-e/install-action@45e0b9c640789c26691115a9756ab35b4cd6a511 # v2.45.2
+            - uses: taiki-e/install-action@5b1c1a554482cdcae4eea02315b6fcdb89dd86fb # v2.45.4
               with:
                 tool: cargo-llvm-cov,nextest
             - name: Collect coverage data (including doctests)
@@ -35,7 +35,7 @@ jobs:
                 cargo llvm-cov --no-report --doc
                 cargo llvm-cov report --doctests --lcov --output-path lcov.info
             - name: Upload to codecov.io
-              uses: codecov/codecov-action@d168679d447a7d9f9917d4b26caf2cfbf080cfb4 # v5.0.6
+              uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # v5.0.7
               with:
                 file: lcov.info
                 token: ${{ secrets.CODECOV_TOKEN }}
