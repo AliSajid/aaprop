@@ -35,7 +35,7 @@ standalone = ["dep:clap", "dep:tokio", "dep:tracing-subscriber"]
 default = ["shuttle"]
 
 [dependencies]
-axum = "0.7.5"
+axum = "0.8.0"
 axum-test = "17.0.0"
 cfg_block = "0.2.0"
 clap = { version = "4.5.4", features = ["derive", "env"], optional = true }
