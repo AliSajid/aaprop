@@ -27,7 +27,7 @@ jobs:
               with:
                 toolchain: nightly
                 components: llvm-tools-preview
-            - uses: taiki-e/install-action@0779861fb45d2abc0679e6ff4713e53d06b089d0 # v2.47.10
+            - uses: taiki-e/install-action@c87777c3160ce0cfd8fc286df47224d2449cb76b # v2.47.11
               with:
                 tool: cargo-llvm-cov,nextest
             - name: Collect coverage data (including doctests)
