@@ -34,7 +34,7 @@ jobs:
       - name: Checkout the Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Install mdbook
-        uses: taiki-e/install-action@d125c0a83576d3c0c86ac610c708b38d3565af4e # v2.47.15
+        uses: taiki-e/install-action@f99317473f9d63b9ecbe00e2a013702053085488 # v2.47.16
         with:
           tool: mdbook
       - name: Build the Book
