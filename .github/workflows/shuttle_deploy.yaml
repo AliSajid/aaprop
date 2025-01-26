@@ -20,6 +20,6 @@ jobs:
 
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-            - uses: shuttle-hq/deploy-action@1872b44280192f6f5d924b784e2b307d070e2929 # main
+            - uses: shuttle-hq/deploy-action@e1c2ff9b0d68adb0b2cfb35e29edfb335b854e41 # main
               with:
                 deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
