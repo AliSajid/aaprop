@@ -48,7 +48,7 @@ tracing = "0.1.38"
 tracing-subscriber = { version = "0.3.18", optional = true }
 
 [dev-dependencies]
-rstest = "0.24.0"
+rstest = "=0.24.0"
 
 [lints.rust]
 unsafe_code = "forbid" # Ensure that the crate does not use unsafe code
