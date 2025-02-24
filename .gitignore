@@ -28,7 +28,8 @@ Cargo.lock
 guide/book
 
 meta/vale-styles/**/*
-!meta/vale-styles/config
+!meta/vale-styles/config/
+!meta/vale-styles/config/**/*
 
 
 # Special Ignore File
