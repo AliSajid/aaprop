@@ -36,9 +36,15 @@ jobs:
       - name: Install mdbook
         uses: taiki-e/install-action@1426bdb9e21b806f1cae604ab3dfc05e174bf885 # v2.49.16
         with:
-          tool: mdbook
+          experimental: true
+          mise-toml: |
+            [tools]
+            "cargo:mdbook" = 0.4.45
+            "cargo:mdbook-inline-highlighting" = 0.1.0
+
       - name: Build the Book
         run: mdbook build guide
+
       - name: Upload artifact
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
@@ -46,6 +52,7 @@ jobs:
           path: guide/book
           retention-days: 1
           compression-level: 9
+
   deploy_book:
     runs-on: ubuntu-latest
     needs: [build_book]
@@ -73,31 +80,34 @@ jobs:
         with:
           name: book
           path: /opt/book
-      - name: Setup NodeJS
-        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+      - name: Install mise-en-place
+        uses: jdx/mise-action@v2
         with:
-          node-version: '18'
-      - name: Install pnpm
-        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-        with:
-          version: 8
-          run_install: false
-      - name: Install pnpm dependencies
-        run: pnpm install -g vercel@latest
+          experimental: true
+          mise-toml: |
+            [tools]
+            node = 22
+            "npm:vercel" = "latest"
+
       - name: Populate Vercel Variables
         run: vercel pull --cwd /opt/book --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
+
       - name: Build for Vercel deployment -- Preview
         if: env.PROJECT_ENVIRONMENT == 'preview'
         run: vercel build --cwd /opt/book -y -d --token=${{ env.VERCEL_TOKEN }}
+
       - name: Deploy to Vercel -- Preview
         if: env.PROJECT_ENVIRONMENT == 'preview'
         run: vercel deploy --cwd /opt/book --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
+
       - name: Build for Vercel deployment -- Production
         if: env.PROJECT_ENVIRONMENT == 'production'
         run: vercel build --cwd /opt/book -y --prod -d --token=${{ env.VERCEL_TOKEN }}
+
       - name: Deploy to Vercel -- Production
         if: env.PROJECT_ENVIRONMENT == 'production'
         run: vercel deploy --cwd /opt/book --prod --prebuilt --token=${{ env.VERCEL_TOKEN }} > deployment_url
+
       - name: Output Deployment URL
         id: output_deployment_url
         run: echo "deployment_url=$(cat deployment_url)" >> $GITHUB_OUTPUT
