@@ -34,7 +34,7 @@ jobs:
       - name: Checkout the Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Install mdbook
-        uses: taiki-e/install-action@0f58b6a196e0d71c72fd459ab8fd8b228f85f669 # v2.49.24
+        uses: taiki-e/install-action@b0dede94e8c623ccff37313309e79b38166901c5 # v2.49.25
         with:
           experimental: true
           mise-toml: |
