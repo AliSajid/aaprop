@@ -35,7 +35,7 @@ jobs:
         uses: jdx/mise-action@v2 # v2.1.11
         with:
           experimental: true
-          mise-toml: |
+          mise_toml: |
             [tools]
             "cargo:mdbook" = 0.4.45
             "cargo:mdbook-inline-highlighting" = 0.1.0
