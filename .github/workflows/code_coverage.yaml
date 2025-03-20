@@ -7,6 +7,7 @@
 name: Code Coverage
 on:
     workflow_call:
+
 jobs:
     test:
         name: Generate Coverage
@@ -27,14 +28,17 @@ jobs:
               with:
                 toolchain: nightly
                 components: llvm-tools-preview
+
             - uses: taiki-e/install-action@37bdc826eaedac215f638a96472df572feab0f9b # v2.49.30
               with:
                 tool: cargo-llvm-cov,nextest
+
             - name: Collect coverage data (including doctests)
               run: |
                 cargo llvm-cov --no-report nextest --config-file nextest.toml
                 cargo llvm-cov --no-report --doc
                 cargo llvm-cov report --doctests --lcov --output-path lcov.info
+
             - name: Upload to codecov.io
               uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
               with:
