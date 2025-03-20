@@ -19,9 +19,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT_GITHUB }}
   BRANCH: ${{ github.ref_name }}
 
-permissions:
-  contents: read
-
 jobs:
   build_book:
     runs-on: ubuntu-latest
@@ -61,6 +58,7 @@ jobs:
       STORE_PATH: ''
     outputs:
       deployment_url: ${{ steps.output_deployment_url.outputs.deployment_url }}
+
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
@@ -75,11 +73,13 @@ jobs:
           else
             echo "PROJECT_ENVIRONMENT=preview" >> $GITHUB_ENV
           fi
+
       - name: Download artifact
         uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: book
           path: /opt/book
+
       - name: Install mise-en-place
         uses: jdx/mise-action@5083fe46898c414b2475087cc79da59e7da859e8 # v2
         with:
