@@ -85,7 +85,7 @@ jobs:
         uses: jdx/mise-action@5083fe46898c414b2475087cc79da59e7da859e8 # v2
         with:
           experimental: true
-          mise-toml: |
+          mise_toml: |
             [tools]
             node = 22
             "npm:vercel" = "latest"
