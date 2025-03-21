@@ -37,8 +37,8 @@ jobs:
           experimental: true
           mise_toml: |
             [tools]
-            "cargo:mdbook" = 0.4.45
-            "cargo:mdbook-inline-highlighting" = 0.1.0
+            "cargo:mdbook" = "0.4.45"
+            "cargo:mdbook-inline-highlighting" = "0.1.0"
 
       - name: Build the Book
         run: mdbook build guide
@@ -87,7 +87,7 @@ jobs:
           experimental: true
           mise_toml: |
             [tools]
-            node = 22
+            node = "22"
             "npm:vercel" = "latest"
 
       - name: Populate Vercel Variables
