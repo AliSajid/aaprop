@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
 
 SPDX-License-Identifier: Apache-2.0
 SPDX-License-Identifier: MIT
@@ -11,7 +11,7 @@ This page lists the licenses of the projects used in cargo-about.
 
 ## Overview of licenses
 
-- [Apache License 2.0](#Apache-2.0) (136)
+- [Apache License 2.0](#Apache-2.0) (137)
 - [MIT License](#MIT) (54)
 - [Unicode License v3](#Unicode-3.0) (20)
 - [ISC License](#ISC) (4)
@@ -1305,8 +1305,8 @@ Apache License 2.0
 
 #### Used by
 
-- [rstest]( https://github.com/la10736/rstest ) 0.24.0
-- [rstest_macros]( https://github.com/la10736/rstest ) 0.24.0
+- [rstest]( https://github.com/la10736/rstest ) 0.25.0
+- [rstest_macros]( https://github.com/la10736/rstest ) 0.25.0
 
 #### License
 
@@ -2395,12 +2395,11 @@ Apache License 2.0
 - [libc]( https://github.com/rust-lang/libc ) 0.2.169
 - [proc-macro2]( https://github.com/dtolnay/proc-macro2 ) 1.0.93
 - [quote]( https://github.com/dtolnay/quote ) 1.0.38
+- [reqwest-middleware]( https://github.com/TrueLayer/reqwest-middleware ) 0.4.0
 - [rustversion]( https://github.com/dtolnay/rustversion ) 1.0.19
 - [ryu]( https://github.com/dtolnay/ryu ) 1.0.19
 - [semver]( https://github.com/dtolnay/semver ) 1.0.25
-- [serde]( https://github.com/serde-rs/serde ) 1.0.217
-- [serde_derive]( https://github.com/serde-rs/serde ) 1.0.217
-- [serde_json]( https://github.com/serde-rs/json ) 1.0.138
+- [serde_json]( https://github.com/serde-rs/json ) 1.0.140
 - [serde_path_to_error]( https://github.com/dtolnay/path-to-error ) 0.1.16
 - [serde_urlencoded]( https://github.com/nox/serde_urlencoded ) 0.7.1
 - [syn]( https://github.com/dtolnay/syn ) 2.0.98
@@ -3036,7 +3035,7 @@ Apache License 2.0
 
 #### Used by
 
-- [reqwest]( https://github.com/seanmonstar/reqwest ) 0.12.12
+- [reqwest]( https://github.com/seanmonstar/reqwest ) 0.12.14
 
 #### License
 
@@ -6922,13 +6921,14 @@ Apache License 2.0
 - [aaprop]( https://crates.io/crates/aaprop ) 2.1.2-next.4
 - [chrono]( https://github.com/chronotope/chrono ) 0.4.39
 - [relative-path]( https://github.com/udoprog/relative-path ) 1.9.3
-- [reqwest-middleware]( https://github.com/TrueLayer/reqwest-middleware ) 0.4.0
-- [shuttle-api-client]( https://github.com/shuttle-hq/shuttle ) 0.52.0
-- [shuttle-axum]( https://github.com/shuttle-hq/shuttle ) 0.52.0
-- [shuttle-codegen]( https://github.com/shuttle-hq/shuttle ) 0.52.0
-- [shuttle-common]( https://github.com/shuttle-hq/shuttle ) 0.52.0
-- [shuttle-runtime]( https://github.com/shuttle-hq/shuttle ) 0.52.0
-- [shuttle-service]( https://github.com/shuttle-hq/shuttle ) 0.52.0
+- [serde]( https://github.com/serde-rs/serde ) 1.0.219
+- [serde_derive]( https://github.com/serde-rs/serde ) 1.0.219
+- [shuttle-api-client]( https://github.com/shuttle-hq/shuttle ) 0.53.0
+- [shuttle-axum]( https://github.com/shuttle-hq/shuttle ) 0.53.0
+- [shuttle-codegen]( https://github.com/shuttle-hq/shuttle ) 0.53.0
+- [shuttle-common]( https://github.com/shuttle-hq/shuttle ) 0.53.0
+- [shuttle-runtime]( https://github.com/shuttle-hq/shuttle ) 0.53.0
+- [shuttle-service]( https://github.com/shuttle-hq/shuttle ) 0.53.0
 - [typeshare-annotation]( https://github.com/1Password/typeshare ) 1.0.4
 - [typeshare]( https://github.com/1Password/typeshare ) 1.0.4
 
@@ -7063,6 +7063,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+```
+
+### Apache-2.0
+
+Apache License 2.0
+
+#### Used by
+
+- [typenum]( https://github.com/paholg/typenum ) 1.18.0
+
+#### License
+
+```text
+MIT OR Apache-2.0
 ```
 
 ### BSD-3-Clause
@@ -7978,8 +7992,8 @@ MIT License
 
 #### Used by
 
-- [strum]( https://github.com/Peternator7/strum ) 0.26.3
-- [strum_macros]( https://github.com/Peternator7/strum ) 0.26.4
+- [strum]( https://github.com/Peternator7/strum ) 0.27.1
+- [strum_macros]( https://github.com/Peternator7/strum ) 0.27.1
 
 #### License
 
@@ -8123,7 +8137,7 @@ MIT License
 #### Used by
 
 - [tokio-util]( https://github.com/tokio-rs/tokio ) 0.7.13
-- [tokio]( https://github.com/tokio-rs/tokio ) 1.43.0
+- [tokio]( https://github.com/tokio-rs/tokio ) 1.44.1
 
 #### License
 
