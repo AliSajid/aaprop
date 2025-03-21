@@ -5,7 +5,6 @@ SPDX-License-Identifier: Apache-2.0
 SPDX-License-Identifier: MIT
 -->
 
-<!-- vale Google.Passive = NO -->
 # **AAProp API Deployment Guide**  
 
 This document provides a comprehensive guide for deploying the **AAProp** API using different methods. The API can be deployed in the following ways:  
@@ -242,5 +241,3 @@ This guide provides three distinct deployment methods for the **AAProp** API:
 Depending on your infrastructure requirements, choose the most suitable method. If deploying in production, consider **securing your API with HTTPS** using **Let's Encrypt** with **Nginx** or **Caddy**.  
 
 For troubleshooting or further optimizations, refer to the [official repository](https://github.com/alisajid/aaprop). 🚀  
-
-<!-- vale Google.Passive = YES -->
