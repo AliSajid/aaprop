@@ -29,9 +29,7 @@
 ### Bug Fixes
 
 * **deps:** update rust crate axum-test to v15.2.0 ([d3df857](https://github.com/AliSajid/aaprop/commit/d3df8579f6af1f068231a4a8ccf88af20a68bba5))
-* **deps:** update rust crate axum-test to v15.2.0 ([3b09aa2](https://github.com/AliSajid/aaprop/commit/3b09aa2f944ed91cf54d971db03cdcb0d0a24b46))
 * **deps:** update rust crate clap to v4.5.7 ([1d299b6](https://github.com/AliSajid/aaprop/commit/1d299b63cb899f7086fe82048e6d265c0b4d6bef))
-* **deps:** update rust crate clap to v4.5.7 ([f9a7bd7](https://github.com/AliSajid/aaprop/commit/f9a7bd76ccb1cf8cb31b416a766c05922e2a6ece))
 * **deps:** update rust crate serde to v1.0.203 ([d4f41ce](https://github.com/AliSajid/aaprop/commit/d4f41ce57fbc8774c7d3d082bde7cef5992486c8))
 * **deps:** update rust crate serde_json to v1.0.118 ([b59d610](https://github.com/AliSajid/aaprop/commit/b59d610d1902c777ccac78fcb241d6d987c6936c))
 * **deps:** update rust crate tokio to v1.38.0 ([f8d7804](https://github.com/AliSajid/aaprop/commit/f8d78048bfa9485eb56a9b6f90a78dba52740ae1))
@@ -44,9 +42,7 @@
 ### Bug Fixes
 
 * **deps:** update rust crate axum-test to v15.2.0 ([d3df857](https://github.com/AliSajid/aaprop/commit/d3df8579f6af1f068231a4a8ccf88af20a68bba5))
-* **deps:** update rust crate axum-test to v15.2.0 ([3b09aa2](https://github.com/AliSajid/aaprop/commit/3b09aa2f944ed91cf54d971db03cdcb0d0a24b46))
 * **deps:** update rust crate clap to v4.5.7 ([1d299b6](https://github.com/AliSajid/aaprop/commit/1d299b63cb899f7086fe82048e6d265c0b4d6bef))
-* **deps:** update rust crate clap to v4.5.7 ([f9a7bd7](https://github.com/AliSajid/aaprop/commit/f9a7bd76ccb1cf8cb31b416a766c05922e2a6ece))
 * **deps:** update rust crate serde to v1.0.203 ([d4f41ce](https://github.com/AliSajid/aaprop/commit/d4f41ce57fbc8774c7d3d082bde7cef5992486c8))
 * **deps:** update rust crate serde_json to v1.0.118 ([b59d610](https://github.com/AliSajid/aaprop/commit/b59d610d1902c777ccac78fcb241d6d987c6936c))
 * **deps:** update rust crate tokio to v1.38.0 ([f8d7804](https://github.com/AliSajid/aaprop/commit/f8d78048bfa9485eb56a9b6f90a78dba52740ae1))
@@ -58,7 +54,7 @@
 
 ### Features
 
-* nest the main api under a version tag ([a03de84](https://github.com/AliSajid/aaprop/commit/a03de841f7562b1226c300db583609419096f8bb))
+* nest the main API under a version tag ([a03de84](https://github.com/AliSajid/aaprop/commit/a03de841f7562b1226c300db583609419096f8bb))
 
 
 ### Bug Fixes
@@ -79,7 +75,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* 
+*
 
 ### Features
 
@@ -109,7 +105,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* 
+*
 
 ### Features
 
@@ -154,7 +150,6 @@
 ### Features
 
 * add a server function ([2adbd22](https://github.com/AliSajid/aaprop/commit/2adbd221a13b8959e038906df0c430f6534572da))
-* add a server function ([c2d3f55](https://github.com/AliSajid/aaprop/commit/c2d3f5595be105ff4473086e3d82bfc827911339))
 * add an extra route ([893ceee](https://github.com/AliSajid/aaprop/commit/893ceee94986befc49e6a9e05dd69cd6d09978fa))
 * add the teapot status ([0a3ee25](https://github.com/AliSajid/aaprop/commit/0a3ee258b9b4b6f715f76a7d6171c9497bcf8d48))
 * get a healthcheck ([c02f48a](https://github.com/AliSajid/aaprop/commit/c02f48a22d54795f499e537e8b5bb375bbb5409c))
@@ -164,13 +159,9 @@
 ### Bug Fixes
 
 * **deps:** update rust crate serde to 1.0.197 ([847359f](https://github.com/AliSajid/aaprop/commit/847359f24174bbc2ce782262c0d696ddc83aaa8b))
-* **deps:** update rust crate serde to 1.0.197 ([e975c80](https://github.com/AliSajid/aaprop/commit/e975c80a07d036deaf3a05ee7c07827e27a322c8))
 * **deps:** update rust crate serde_json to 1.0.114 ([0307dc9](https://github.com/AliSajid/aaprop/commit/0307dc91147f41848a6bd0db80475f3a36c42934))
-* **deps:** update rust crate serde_json to 1.0.114 ([3942bc4](https://github.com/AliSajid/aaprop/commit/3942bc4162e400c7d041c2d469cf9e75d8acb52a))
 * **deps:** update rust crate tokio to 1.36.0 ([1017d3e](https://github.com/AliSajid/aaprop/commit/1017d3ea31bc14f42e884428e9372a1e2b253cb2))
-* **deps:** update rust crate tokio to 1.36.0 ([16f96c9](https://github.com/AliSajid/aaprop/commit/16f96c9a2c6a8234ab7f62cf88b1fb98adaa6b5f))
 * **deps:** update rust crate tracing to v0.1.40 [security] ([d3ab639](https://github.com/AliSajid/aaprop/commit/d3ab6391bb65938b96f967bc8a4fae2825723384))
-* **deps:** update rust crate tracing to v0.1.40 [security] ([8e83799](https://github.com/AliSajid/aaprop/commit/8e83799d5a982d51f451b169e7ab103a72aa013c))
 * move to build-push-action ([9a42db2](https://github.com/AliSajid/aaprop/commit/9a42db2c0151d076e8fd238633e35f85c767d5b4))
 * only build docker container for arm64 and aarch64 ([814c36e](https://github.com/AliSajid/aaprop/commit/814c36ed471acaf30717ca8287cd0a56b9545340))
 
@@ -184,10 +175,10 @@
 * add the abbreviation route ([323cc97](https://github.com/AliSajid/aaprop/commit/323cc976429871f44a75712aee5961b832d25652))
 * add the side_chain function ([3c358d3](https://github.com/AliSajid/aaprop/commit/3c358d3caa5157ee4a92e9c37535b7de97aacbc8))
 * add tracing ([710c0cc](https://github.com/AliSajid/aaprop/commit/710c0ccf2c6cd859e9a0759fe109b2c8780f8f09))
-* **AminoAcid:** create the amino acid struc ([f85dc92](https://github.com/AliSajid/aaprop/commit/f85dc92f23a346c68de4d60f9000f938a2fc8403))
-* cleared unnecessary code and fixed codon plurlaization ([962ea07](https://github.com/AliSajid/aaprop/commit/962ea077f57b5cbb530ddd050a28a07bf5fc27be))
+* **AminoAcid:** create the amino acid struct ([f85dc92](https://github.com/AliSajid/aaprop/commit/f85dc92f23a346c68de4d60f9000f938a2fc8403))
+* cleared unnecessary code and fixed codon pluralization ([962ea07](https://github.com/AliSajid/aaprop/commit/962ea077f57b5cbb530ddd050a28a07bf5fc27be))
 * create the project ([62d1c90](https://github.com/AliSajid/aaprop/commit/62d1c9098ca1a8c05ae38950ca62ab249f9fa04a))
-* functional api with root and amino acid resources ([7e7d7a8](https://github.com/AliSajid/aaprop/commit/7e7d7a8b58eb855aac2251c8498b4d187a60a823))
+* functional API with root and amino acid resources ([7e7d7a8](https://github.com/AliSajid/aaprop/commit/7e7d7a8b58eb855aac2251c8498b4d187a60a823))
 
 
 ### Bug Fixes
@@ -284,10 +275,10 @@
 * add the abbreviation route ([323cc97](https://github.com/AliSajid/aaprop/commit/323cc976429871f44a75712aee5961b832d25652))
 * add the side_chain function ([3c358d3](https://github.com/AliSajid/aaprop/commit/3c358d3caa5157ee4a92e9c37535b7de97aacbc8))
 * add tracing ([710c0cc](https://github.com/AliSajid/aaprop/commit/710c0ccf2c6cd859e9a0759fe109b2c8780f8f09))
-* **AminoAcid:** create the amino acid struc ([f85dc92](https://github.com/AliSajid/aaprop/commit/f85dc92f23a346c68de4d60f9000f938a2fc8403))
-* cleared unnecessary code and fixed codon plurlaization ([962ea07](https://github.com/AliSajid/aaprop/commit/962ea077f57b5cbb530ddd050a28a07bf5fc27be))
+* **AminoAcid:** create the amino acid struct ([f85dc92](https://github.com/AliSajid/aaprop/commit/f85dc92f23a346c68de4d60f9000f938a2fc8403))
+* cleared unnecessary code and fixed codon pluralization ([962ea07](https://github.com/AliSajid/aaprop/commit/962ea077f57b5cbb530ddd050a28a07bf5fc27be))
 * create the project ([62d1c90](https://github.com/AliSajid/aaprop/commit/62d1c9098ca1a8c05ae38950ca62ab249f9fa04a))
-* functional api with root and amino acid resources ([7e7d7a8](https://github.com/AliSajid/aaprop/commit/7e7d7a8b58eb855aac2251c8498b4d187a60a823))
+* functional API with root and amino acid resources ([7e7d7a8](https://github.com/AliSajid/aaprop/commit/7e7d7a8b58eb855aac2251c8498b4d187a60a823))
 
 
 ### Bug Fixes
