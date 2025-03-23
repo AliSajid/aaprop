@@ -28,3 +28,16 @@ Daltons
 Da
 (?i)bioinformatics
 API
+deps
+tokio
+serde
+serde_json
+get_amino_acid_short_name
+(?i)api
+clippy
+(?i)json
+Dockerfile
+amino_acid
+side_chain
+axum
+healthcheck
