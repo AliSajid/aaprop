@@ -1,211 +1,226 @@
 <!--
-SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
 
 SPDX-License-Identifier: Apache-2.0
 SPDX-License-Identifier: MIT
 -->
+# **API Routes**  
 
-# API Routes
+The **AAProp API** provides a structured interface for retrieving amino acid properties. Below is a comprehensive reference for available routes, their usage, and expected responses.  
 
-This section provides a reference for the API routes of the `AAProp` API.
+## **1. Base URL**  
 
-## Routes
+All API requests should be directed to:  
+[https://aaprop-c1io.shuttle.app/v1](https://aaprop.shuttleapp.rs/v1)  
 
-### Get Amino Acid Information
+## **2. Available Routes**  
 
-This route returns information about an amino acid.
+### **2.1 Retrieve Amino Acid Information**  
 
-- **URL**: `/amino_acid/{amino_acid}`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+Fetches all available information about a specific amino acid.  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine
-```
+- **Endpoint**: `/amino_acid/{amino_acid}`  
+- **Method**: `GET`  
+- **URL Parameters**:  
+  - `{amino_acid}`–Name, three-letter code, or one-letter code of the amino acid.  
+- **Example Request**:  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "short_name": "Ala",
-    "abbreviation": "A",
-    "side_chain": "Nonpolar",
-    "molecular_weight": 89.09,
-    "codons": [
-      "GCT",
-      "GCC",
-      "GCA",
-      "GCG"
-    ]
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine
+  ```  
+
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "short_name": "Ala",
+      "abbreviation": "A",
+      "side_chain": "Nonpolar",
+      "molecular_weight": 89.09,
+      "codons": [
+        "GCT",
+        "GCC",
+        "GCA",
+        "GCG"
+      ]
+    }
   }
-}
-```
+  ```  
 
-### Get Amino Acid Side Chain Information
+### **2.2 Retrieve Side Chain Classification**  
 
-This route returns information about the side chain of an amino acid.
+Fetches the side chain property (for example, polar, non-polar, acidic, or basic) of a given amino acid.  
 
-- **URL**: `/amino_acid/{amino_acid}/side_chain`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+- **Endpoint**: `/amino_acid/{amino_acid}/side_chain`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine/side_chain
-```
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine/side_chain
+  ```  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "side_chain": "Nonpolar",
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "side_chain": "Nonpolar"
+    }
   }
-}
-```
+  ```  
 
-### Get Amino Acid Molecular Weight
+### **2.3 Retrieve Molecular Weight**  
 
-This route returns the molecular weight of an amino acid.
+Fetches the molecular weight of a given amino acid.  
 
-- **URL**: `/amino_acid/{amino_acid}/molecular_weight`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+- **Endpoint**: `/amino_acid/{amino_acid}/molecular_weight`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine/molecular_weight
-```
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine/molecular_weight
+  ```  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "short_name": "Ala",
-    "abbreviation": "A",
-    "molecular_weight": 89.09,
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "molecular_weight": 89.09
+    }
   }
-}
-```
+  ```  
 
-### Get Amino Acid Codons
+### **2.4 Retrieve DNA Codons**  
 
-This route returns the codons that code for an amino acid.
+Fetches the codons that encode a given amino acid.  
 
-- **URL**: `/amino_acid/{amino_acid}/codon`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+- **Endpoint**: `/amino_acid/{amino_acid}/codon`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine/codon
-```
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine/codon
+  ```  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "short_name": "Ala",
-    "abbreviation": "A",
-    "codons": [
-      "GCT",
-      "GCC",
-      "GCA",
-      "GCG"
-    ]
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "codons": [
+        "GCT",
+        "GCC",
+        "GCA",
+        "GCG"
+      ]
+    }
   }
-}
-```
+  ```  
 
-### Get Amino Acid Abbreviation
+### **2.5 Retrieve Abbreviations**  
 
-This route returns the abbreviation of an amino acid.
+#### **2.5.1 Retrieve One-Letter Abbreviation**  
 
-- **URL**: `/amino_acid/{amino_acid}/abbreviation`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+Fetches the single-letter abbreviation of a given amino acid.  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine/abbreviation
-```
+- **Endpoint**: `/amino_acid/{amino_acid}/abbreviation`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "short_name": "Ala",
-    "abbreviation": "A",
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine/abbreviation
+  ```  
+
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "abbreviation": "A"
+    }
   }
-}
-```
+  ```  
 
-### Get Amino Acid Short Name
+#### **2.5.2 Retrieve Three-Letter Code**  
 
-This route returns the short name of an amino acid.
+Fetches the standard three-letter abbreviation for a given amino acid.  
 
-- **URL**: `/amino_acid/{amino_acid}/short_name`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+- **Endpoint**: `/amino_acid/{amino_acid}/short_name`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine/short_name
-```
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine/short_name
+  ```  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "short_name": "Ala",
-    "abbreviation": "A",
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "short_name": "Ala"
+    }
   }
-}
-```
+  ```  
 
-### Get Amino Acid Codons Count
+### **2.6 Retrieve Codon Count**  
 
-This route returns the number of codons that code for an amino acid.
+Fetches the number of codons that encode a given amino acid.  
 
-- **URL**: `/amino_acid/{amino_acid}/codon_count`
-- **Method**: `GET`
-- **URL Parameters**:
-  - `amino_acid`: The name, three-letter code, or one-letter code of the amino acid.
-- **Example**:
+- **Endpoint**: `/amino_acid/{amino_acid}/codon_count`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```bash
-curl https://aaprop.shuttleapp.rs/amino_acid/Alanine/codon_count
-```
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/amino_acid/Alanine/codon_count
+  ```  
 
-```json
-{
-  "amino_acid": {
-    "name": "Alanine",
-    "short_name": "Ala",
-    "abbreviation": "A",
-    "codon_count": 4,
+- **Example Response**:  
+
+  ```json
+  {
+    "amino_acid": {
+      "name": "Alanine",
+      "codon_count": 4
+    }
   }
-}
-```
+  ```  
 
-### Check for the health of the API
+### **2.7 API Health Check**  
 
-This route returns the health status of the API.
+Checks the availability and operational status of the API.  
 
-- **URL**: `/health`
-- **Method**: `GET`
-- **Example**:
+- **Endpoint**: `/health`  
+- **Method**: `GET`  
+- **Example Request**:  
 
-```bash
-curl https://aaprop.shuttleapp.rs/health
-```
+  ```bash
+  curl https://aaprop-c1io.shuttle.app/v1/health
+  ```  
 
-```json
-{}
-```
+- **Example Response**:  
+
+  ```json
+  {}
+  ```  
+
+## **3. Summary of Routes**  
+
+| **Route**                            | **Method** | **Description** |
+|--------------------------------------|-----------|----------------|
+| `/amino_acid/{amino_acid}`           | `GET`     | Retrieve full amino acid details |
+| `/amino_acid/{amino_acid}/side_chain` | `GET`     | Retrieve the side chain type |
+| `/amino_acid/{amino_acid}/molecular_weight` | `GET` | Retrieve the molecular weight |
+| `/amino_acid/{amino_acid}/codon`      | `GET`     | Retrieve the codons for the amino acid |
+| `/amino_acid/{amino_acid}/abbreviation` | `GET`    | Retrieve the one-letter abbreviation |
+| `/amino_acid/{amino_acid}/short_name`  | `GET`    | Retrieve the three-letter abbreviation |
+| `/amino_acid/{amino_acid}/codon_count` | `GET`    | Retrieve the number of codons for the amino acid |
+| `/health`                             | `GET`     | Check the API's operational status |

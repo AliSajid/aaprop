@@ -1,12 +1,9 @@
-// SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+// SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
 //
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
-use clap::{
-    Parser,
-    ValueEnum,
-};
+use clap::{Parser, ValueEnum};
 
 #[derive(Parser, Debug)]
 #[command(name = "aaprop-server", version, about)]
@@ -36,7 +33,7 @@ pub struct Cli {
         env = "LOG_LEVEL",
         value_name = "LOG_LEVEL"
     )]
-    pub log:  LogLevel,
+    pub log: LogLevel,
 }
 
 #[derive(ValueEnum, Debug, Clone, Copy, PartialEq, Eq)]

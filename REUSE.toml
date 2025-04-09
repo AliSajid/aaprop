@@ -6,89 +6,89 @@ SPDX-PackageDownloadLocation = "https://github.com/AliSajid/aaprop"
 [[annotations]]
 path = ".gitignore"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "guide/.gitignore"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = ".gitleaksignore"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = ".markdownlintignore"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = ".markdownlint.json"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "Cargo.lock"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "MIT AND Apache-2.0"
 
 [[annotations]]
 path = ".secrets.baseline"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = ".vscode/**.json"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "licenses_report.json"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "Apache-2.0 AND MIT"
 
 [[annotations]]
 path = ".gitpod.Dockerfile"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "meta/vale-styles/config/**/**.txt"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "CHANGELOG.md"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "src/aaprop_lib/amino_acid_data.json"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = "renovate.json"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "MIT AND Apache-2.0"
 
 [[annotations]]
 path = "REUSE.toml"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2023 - 2024 Ali Sajid Imami"
+SPDX-FileCopyrightText = "2023 - 2025 Ali Sajid Imami"
 SPDX-License-Identifier = "CC0-1.0"

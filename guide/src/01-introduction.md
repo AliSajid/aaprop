@@ -1,23 +1,23 @@
 <!--
-SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
 
 SPDX-License-Identifier: Apache-2.0
 SPDX-License-Identifier: MIT
 -->
 
-# AAProp Project
+# **Amino Acid Properties API (`aaprop`)**  
 
-## Introduction
+Amino acids are fundamental building blocks of life, serving as the essential components of proteins and playing critical roles in various biochemical processes. Each of the twenty standard amino acids possesses distinct physicochemical properties, structural features, and codons, all of which are crucial for understanding protein function, enzyme activity, and molecular biology at large.  
 
-Amino Acids. They are very important things, evidently. However, they tend to have
-a lot of information associated with them. This project, `aaprop`, is designed to
-provide a RESTful API for accessing information about amino acids. All 20 of them.
+To facilitate easy access to standardized amino acid information, this project, **`aaprop`**, provides a **RESTful API** designed to serve as a structured repository of key amino acid properties. The API offers an intuitive and programmatically accessible interface for retrieving essential data on all twenty standard amino acids.  
 
-Using this, one can have a easy-to-use interface that can provide the following information:
+Through this API, users can obtain the following fundamental details about any amino acid:  
 
-- The name of the amino acid
-- The three-letter code of the amino acid
-- The one-letter code of the amino acid
-- The molecular weight of the amino acid
-- The side chain type of the amino acid (polar, non-polar, acidic, basic)
-- The DNA codons that code for that amino acid.
+- **Full Name**–The complete scientific name of the amino acid.  
+- **Three-Letter Code**–conventional three-letter abbreviation used in biochemistry (for example, Ala for Alanine).  
+- **One-Letter Code**–e single-character representation commonly used in protein sequences (for example, A for Alanine).  
+- **Molecular Weight**–The precise molecular mass of the amino acid, expressed in Daltons (Da).  
+- **Side Chain Classification**–The categorization of the amino acid's side chain based on its chemical properties, distinguishing between **polar, non-polar, acidic, and basic** residues.  
+- **DNA Codons**–The set of nucleotide triplets that encode the amino acid according to the standard genetic code.  
+
+By utilizing `aaprop`, researchers, developers, and bioinformatics professionals can integrate amino acid data into computational models, biochemical studies, and educational tools with ease and efficiency.

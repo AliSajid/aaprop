@@ -1,18 +1,20 @@
-# SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+# SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
 #
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-License-Identifier: MIT
 
 # Accepted licesnes by default
-accepted = ["Apache-2.0", "MIT"]
+accepted = ["Apache-2.0", "MIT", "Unicode-3.0", "ISC", "MPL-2.0"]
 targets = [
     "aarch64-unknown-linux-gnu",
     "aarch64-unknown-linux-musl",
     "i686-unknown-linux-gnu",
     "i686-unknown-linux-musl",
     "x86_64-unknown-linux-gnu",
-    "x86_64-unknown-linux-musl"
+    "x86_64-unknown-linux-musl",
 ]
+
+workarounds = ["ring", "rustls"]
 
 # Do not ignore any dependencies
 ignore-build-dependencies = false
@@ -38,6 +40,16 @@ accepted = ["Unicode-DFS-2016"]
 # MPL-2.0: https://github.com/colored-rs/colored/blob/master/LICENSE
 [colored]
 accepted = ["MPL-2.0"]
+
+# Specify the license for `ring`
+# ISC: https://github.com/briansmith/ring/blob/main/LICENSE
+[ring]
+accepted = ["MIT", "ISC", "OpenSSL"]
+
+# Specify the license for `subtle`
+# BSD-3-Clause: https://github.com/dalek-cryptography/subtle/blob/main/LICENSE
+[subtle]
+accepted = ["BSD-3-Clause"]
 
 # Specify the license for `matchit`
 # MIT: https://github.com/ibraheemdev/matchit/blob/master/LICENSE

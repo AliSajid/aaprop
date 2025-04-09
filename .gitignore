@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 - 2024 Ali Sajid Imami
+# SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
 #
 # SPDX-License-Identifier: CC0-1.0
 
@@ -28,7 +28,8 @@ Cargo.lock
 guide/book
 
 meta/vale-styles/**/*
-!meta/vale-styles/config
+!meta/vale-styles/config/
+!meta/vale-styles/config/**/*
 
 
 # Special Ignore File
@@ -37,3 +38,6 @@ cobertura_sonar.py
 sonar-generic-coverage.xsd
 sonar-report.xml
 sonar-validation.xml
+/target
+.shuttle*
+Secrets*.toml
