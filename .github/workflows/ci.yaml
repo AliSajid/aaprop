@@ -172,5 +172,6 @@ jobs:
         id-token: write
         packages: write
       needs: [ci]
+      if: ${{! startsWith(github.ref, 'refs/heads/renovate/')}}
       uses: ./.github/workflows/build_container.yaml
       secrets: inherit # pragma: allowlist secret

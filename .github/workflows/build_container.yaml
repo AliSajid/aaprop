@@ -72,12 +72,13 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GHCR_TOKEN }}
 
+            - name: Setup QEMU
+              uses: docker/setup-qemu-action@v3
+
             - name: Setup Buildx
               uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
               with:
                 version: "lab:latest"
-                driver: cloud
-                endpoint: "imamiland/cloud-builder"
 
             - name: Build and Push Docker Images
               id: build
@@ -93,8 +94,8 @@ jobs:
                   labels: ${{ steps.meta.outputs.labels }}
                   platforms: linux/amd64,linux/arm64
                   outputs: ${{ github.event_name == 'pull_request' && 'type=cacheonly' || 'type=registry,push=true' }}
-                  # cache-from: type=gha
-                  # cache-to: type=gha,mode=max
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
 
             - name: Debug Build
               run: echo "${{join(steps.build.outputs.*, '\n')}}"
@@ -102,8 +103,8 @@ jobs:
             - name: Install cosign
               uses: sigstore/cosign-installer@d7d6bc7722e3daa8354c50bcb52f4837da5e9b6a # v3.8.1
               with:
-
                 cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
+
             - name: Install Syft
               uses: anchore/sbom-action/download-syft@f325610c9f50a54015d37c8d16cb3b0e2c8f4de0 # v0.18.0
               with:
