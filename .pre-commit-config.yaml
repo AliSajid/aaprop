@@ -89,7 +89,7 @@ repos:
           args:
             - --markdown-linebreak-ext=md
     - repo: https://github.com/compilerla/conventional-pre-commit
-      rev: v4.0.0
+      rev: v4.1.0
       hooks:
         - args:
             - build
@@ -142,7 +142,7 @@ repos:
         - id: fix-ligatures
         - id: forbid-bidi-controls
     - repo: https://github.com/zricethezav/gitleaks
-      rev: v8.24.3
+      rev: v8.25.0
       hooks:
         - id: gitleaks
     - repo: https://github.com/fsfe/reuse-tool
