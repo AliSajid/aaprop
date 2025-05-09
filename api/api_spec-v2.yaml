@@ -1,0 +1,723 @@
+# SPDX-FileCopyrightText: 2023 - 2025 Ali Sajid Imami
+#
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+---
+openapi: 3.0.0
+info:
+    title: AAProp API
+    description: |
+        API reference for the AAProp (Amino Acid Properties) API.
+
+        This API allows:
+          - Access to standard and ambiguous amino acid information
+          - Querying amino acids based on biochemical properties
+          - Codon → Amino Acid reverse lookups
+    version: 2.0.0
+servers:
+    - url: https://aaprop.shuttleapp.rs/v2
+paths:
+    /query:
+        get:
+            summary: Query amino acids by property
+            tags:
+                - Query
+            description: >
+                This endpoint allows you to filter the list of amnino acids for specific properties. Returns all amino acids matching a specific property.
+                Supports filters such as molecular weight, side chain type, polarity, etc.
+
+            parameters:
+                - name: molecular_weight_lt
+                  in: query
+                  description: Molecular weight less than
+                  schema:
+                    type: number
+                - name: molecular_weight_gt
+                  in: query
+                  description: Molecular weight greater than
+                  schema:
+                    type: number
+                - name: polarity
+                  in: query
+                  description: Polarity (nonpolar, polar, acidic, basic)
+                  schema:
+                    type: string
+                    enum:
+                        - nonpolar
+                        - polar
+                        - acidic
+                        - basic
+                - name: side_chain
+                  in: query
+                  description: Substring match on side chain description
+                  schema:
+                    type: string
+                - name: includes_ambiguous
+                  in: query
+                  description: Whether to include ambiguous amino acids
+                  schema:
+                    type: boolean
+                    default: false
+            responses:
+                '200':
+                    description: List of matching amino acids
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AminoAcidResponse'
+    /amino_acid/{query}:
+        get:
+            summary: Get amino acid information (standard or ambiguous)
+            tags:
+                - Query
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name, 1-letter, or 3-letter code of the amino acid.
+                    For ambiguous amino acids (e.g., B, Z, X), use their standard codes.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AminoAcidResponse'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /amino_acid/{query}/name:
+        get:
+            summary: >-
+                Get the full name for a given amino acid short name or single-digit code (or ambiguous set)
+            tags:
+                - Amino Acid Properties
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name or code of the amino acid (1-letter or 3-letter).
+                    Supports ambiguous amino acids like B or Z.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - $ref: '#/components/schemas/NameByShortName'
+                                    - $ref: '#/components/schemas/NameByAbbreviation'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /amino_acid/{query}/short_name:
+        get:
+            summary: >-
+                Get the short (three letter) name(s) for a given amino acid (or ambiguous set)
+            tags:
+                - Amino Acid Properties
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name or code of the amino acid (1-letter or 3-letter).
+                    Supports ambiguous amino acids like B or Z.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - $ref: '#/components/schemas/ShortNameByName'
+                                    - $ref: '#/components/schemas/ShortNameByAbbreviation'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /amino_acid/{query}/abbreviation:
+        get:
+            summary: >-
+                Get the abbreviated (one letter) code(s) for a given amino acid (or ambiguous set)
+            tags:
+                - Amino Acid Properties
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name or code of the amino acid (1-letter or 3-letter).
+                    Supports ambiguous amino acids like B or Z.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - $ref: '#/components/schemas/AbbreviationByName'
+                                    - $ref: '#/components/schemas/AbbreviationByShortName'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /amino_acid/{query}/molecular_weight:
+        get:
+            summary: Get molecular weight(s) for a given amino acid (or ambiguous set)
+            tags:
+                - Amino Acid Properties
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name or code of the amino acid (1-letter or 3-letter).
+                    Supports ambiguous amino acids like B or Z.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - $ref: '#/components/schemas/MolecularWeightByName'
+                                    - $ref: '#/components/schemas/MolecularWeightByShortName'
+                                    - $ref: '#/components/schemas/MolecularWeightByAbbreviation'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /amino_acid/{query}/codons:
+        get:
+            summary: Get codons for a given amino acid (or ambiguous set)
+            tags:
+                - Amino Acid Properties
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name or code of the amino acid (1-letter or 3-letter).
+                    Supports ambiguous amino acids like B or Z.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - $ref: '#/components/schemas/CodonsByName'
+                                    - $ref: '#/components/schemas/CodonsByShortName'
+                                    - $ref: '#/components/schemas/CodonsByAbbreviation'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /amino_acid/{query}/codon_count:
+        get:
+            summary: >-
+                Get the number of codons coding for a given amino acid (or ambiguous set)
+            tags:
+                - Amino Acid Properties
+            parameters:
+                - name: query
+                  in: path
+                  required: true
+                  description: |
+                    Name or code of the amino acid (1-letter or 3-letter).
+                    Supports ambiguous amino acids like B or Z.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - $ref: '#/components/schemas/CodonCountByName'
+                                    - $ref: '#/components/schemas/CodonCountByShortName'
+                                    - $ref: '#/components/schemas/CodonCountByAbbreviation'
+                '400':
+                    description: Invalid query format
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Amino acid not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /codon/{codon}:
+        get:
+            summary: Get amino acid(s) for a given codon
+            tags:
+                - Translation
+            parameters:
+                - name: codon
+                  in: path
+                  required: true
+                  description: DNA codon (e.g., ATG). Case-insensitive.
+                  schema:
+                    type: string
+                    pattern: ^[AaTtGgCc]{3}$
+            responses:
+                '200':
+                    description: Matching amino acid(s)
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AminoAcidResponse'
+                '400':
+                    description: Codon is not 3 base pairs
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: No matching amino acid for the given codon
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /health:
+        get:
+            summary: Check API health
+            tags:
+                - Health Check
+            responses:
+                '200':
+                    description: API is healthy
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: healthy
+components:
+    schemas:
+        AminoAcid:
+            type: object
+            properties:
+                name:
+                    type: string
+                short_name:
+                    type: string
+                abbreviation:
+                    type: string
+                side_chain:
+                    type: string
+                molecular_weight:
+                    type: number
+                polarity:
+                    type: string
+                    enum:
+                        - nonpolar
+                        - polar
+                        - acidic
+                        - basic
+                        - unknown
+                codons:
+                    type: array
+                    items:
+                        type: string
+                is_ambiguous:
+                    type: boolean
+                    description: True if the code represents an ambiguous amino acid
+                resolves_to:
+                    type: array
+                    description: |
+                        If ambiguous, this field lists the amino acids it may refer to.
+                    items:
+                        type: string
+        AminoAcidResponse:
+            type: object
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AminoAcid'
+        CodonsByName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                example: Glycine
+                            codons:
+                                type: array
+                                items:
+                                    type: string
+        CodonsByShortName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            short_name:
+                                type: string
+                                example: Glycine
+                            codons:
+                                type: array
+                                items:
+                                    type: string
+        CodonsByAbbreviation:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            abbreviation:
+                                type: string
+                                example: Glycine
+                            codons:
+                                type: array
+                                items:
+                                    type: string
+        MolecularWeightByName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                example: Glycine
+                            molecular_weight:
+                                type: array
+                                items:
+                                    type: string
+        MolecularWeightByShortName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            short_name:
+                                type: string
+                                example: Glycine
+                            molecular_weight:
+                                type: array
+                                items:
+                                    type: string
+        MolecularWeightByAbbreviation:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            abbreviation:
+                                type: string
+                                example: Glycine
+                            molecular_weight:
+                                type: array
+                                items:
+                                    type: string
+        CodonCountByName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                example: Glycine
+                            codon_count:
+                                type: array
+                                items:
+                                    type: string
+        CodonCountByShortName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            short_name:
+                                type: string
+                                example: Glycine
+                            codon_count:
+                                type: array
+                                items:
+                                    type: string
+        CodonCountByAbbreviation:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            abbreviation:
+                                type: string
+                                example: Glycine
+                            codon_count:
+                                type: array
+                                items:
+                                    type: string
+        ShortNameByName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                example: Glycine
+                            short_name:
+                                type: array
+                                items:
+                                    type: string
+        AbbreviationByName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                example: Glycine
+                            abbreviation:
+                                type: array
+                                items:
+                                    type: string
+        NameByShortName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            short_name:
+                                type: string
+                                example: Glycine
+                            name:
+                                type: array
+                                items:
+                                    type: string
+        AbbreviationByShortName:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            short_name:
+                                type: string
+                                example: Glycine
+                            abbreviation:
+                                type: array
+                                items:
+                                    type: string
+        NameByAbbreviation:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            abbreviation:
+                                type: string
+                                example: Glycine
+                            name:
+                                type: array
+                                items:
+                                    type: string
+        ShortNameByAbbreviation:
+            type: object
+            required:
+                - amino_acids
+            properties:
+                amino_acids:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            abbreviation:
+                                type: string
+                                example: Glycine
+                            short_name:
+                                type: array
+                                items:
+                                    type: string
+        ErrorResponse:
+            type: object
+            required:
+                - error
+                - message
+            properties:
+                error:
+                    type: string
+                    example: Bad Request
+                message:
+                    type: string
+                    example: The codon 'XYZ' is not a valid triplet.
