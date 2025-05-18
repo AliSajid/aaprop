@@ -54,7 +54,7 @@ repos:
           types: [markdown]
           files: "^(README.md|CONTRIBUTING.md|CODE_OF_CONDUCT.md|guide/src/.*.md)$"
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v4.7.1
+      rev: v4.7.2
       hooks:
         - id: commitizen
     - repo: https://github.com/pre-commit/pre-commit-hooks
