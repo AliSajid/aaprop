@@ -20,7 +20,7 @@ jobs:
             new-release-published: ${{ steps.get-next-version.outputs.new-release-published }}
         steps:
             - name: Harden Runner
-              uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+              uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
               with:
                 egress-policy: audit
 
@@ -31,7 +31,7 @@ jobs:
                 persist-credentials: false
 
             - name: Install mise-en-place
-              uses: jdx/mise-action@5cb1df66ed5e1fb3c670ea0b62fd17a76979826a # v2
+              uses: jdx/mise-action@bfb9fa0b029db830a8c570757cee683df207a6c5 # v2
               with:
                 node-version: lts/*
 

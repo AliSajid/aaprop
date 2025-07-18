@@ -13,11 +13,11 @@ jobs:
         name: Generate Coverage
         runs-on: ubuntu-latest
         container:
-            image: xd009642/tarpaulin:develop-nightly@sha256:90e49e5335a8f02a37d8f9edd8c0ecb182ee1cdc24ab0526b0897881f95fb912
+            image: xd009642/tarpaulin:develop-nightly@sha256:b47ab6c0de99f4cb6a74b22c65c638818aaf067506550d2f842d746e14e9f366
             options: --security-opt seccomp=unconfined
         steps:
             - name: Harden Runner
-              uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+              uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
               with:
                 egress-policy: audit
 
@@ -29,7 +29,7 @@ jobs:
                 toolchain: nightly
                 components: llvm-tools-preview
 
-            - uses: taiki-e/install-action@2cab843126c0d8cf950bf55f4e9b8413f70f553f # v2.54.1
+            - uses: taiki-e/install-action@4fd6bded9bf87df7896958594ca6d67b38b5350e # v2.56.15
               with:
                 tool: cargo-llvm-cov,nextest
 
