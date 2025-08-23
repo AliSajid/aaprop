@@ -24,12 +24,12 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-            - uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # nightly
+            - uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # nightly
               with:
                 toolchain: nightly
                 components: llvm-tools-preview
 
-            - uses: taiki-e/install-action@2daacd119c20c45d121b50506ad5e53f14587a5f # v2.58.19
+            - uses: taiki-e/install-action@f63c33fd96cc1e69a29bafd06541cf28588b43a4 # v2.58.21
               with:
                 tool: cargo-llvm-cov,nextest
 
