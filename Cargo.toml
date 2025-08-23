@@ -36,7 +36,7 @@ default = ["shuttle"]
 
 [dependencies]
 axum = "0.8.1"
-axum-test = "17.2.0"
+axum-test = "18.0.0"
 cfg_block = "0.2.0"
 clap = { version = "4.5.29", features = ["derive", "env"], optional = true }
 serde = { version = "1.0.217", features = ["derive"] }
