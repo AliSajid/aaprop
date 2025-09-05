@@ -29,7 +29,7 @@ jobs:
                 toolchain: nightly
                 components: llvm-tools-preview
 
-            - uses: taiki-e/install-action@6e092deb71cc9ba464addeccefe34c0d06921585 # v2.58.31
+            - uses: taiki-e/install-action@133a13585eb96b576726757d256e9531cd6dddf2 # v2.58.32
               with:
                 tool: cargo-llvm-cov,nextest
 
@@ -40,7 +40,7 @@ jobs:
                 cargo llvm-cov report --doctests --lcov --output-path lcov.info
 
             - name: Upload to codecov.io
-              uses: codecov/codecov-action@fdcc8476540edceab3de004e990f80d881c6cc00 # v5.5.0
+              uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
               with:
                 file: lcov.info
                 token: ${{ secrets.CODECOV_TOKEN }}
