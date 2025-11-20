@@ -13,7 +13,7 @@ jobs:
         name: Generate Coverage
         runs-on: ubuntu-latest
         container:
-            image: xd009642/tarpaulin:develop-nightly@sha256:174bd52ecd6b691ad3f3c8f60386e332e7c880a4331ad120bba37df90f6e24cc
+            image: xd009642/tarpaulin:develop-nightly@sha256:5fde618f0db30c8b7be18238362f83821ba62f285984db8ad639a7f5c08f4837
             options: --security-opt seccomp=unconfined
         steps:
             - name: Harden Runner
