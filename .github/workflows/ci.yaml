@@ -29,11 +29,11 @@ jobs:
         book_changed: ${{steps.changed_dirs.outputs.book}}
       steps:
         - name: Harden Runner
-          uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+          uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
           with:
             egress-policy: audit
 
-        - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         - name: Check changed directories
           id: changed_dirs
           uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
@@ -78,11 +78,11 @@ jobs:
                       label: nightly
         steps:
             - name: Harden Runner
-              uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+              uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
               with:
                 egress-policy: audit
 
-            - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+            - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
             - name: Install Rust
               if: ${{ needs.check_changed_dirs.outputs.source_changed == 'true' }}
               uses: dtolnay/rust-toolchain@0b1efabc08b657293548b77fb76cc02d26091c7e # master
