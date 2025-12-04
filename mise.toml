@@ -4,4 +4,4 @@
 # SPDX-License-Identifier: MIT
 
 [tools]
-"cargo:mdbook" = "0.4.43"
+"cargo:mdbook" = "0.5.0"
