@@ -13,11 +13,11 @@ jobs:
         name: Generate Coverage
         runs-on: ubuntu-latest
         container:
-            image: xd009642/tarpaulin:develop-nightly@sha256:aae42a20755dd80b716362724e7e7464d67ca6b98bc4430f0ec8a93ea90bad7e
+            image: xd009642/tarpaulin:develop-nightly@sha256:8bf6bd3e239f3eb5114391e80c4ada495d241b4cafe94f220e7c2641c967aeaf
             options: --security-opt seccomp=unconfined
         steps:
             - name: Harden Runner
-              uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
               with:
                 egress-policy: audit
 
@@ -29,7 +29,7 @@ jobs:
                 toolchain: nightly
                 components: llvm-tools-preview
 
-            - uses: taiki-e/install-action@493d7f216ecab2af0602481ce809ab2c72836fa1 # v2.62.62
+            - uses: taiki-e/install-action@5818d9684d2a52207bb7475983a18ba56127e337 # v2.63.2
               with:
                 tool: cargo-llvm-cov,nextest
 
@@ -40,7 +40,7 @@ jobs:
                 cargo llvm-cov report --doctests --lcov --output-path lcov.info
 
             - name: Upload to codecov.io
-              uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+              uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
               with:
                 file: lcov.info
                 token: ${{ secrets.CODECOV_TOKEN }}
