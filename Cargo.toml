@@ -20,6 +20,7 @@ homepage = "https://aliimami.com/aaprop"
 keywords = ["bioinformatics", "amino-acids", "chemistry"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
+rust-version = "1.86.0"
 
 [lib]
 crate-type = ["dylib", "lib", "staticlib"]
