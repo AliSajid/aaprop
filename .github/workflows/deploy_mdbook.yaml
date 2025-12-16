@@ -35,10 +35,6 @@ jobs:
         uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
         with:
           experimental: true
-          mise_toml: |
-            [tools]
-            "cargo:mdbook" = "0.4.45"
-            "cargo:mdbook-inline-highlighting" = "0.1.0"
 
       - name: Build the Book
         run: mdbook build guide
@@ -55,8 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_book]
     env:
-      PROJECT_ENVIRONMENT: ''
-      STORE_PATH: ''
+      PROJECT_ENVIRONMENT: ""
+      STORE_PATH: ""
     outputs:
       deployment_url: ${{ steps.output_deployment_url.outputs.deployment_url }}
 
@@ -85,10 +81,6 @@ jobs:
         uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
         with:
           experimental: true
-          mise_toml: |
-            [tools]
-            node = "22"
-            "npm:vercel" = "latest"
 
       - name: Populate Vercel Variables
         run: vercel pull --cwd /opt/book --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
