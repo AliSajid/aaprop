@@ -10,7 +10,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: container-{github.event.ref}
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
