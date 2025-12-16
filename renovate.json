@@ -28,7 +28,8 @@
         {
             "enabled": false,
             "matchFileNames": [
-                "Dockerfile"
+                "Dockerfile",
+                "Containerfile"
             ],
             "matchManagers": [
                 "dockerfile"

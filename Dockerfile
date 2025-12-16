@@ -3,14 +3,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-License-Identifier: MIT
 
-# This Dockerfile is used to build a Docker image for the aaprop project
+# This Containerfile/Dockerfile is used to build a container image for the aaprop project
+# Compatible with both Docker and Podman container engines
 # The image is built in two phases:
-# 1. The Preparation phase starts fromn the official Rust image to prepare
+# 1. The Preparation phase starts from the official Rust image to prepare
 #    the environment for the final build.
 # 2. The Build phase finally builds the binary of the aaprop project.
 #    It copies the binary from the builder image to a distroless image and
 #    sets it as the entry point of the container
-# All in all, this results in the total process of building the Docker image
+# All in all, this results in the total process of building the container image
 # consisting of four stages:
 # 1. The `chef` stage installs the `cargo-chef` tool in the official Rust image
 # 2. The `planner` stage examines the project and builds a minimal recipe for
