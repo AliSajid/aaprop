@@ -53,12 +53,17 @@ repos:
           language: system
           types: [markdown]
           files: "^(README.md|CONTRIBUTING.md|CODE_OF_CONDUCT.md|guide/src/.*.md)$"
+        - id: reuse-lint
+          name: Run Reuse linter
+          entry: reuse lint
+          language: system
+          pass_filenames: false
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v4.8.3
+      rev: v4.10.0
       hooks:
         - id: commitizen
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
+      rev: v6.0.0
       hooks:
         - id: check-json
           exclude: ".vscode/.*json"
@@ -89,7 +94,7 @@ repos:
           args:
             - --markdown-linebreak-ext=md
     - repo: https://github.com/compilerla/conventional-pre-commit
-      rev: v4.2.0
+      rev: v4.3.0
       hooks:
         - args:
             - build
@@ -115,12 +120,12 @@ repos:
         - id: forbid-tabs
         - id: remove-tabs
     - repo: https://github.com/google/yamlfmt
-      rev: v0.17.2
+      rev: v0.20.0
       hooks:
         - id: yamlfmt
           exclude: ".github/workflows/.*\\.ya?ml"
     - repo: https://github.com/igorshubovych/markdownlint-cli
-      rev: v0.45.0
+      rev: v0.47.0
       hooks:
         - id: markdownlint
           args:
@@ -135,20 +140,16 @@ repos:
             - ".secrets.baseline"
           exclude: "meta/licenses.*"
     - repo: https://github.com/sirosen/texthooks
-      rev: 0.6.8
+      rev: 0.7.1
       hooks:
         - id: fix-smartquotes
           exclude: "licenses_report.json"
         - id: fix-ligatures
         - id: forbid-bidi-controls
     - repo: https://github.com/zricethezav/gitleaks
-      rev: v8.27.2
+      rev: v8.30.0
       hooks:
         - id: gitleaks
-    - repo: https://github.com/fsfe/reuse-tool
-      rev: v5.0.2
-      hooks:
-        - id: reuse
     - repo: https://github.com/jumanjihouse/pre-commit-hooks
       rev: 3.0.0
       hooks:

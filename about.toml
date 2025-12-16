@@ -51,6 +51,11 @@ accepted = ["MIT", "ISC", "OpenSSL"]
 [subtle]
 accepted = ["BSD-3-Clause"]
 
+# Specify the license for `webpki-roots`
+# CDLA-Permissive-2.0: https://github.com/rustls/webpki-roots/blob/main/LICENSE-CCADB
+[webpki-roots]
+accepted = ["CDLA-Permissive-2.0"]
+
 # Specify the license for `matchit`
 # MIT: https://github.com/ibraheemdev/matchit/blob/master/LICENSE
 # BSD-3-Clause: https://github.com/ibraheemdev/matchit/blob/master/LICENSE.httprouter

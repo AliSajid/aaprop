@@ -30,7 +30,7 @@
 
 # Use the official Rust image as the builder image
 # Use the 1.78 version of the Rust image since it's the MSRV (Minimum Supported Rust Version) for the aaprop project
-FROM rust:1.85.1 AS chef
+FROM rust:1.86.0 AS chef
 
 # Install the `cargo-chef` tool
 RUN cargo install cargo-chef
@@ -92,4 +92,4 @@ USER 1000
 
 # Set the binary as the entry point of the container
 # When the container starts, it will execute this binary
-ENTRYPOINT [ "/usr/local/bin/aaprop", "--bind", "0.0.0.0", "--port", "80" ]
+ENTRYPOINT [ "/usr/local/bin/aaprop", "--bind", "0.0.0.0", "--port", "8080" ]

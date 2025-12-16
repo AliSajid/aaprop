@@ -20,6 +20,7 @@ homepage = "https://aliimami.com/aaprop"
 keywords = ["bioinformatics", "amino-acids", "chemistry"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
+rust-version = "1.86.0"
 
 [lib]
 crate-type = ["dylib", "lib", "staticlib"]
@@ -36,19 +37,19 @@ default = ["shuttle"]
 
 [dependencies]
 axum = "0.8.1"
-axum-test = "17.2.0"
+axum-test = "18.0.0"
 cfg_block = "0.2.0"
 clap = { version = "4.5.29", features = ["derive", "env"], optional = true }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = "1.0.138"
-shuttle-axum = { version = "0.56.0", optional = true }
-shuttle-runtime = { version = "0.56.0", optional = true }
+shuttle-axum = { version = "0.57.0", optional = true }
+shuttle-runtime = { version = "0.57.0", optional = true }
 tokio = { version = "1.43.0", optional = true, features = ["full"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", optional = true }
 
 [dev-dependencies]
-rstest = "=0.25.0"
+rstest = "=0.26.1"
 
 [lints.rust]
 unsafe_code = "forbid" # Ensure that the crate does not use unsafe code

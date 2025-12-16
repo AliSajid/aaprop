@@ -49,4 +49,4 @@ if [ -z "$1" ]; then
 fi
 
 OUTPUT_FILE=${2:-licenses_report.md}
-cargo about generate --format handlebars "$1" | gexpand -t 4 | dos2unix >"$OUTPUT_FILE"
+cargo about generate --format handlebars --frozen "$1" | gexpand -t 4 | dos2unix >"$OUTPUT_FILE"
