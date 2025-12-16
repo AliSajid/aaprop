@@ -53,8 +53,13 @@ repos:
           language: system
           types: [markdown]
           files: "^(README.md|CONTRIBUTING.md|CODE_OF_CONDUCT.md|guide/src/.*.md)$"
+        - id: reuse-lint
+          name: Run Reuse linter
+          entry: reuse lint
+          language: system
+          pass_filenames: false
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v4.10.1
+      rev: v4.10.0
       hooks:
         - id: commitizen
     - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -145,10 +150,6 @@ repos:
       rev: v8.30.0
       hooks:
         - id: gitleaks
-    - repo: https://github.com/fsfe/reuse-tool
-      rev: v6.2.0
-      hooks:
-        - id: reuse
     - repo: https://github.com/jumanjihouse/pre-commit-hooks
       rev: 3.0.0
       hooks:
