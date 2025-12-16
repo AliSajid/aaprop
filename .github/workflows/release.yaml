@@ -11,8 +11,6 @@ name: Semantic Release
 env:
     RUST_BACKTRACE: 1
     SEMREL_RUST_VERSION: 2.3.71
-concurrency:
-    group: ${{ github.event.ref }}
 jobs:
     build_application:
         name: Build CLI ${{ matrix.build.target }}

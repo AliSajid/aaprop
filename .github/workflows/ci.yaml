@@ -14,7 +14,7 @@ on:
             - closed
     workflow_dispatch:
 concurrency:
-    group: ${{github.event.ref}}
+    group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 env:
     GIST_KEY: 625c1d8a63a7cbb926f8828d97d850b1 # pragma: allowlist secret
