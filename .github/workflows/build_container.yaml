@@ -68,18 +68,30 @@ jobs:
 
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG_NAME="${{ github.ref_name }}"
-            TAGS="${DOCKER_HUB_IMAGE}:${TAG_NAME},${GHCR_IMAGE}:${TAG_NAME}"
+            if [[ -n "${TAGS}" ]]; then
+              TAGS="${TAGS},${DOCKER_HUB_IMAGE}:${TAG_NAME},${GHCR_IMAGE}:${TAG_NAME}"
+            else
+              TAGS="${DOCKER_HUB_IMAGE}:${TAG_NAME},${GHCR_IMAGE}:${TAG_NAME}"
+            fi
             TAGS="${TAGS},${DOCKER_HUB_IMAGE}:latest,${GHCR_IMAGE}:latest"
           fi
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             PR_NUMBER="${{ github.event.pull_request.number }}"
-            TAGS="${DOCKER_HUB_IMAGE}:pr-${PR_NUMBER},${GHCR_IMAGE}:pr-${PR_NUMBER}"
+            if [[ -n "${TAGS}" ]]; then
+              TAGS="${TAGS},${DOCKER_HUB_IMAGE}:pr-${PR_NUMBER},${GHCR_IMAGE}:pr-${PR_NUMBER}"
+            else
+              TAGS="${DOCKER_HUB_IMAGE}:pr-${PR_NUMBER},${GHCR_IMAGE}:pr-${PR_NUMBER}"
+            fi
           fi
 
           # Add SHA tag
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          TAGS="${TAGS},${DOCKER_HUB_IMAGE}:sha-${SHORT_SHA},${GHCR_IMAGE}:sha-${SHORT_SHA}"
+          if [[ -n "${TAGS}" ]]; then
+            TAGS="${TAGS},${DOCKER_HUB_IMAGE}:sha-${SHORT_SHA},${GHCR_IMAGE}:sha-${SHORT_SHA}"
+          else
+            TAGS="${DOCKER_HUB_IMAGE}:sha-${SHORT_SHA},${GHCR_IMAGE}:sha-${SHORT_SHA}"
+          fi
 
           # Export for later steps
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
@@ -99,38 +111,52 @@ jobs:
 
       - name: Login to DockerHub
         run: |
-          echo "${{ secrets.DOCKER_TOKEN }}" | podman login docker.io -u "${{ env.DOCKER_USERNAME }}" --password-stdin
+          printf '%s' "${{ secrets.DOCKER_TOKEN }}" | podman login docker.io -u "${{ env.DOCKER_USERNAME }}" --password-stdin
 
       - name: Login to GitHub Container Registry
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
+          printf '%s' "${{ secrets.GHCR_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build and Push Container Images
         id: build
         env:
           SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
         run: |
-          # Build multi-arch manifest
+          set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+
+          # Build images for each architecture and add to multi-arch manifest
           PLATFORMS="linux/amd64,linux/arm64"
           IFS=',' read -ra TAG_ARRAY <<< "${{ steps.meta.outputs.tags }}"
           IFS=',' read -ra PLATFORM_ARRAY <<< "${PLATFORMS}"
+          IFS=',' read -ra LABEL_ARRAY <<< "${{ steps.meta.outputs.labels }}"
 
           # Get first tag for manifest name
           MANIFEST_NAME="${TAG_ARRAY[0]}"
+
+          # Build label flags for podman
+          LABEL_FLAGS=()
+          for label in "${LABEL_ARRAY[@]}"; do
+            LABEL_FLAGS+=("--label" "${label}")
+          done
 
           # Build for each platform
           for PLATFORM in "${PLATFORM_ARRAY[@]}"; do
             ARCH=$(echo $PLATFORM | cut -d'/' -f2)
             echo "Building for platform: ${PLATFORM} (${ARCH})"
 
-            podman build \
+            if ! podman build \
               --platform=${PLATFORM} \
               --format=docker \
               --timestamp=${SOURCE_DATE_EPOCH} \
-              --label="${{ steps.meta.outputs.labels }}" \
+              "${LABEL_FLAGS[@]}" \
               --manifest=${MANIFEST_NAME} \
               -f Containerfile \
-              .
+              . ; then
+              echo "Error: Build failed for platform ${PLATFORM}"
+              exit 1
+            fi
+
+            echo "Successfully built for platform: ${PLATFORM}"
           done
 
           # Only push if not a PR
