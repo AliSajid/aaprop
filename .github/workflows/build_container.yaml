@@ -146,7 +146,7 @@ jobs:
               --timestamp=${SOURCE_DATE_EPOCH} \
               "${LABEL_FLAGS[@]}" \
               --manifest=${MANIFEST_NAME} \
-              -f Containerfile \
+              -f Dockerfile \
               . ; then
               echo "Error: Build failed for platform ${PLATFORM}"
               exit 1
