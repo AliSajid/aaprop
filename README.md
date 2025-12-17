@@ -49,7 +49,7 @@ Contributions to the project are welcome. Please see the [Contributing Guideline
 
 This project is dual-licensed under the [MIT License](LICENSES/MIT.txt) and the [Apache License (Version 2.0)](LICENSES/Apache-2.0.txt). You may choose to use this project under either license, at your discretion. Other, ancillary files are under the [CC0 License](LICENSES/CC0-1.0.txt) and are dedicated to the Public Domain. Please see the [LICENSES](LICENSES) directory for more information.
 
-This project is REUSE compliant. You can find more information about the [REUSE project here](https://reuse.software/).
+This project is REUSE compliant. You can find more information about [the REUSE project here](https://reuse.software/).
 
 ## Code of Conduct
 
