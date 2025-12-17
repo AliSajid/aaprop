@@ -19,12 +19,11 @@ rust = "stable"
 "cargo:mdbook-inline-highlighting" = "0.1.0"
 "cargo:semantic-release-cargo" = "2.4.0"
 node = "22.14.0"
-"npm:conventional-changelog-conventionalcommits" = "8.0.0"
 "npm:semantic-release" = "24.2.1"
-"npm:semantic-release-export-data" = "1.1.0"
 "npm:vercel" = "latest"
 "pipx:pre-commit" = "4.0.1"
 "ubi:rust-lang/mdbook" = "latest"
+"pipx:pre-commit/pre-commit" = "v4.2.0"
 
 [tasks.coverage]
 description = "Generate test coverage information"
