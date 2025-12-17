@@ -31,7 +31,7 @@ jobs:
       - name: Checkout the Repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-      - name: Install mdbook
+      - name: Install mise-en-place
         uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
         with:
           experimental: true
@@ -77,10 +77,13 @@ jobs:
           name: book
           path: /opt/book
 
-      - name: Install mise-en-place
-        uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
+      - name: Setup Node.js
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
-          experimental: true
+          node-version: '22'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
 
       - name: Populate Vercel Variables
         run: vercel pull --cwd /opt/book --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}

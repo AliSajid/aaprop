@@ -32,6 +32,13 @@ jobs:
 
       - name: Install mise-en-place
         uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
+        with:
+          experimental: true
+
+      - name: Install the necessary plugin
+        run: |
+          npm install semantic-release-export-data
+        shell: bash
 
       - name: Get next release version
         id: get-next-version
