@@ -15,11 +15,10 @@ env:
   REPOSITORY_NAME: ${{ github.event.repository.name }}
   COSIGN_RELEASE_VERSION: v2.2.4
   SYFT_VERSION: v1.7.0
-  SOURCE_DATE_EPOCH: 0
 
 jobs:
   podman-build-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       id-token: write
       packages: write
@@ -32,78 +31,45 @@ jobs:
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-      - name: Get Last Commit Date/Time for reproducible builds
-        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
+      - name: Validate Environment Variables
+        run: |
+          : "${DOCKER_USERNAME:?Missing DOCKER_USERNAME}"
+          : "${DOCKER_REPOSITORY_NAME:?Missing DOCKER_REPOSITORY_NAME}"
+          echo "Environment validated successfully"
 
       - name: Install Podman
         run: |
           sudo apt-get update
           sudo apt-get -y install podman qemu-user-static
+          echo "Installed versions:"
+          podman version
+          qemu-aarch64 --version || true
 
       - name: Setup Podman for multi-arch builds
         run: |
-          podman version
           # Enable QEMU for multi-arch support
-          sudo systemctl start systemd-binfmt.service || true
-          # Test multi-arch support
-          podman run --rm tonistiigi/binfmt --install all
+          sudo update-binfmts --enable
+          # Install only ARM64 architecture support
+          podman run --privileged --rm tonistiigi/binfmt --install arm64
+          # Install skopeo for reliable digest inspection
+          sudo apt-get -y install skopeo
 
       - name: Generate Container Metadata
         id: meta
-        run: |
-          # Generate tags
-          TAGS=""
-          DOCKER_HUB_IMAGE="${{env.DOCKER_REPOSITORY_NAME}}/${{env.REPOSITORY_NAME}}"
-          GHCR_IMAGE="ghcr.io/${{ github.repository}}"
-
-          # Add tags based on event type
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            BRANCH_NAME="${{ github.ref_name }}"
-            TAGS="${DOCKER_HUB_IMAGE}:${BRANCH_NAME},${GHCR_IMAGE}:${BRANCH_NAME}"
-          fi
-
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            TAG_NAME="${{ github.ref_name }}"
-            if [[ -n "${TAGS}" ]]; then
-              TAGS="${TAGS},${DOCKER_HUB_IMAGE}:${TAG_NAME},${GHCR_IMAGE}:${TAG_NAME}"
-            else
-              TAGS="${DOCKER_HUB_IMAGE}:${TAG_NAME},${GHCR_IMAGE}:${TAG_NAME}"
-            fi
-            # Always append latest tags for tag releases
-            if [[ -n "${TAGS}" ]]; then
-              TAGS="${TAGS},${DOCKER_HUB_IMAGE}:latest,${GHCR_IMAGE}:latest"
-            else
-              TAGS="${DOCKER_HUB_IMAGE}:latest,${GHCR_IMAGE}:latest"
-            fi
-          fi
-
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            if [[ -n "${TAGS}" ]]; then
-              TAGS="${TAGS},${DOCKER_HUB_IMAGE}:pr-${PR_NUMBER},${GHCR_IMAGE}:pr-${PR_NUMBER}"
-            else
-              TAGS="${DOCKER_HUB_IMAGE}:pr-${PR_NUMBER},${GHCR_IMAGE}:pr-${PR_NUMBER}"
-            fi
-          fi
-
-          # Add SHA tag
-          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          if [[ -n "${TAGS}" ]]; then
-            TAGS="${TAGS},${DOCKER_HUB_IMAGE}:sha-${SHORT_SHA},${GHCR_IMAGE}:sha-${SHORT_SHA}"
-          else
-            TAGS="${DOCKER_HUB_IMAGE}:sha-${SHORT_SHA},${GHCR_IMAGE}:sha-${SHORT_SHA}"
-          fi
-
-          # Export for later steps
-          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
-          echo "Generated tags: ${TAGS}"
-
-          # Generate labels
-          LABELS="org.opencontainers.image.licenses=MIT AND Apache-2.0"
-          LABELS="${LABELS},org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}"
-          LABELS="${LABELS},org.opencontainers.image.revision=${{ github.sha }}"
-          LABELS="${LABELS},org.opencontainers.image.created=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          echo "labels=${LABELS}" >> $GITHUB_OUTPUT
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          images: |
+            ${{ env.DOCKER_REPOSITORY_NAME }}/${{ env.REPOSITORY_NAME }}
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-,format=short
+          labels: |
+            org.opencontainers.image.licenses=MIT AND Apache-2.0
 
       - name: Debug Metadata
         run: |
@@ -111,25 +77,29 @@ jobs:
           echo "Labels: ${{ steps.meta.outputs.labels }}"
 
       - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
         run: |
           printf '%s' "${{ secrets.DOCKER_TOKEN }}" | podman login docker.io -u "${{ env.DOCKER_USERNAME }}" --password-stdin
 
       - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
         run: |
           printf '%s' "${{ secrets.GHCR_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build and Push Container Images
         id: build
-        env:
-          SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
         run: |
           set -euo pipefail  # Exit on error, undefined variables, and pipe failures
 
+          # Get SOURCE_DATE_EPOCH from last commit for reproducible builds
+          SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+          echo "Using SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
+
           # Build images for each architecture and add to multi-arch manifest
           PLATFORMS="linux/amd64,linux/arm64"
-          IFS=',' read -ra TAG_ARRAY <<< "${{ steps.meta.outputs.tags }}"
+          IFS=$'\n' read -ra TAG_ARRAY <<< "${{ steps.meta.outputs.tags }}"
           IFS=',' read -ra PLATFORM_ARRAY <<< "${PLATFORMS}"
-          IFS=',' read -ra LABEL_ARRAY <<< "${{ steps.meta.outputs.labels }}"
+          IFS=$'\n' read -ra LABEL_ARRAY <<< "${{ steps.meta.outputs.labels }}"
 
           # Validate that we have tags
           if [ ${#TAG_ARRAY[@]} -eq 0 ] || [ -z "${TAG_ARRAY[0]}" ]; then
@@ -137,9 +107,10 @@ jobs:
             exit 1
           fi
 
-          # Get first tag for manifest name and validate it
-          MANIFEST_NAME="${TAG_ARRAY[0]}"
-          echo "Using manifest name: ${MANIFEST_NAME}"
+          # Create explicit manifest with localhost name to decouple build from distribution
+          MANIFEST="localhost/${REPOSITORY_NAME}:build-manifest"
+          echo "Creating manifest: ${MANIFEST}"
+          podman manifest create "${MANIFEST}"
           echo "Total tags to create: ${#TAG_ARRAY[@]}"
 
           # Build label flags for podman
@@ -157,10 +128,9 @@ jobs:
 
             if ! podman build \
               --platform="${PLATFORM}" \
-              --format=docker \
               --timestamp="${SOURCE_DATE_EPOCH}" \
               "${LABEL_FLAGS[@]}" \
-              --manifest="${MANIFEST_NAME}" \
+              --manifest="${MANIFEST}" \
               -f Containerfile \
               . ; then
               echo "Error: Build failed for platform ${PLATFORM}"
@@ -176,14 +146,21 @@ jobs:
             for TAG in "${TAG_ARRAY[@]}"; do
               echo "Pushing manifest to: ${TAG}"
               # Push the same manifest to each destination
-              podman manifest push --all ${MANIFEST_NAME} docker://${TAG}
+              podman manifest push --all "${MANIFEST}" docker://${TAG}
             done
-          fi
 
-          # Get the manifest list digest for signing (not individual architecture digests)
-          DIGEST=$(podman manifest inspect ${MANIFEST_NAME} | jq -r '.digest')
-          echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
-          echo "Manifest list digest: ${DIGEST}"
+            # Get the manifest list digest from the first pushed tag
+            FIRST_TAG="${TAG_ARRAY[0]}"
+            echo "Extracting digest from registry for: ${FIRST_TAG}"
+            DIGEST=$(skopeo inspect --format '{{.Digest}}' docker://${FIRST_TAG} 2>/dev/null || \
+                     podman manifest inspect "${MANIFEST}" | jq -r '.digest')
+            echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
+            echo "Manifest list digest: ${DIGEST}"
+          else
+            echo "Skipping push for pull request"
+            # For PRs, still output a placeholder digest for workflow continuity
+            echo "digest=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Debug Build
         run: echo "${{join(steps.build.outputs.*, '\n')}}"
@@ -199,75 +176,85 @@ jobs:
           syft-version: ${{ env.SYFT_VERSION }}
 
       - name: Sign and Push
+        if: github.event_name != 'pull_request'
         env:
           IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
           IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
           GITHUB_TOKEN: ${{ github.token }}
-          SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
         run: |
-          IFS=',' read -ra TAG_ARRAY <<< "${IMAGE_TAGS}"
+          set -euo pipefail
+
+          if [[ -z "${IMAGE_DIGEST}" ]]; then
+            echo "Error: No digest available for signing"
+            exit 1
+          fi
+
+          # Generate SBOM once for the manifest digest
+          IFS=$'\n' read -ra TAG_ARRAY <<< "${IMAGE_TAGS}"
+          FIRST_TAG="${TAG_ARRAY[0]}"
+          MANIFEST_REF="${FIRST_TAG}@${IMAGE_DIGEST}"
+
+          echo "Generating SBOM for manifest: ${MANIFEST_REF}"
+          syft "${MANIFEST_REF}" -o spdx-json=sbom.json -v
+
+          # Sign and attest each tag with the same SBOM
           for tag in "${TAG_ARRAY[@]}"; do
-            # Use podman-compatible image reference
-            if [[ -n "${IMAGE_DIGEST}" ]]; then
-              image="${tag}@${IMAGE_DIGEST}"
-            else
-              # Fallback to getting digest from podman
-              IMAGE_DIGEST=$(podman manifest inspect ${tag} 2>/dev/null | jq -r '.manifests[0].digest' || echo "")
-              if [[ -n "${IMAGE_DIGEST}" ]]; then
-                image="${tag}@${IMAGE_DIGEST}"
-              else
-                image="${tag}"
-              fi
-            fi
+            image="${tag}@${IMAGE_DIGEST}"
+            echo "Signing image: ${image}"
+            cosign sign --yes "${image}"
 
-            original_name="sbom-${tag}.json"
-            sanitized_name=$(echo "$original_name" | sed 's|[/:]|_|g' | tr '_-' '-_')
-            echo "Signing the image: ${image}"
-            echo "Using the original name: $original_name"
-            echo "Using the sanitized name: $sanitized_name"
-            echo "Signing and pushing ${image}"
-
-            # Cosign works with both Docker and Podman images
-            cosign sign --yes ${image}
-            echo "Generating Software Bill of Materials for ${image}"
-
-            # Syft can analyze Podman images
-            syft ${image} -o spdx-json=${sanitized_name} -v
-            echo "Attesting the Software Bill of Materials for ${image}"
-            cosign attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
-            echo "Done signing and pushing ${image} with SBOM"
+            echo "Attesting SBOM for: ${image}"
+            cosign attest --type=spdxjson --yes --predicate sbom.json "${image}"
+            echo "Done signing and attesting ${image}"
           done
         shell: bash
 
       - name: Verify Signatures
+        if: github.event_name != 'pull_request'
         env:
           IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
           IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
           GITHUB_TOKEN: ${{ github.token }}
-          SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
         run: |
+          set -euo pipefail
+
           mkdir -p /tmp/cosign-verifications
-          IFS=',' read -ra TAG_ARRAY <<< "${IMAGE_TAGS}"
+          IFS=$'\n' read -ra TAG_ARRAY <<< "${IMAGE_TAGS}"
+
+          VERIFICATION_FAILED=0
           for tag in "${TAG_ARRAY[@]}"; do
-            # Use podman-compatible image reference
-            if [[ -n "${IMAGE_DIGEST}" ]]; then
-              image="${tag}@${IMAGE_DIGEST}"
-            else
-              # Fallback to getting digest from podman
-              IMAGE_DIGEST=$(podman manifest inspect ${tag} 2>/dev/null | jq -r '.manifests[0].digest' || echo "")
-              if [[ -n "${IMAGE_DIGEST}" ]]; then
-                image="${tag}@${IMAGE_DIGEST}"
-              else
-                image="${tag}"
-              fi
+            image="${tag}@${IMAGE_DIGEST}"
+            # Sanitize tag for filename
+            safe_tag=$(echo "${tag}" | sed 's|[/:]|_|g')
+
+            echo "Verifying signature for: ${image}"
+            if ! cosign verify "${image}" \
+              --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" \
+              --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" \
+              --output-file="/tmp/cosign-verifications/${safe_tag}-verify.json"; then
+              echo "Error: Signature verification failed for ${image}"
+              VERIFICATION_FAILED=1
             fi
 
-            echo "Verifying ${image}"
-            cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" --output-file="/tmp/cosign-verifications/cosign-verify.json"
-            echo "Verifying SBOM Attestation for ${image}"
-            cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" --output-file="/tmp/cosign-verifications/cosign-verify-attestation.json"
-            echo "Done verifying ${image}"
+            echo "Verifying SBOM attestation for: ${image}"
+            if ! cosign verify-attestation "${image}" \
+              --type=spdxjson \
+              --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" \
+              --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" \
+              --output-file="/tmp/cosign-verifications/${safe_tag}-attestation.json"; then
+              echo "Error: Attestation verification failed for ${image}"
+              VERIFICATION_FAILED=1
+            fi
+
+            echo "Successfully verified ${image}"
           done
+
+          if [ ${VERIFICATION_FAILED} -eq 1 ]; then
+            echo "Error: One or more verifications failed"
+            exit 1
+          fi
+
+          echo "All verifications passed successfully"
         shell: bash
 
       - name: Upload verification results
