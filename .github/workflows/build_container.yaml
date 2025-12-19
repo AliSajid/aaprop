@@ -69,7 +69,12 @@ jobs:
             else
               TAGS="${DOCKER_HUB_IMAGE}:${TAG_NAME},${GHCR_IMAGE}:${TAG_NAME}"
             fi
-            TAGS="${TAGS},${DOCKER_HUB_IMAGE}:latest,${GHCR_IMAGE}:latest"
+            # Always append latest tags for tag releases
+            if [[ -n "${TAGS}" ]]; then
+              TAGS="${TAGS},${DOCKER_HUB_IMAGE}:latest,${GHCR_IMAGE}:latest"
+            else
+              TAGS="${DOCKER_HUB_IMAGE}:latest,${GHCR_IMAGE}:latest"
+            fi
           fi
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
@@ -126,13 +131,23 @@ jobs:
           IFS=',' read -ra PLATFORM_ARRAY <<< "${PLATFORMS}"
           IFS=',' read -ra LABEL_ARRAY <<< "${{ steps.meta.outputs.labels }}"
 
-          # Get first tag for manifest name
+          # Validate that we have tags
+          if [ ${#TAG_ARRAY[@]} -eq 0 ] || [ -z "${TAG_ARRAY[0]}" ]; then
+            echo "Error: No tags generated"
+            exit 1
+          fi
+
+          # Get first tag for manifest name and validate it
           MANIFEST_NAME="${TAG_ARRAY[0]}"
+          echo "Using manifest name: ${MANIFEST_NAME}"
+          echo "Total tags to create: ${#TAG_ARRAY[@]}"
 
           # Build label flags for podman
           LABEL_FLAGS=()
           for label in "${LABEL_ARRAY[@]}"; do
-            LABEL_FLAGS+=("--label" "${label}")
+            if [ -n "${label}" ]; then
+              LABEL_FLAGS+=("--label" "${label}")
+            fi
           done
 
           # Build for each platform
@@ -141,12 +156,12 @@ jobs:
             echo "Building for platform: ${PLATFORM} (${ARCH})"
 
             if ! podman build \
-              --platform=${PLATFORM} \
+              --platform="${PLATFORM}" \
               --format=docker \
-              --timestamp=${SOURCE_DATE_EPOCH} \
+              --timestamp="${SOURCE_DATE_EPOCH}" \
               "${LABEL_FLAGS[@]}" \
-              --manifest=${MANIFEST_NAME} \
-              -f Dockerfile \
+              --manifest="${MANIFEST_NAME}" \
+              -f Containerfile \
               . ; then
               echo "Error: Build failed for platform ${PLATFORM}"
               exit 1
@@ -157,25 +172,18 @@ jobs:
 
           # Only push if not a PR
           if [[ "${{ github.event_name }}" != "pull_request" ]]; then
-            # Push manifest to all tags
+            # Push the manifest to all tag destinations
             for TAG in "${TAG_ARRAY[@]}"; do
               echo "Pushing manifest to: ${TAG}"
-
-              # If this is not the first tag, create a new manifest referencing the first
-              if [[ "${TAG}" != "${MANIFEST_NAME}" ]]; then
-                podman manifest create ${TAG}
-                podman manifest add ${TAG} ${MANIFEST_NAME}
-              fi
-
-              # Push with all-images to push all architectures
-              podman manifest push --all ${TAG} docker://${TAG}
+              # Push the same manifest to each destination
+              podman manifest push --all ${MANIFEST_NAME} docker://${TAG}
             done
           fi
 
-          # Get the manifest digest for signing
-          DIGEST=$(podman manifest inspect ${MANIFEST_NAME} | jq -r '.manifests[0].digest')
+          # Get the manifest list digest for signing (not individual architecture digests)
+          DIGEST=$(podman manifest inspect ${MANIFEST_NAME} | jq -r '.digest')
           echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
-          echo "Manifest digest: ${DIGEST}"
+          echo "Manifest list digest: ${DIGEST}"
 
       - name: Debug Build
         run: echo "${{join(steps.build.outputs.*, '\n')}}"
