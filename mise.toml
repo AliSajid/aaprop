@@ -25,6 +25,10 @@ node = "22.14.0"
 "ubi:rust-lang/mdbook" = "latest"
 "pipx:pre-commit/pre-commit" = "v4.2.0"
 
+[settings]
+experimental = true
+lockfile = true
+
 [tasks.coverage]
 description = "Generate test coverage information"
 run = [
