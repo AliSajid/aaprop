@@ -4,13 +4,10 @@
 # SPDX-License-Identifier: MIT
 
 ---
-name: Docker Image Generation
+name: Container Image Generation
 on:
   workflow_call:
   workflow_dispatch:
-
-concurrency:
-  group: docker-{github.event.ref}
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
@@ -18,143 +15,251 @@ env:
   REPOSITORY_NAME: ${{ github.event.repository.name }}
   COSIGN_RELEASE_VERSION: v2.2.4
   SYFT_VERSION: v1.7.0
-  SOURCE_DATE_EPOCH: 0
 
 jobs:
-    docker-build-push:
-        runs-on: ubuntu-latest
-        permissions:
-          id-token: write
-          packages: write
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
-              with:
-                egress-policy: audit
+  podman-build-push:
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      packages: write
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
 
-            - name: Checkout
-              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-            - name: Get Last Commit Date/Time for reproducible builds
-              run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
+      - name: Validate Environment Variables
+        run: |
+          : "${DOCKER_USERNAME:?Missing DOCKER_USERNAME}"
+          : "${DOCKER_REPOSITORY_NAME:?Missing DOCKER_REPOSITORY_NAME}"
+          echo "Environment validated successfully"
 
-            - name: Generate Docker Metadata
-              id: meta
-              uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
-              with:
-                  images: |
-                    ${{env.DOCKER_REPOSITORY_NAME}}/${{env.REPOSITORY_NAME}}
-                    ghcr.io/${{ github.repository}}
-                  tags: |
-                    type=ref,event=branch
-                    type=ref,event=pr
-                    type=ref,event=tag
-                    type=semver,pattern={{version}}
-                    type=semver,pattern={{major}}.{{minor}}
-                    type=semver,pattern={{major}}
-                    type=sha
-                  labels: |
-                    org.opencontainers.image.licenses="MIT AND Apache-2.0"
+      - name: Install Podman
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install podman qemu-user-static
+          echo "Installed versions:"
+          podman version
+          qemu-aarch64 --version || true
 
-            - name: Debug Metadata
-              run: echo "${{ steps.meta.outputs.json }}"
+      - name: Setup Podman for multi-arch builds
+        run: |
+          # Enable QEMU for multi-arch support
+          sudo update-binfmts --enable
+          # Install only ARM64 architecture support
+          podman run --privileged --rm tonistiigi/binfmt --install arm64
+          # Install skopeo for reliable digest inspection
+          sudo apt-get -y install skopeo
 
-            - name: Login to DockerHub
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-              with:
-                  username: ${{ env.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Generate Container Metadata
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          images: |
+            ${{ env.DOCKER_REPOSITORY_NAME }}/${{ env.REPOSITORY_NAME }}
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-,format=short
+          labels: |
+            org.opencontainers.image.licenses=MIT AND Apache-2.0
 
-            - name: Login to GitHub Container Registry
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-              with:
-                  registry: ghcr.io
-                  username: ${{ github.actor }}
-                  password: ${{ secrets.GHCR_TOKEN }}
+      - name: Debug Metadata
+        run: |
+          echo "Tags: ${{ steps.meta.outputs.tags }}"
+          echo "Labels: ${{ steps.meta.outputs.labels }}"
 
-            - name: Setup QEMU
-              uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        run: |
+          printf '%s' "${{ secrets.DOCKER_TOKEN }}" | podman login docker.io -u "${{ env.DOCKER_USERNAME }}" --password-stdin
 
-            - name: Setup Buildx
-              uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
-              with:
-                version: "lab:latest"
+      - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        run: |
+          printf '%s' "${{ secrets.GHCR_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-            - name: Build and Push Docker Images
-              id: build
-              uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
-              env:
-                SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
-              with:
-                  context: .
-                  # push: true
-                  provenance: true
-                  annotations: ${{ steps.meta.outputs.annotations }}
-                  tags: ${{ steps.meta.outputs.tags }}
-                  labels: ${{ steps.meta.outputs.labels }}
-                  platforms: linux/amd64,linux/arm64
-                  outputs: ${{ github.event_name == 'pull_request' && 'type=cacheonly' || 'type=registry,push=true' }}
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+      - name: Build and Push Container Images
+        id: build
+        run: |
+          set -euo pipefail  # Exit on error, undefined variables, and pipe failures
 
-            - name: Debug Build
-              run: echo "${{join(steps.build.outputs.*, '\n')}}"
+          # Get SOURCE_DATE_EPOCH from last commit for reproducible builds
+          SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+          echo "Using SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
 
-            - name: Install cosign
-              uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
-              with:
-                cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
+          # Build images for each architecture and add to multi-arch manifest
+          PLATFORMS="linux/amd64,linux/arm64"
+          IFS=$'\n' read -ra TAG_ARRAY <<< "${{ steps.meta.outputs.tags }}"
+          IFS=',' read -ra PLATFORM_ARRAY <<< "${PLATFORMS}"
+          IFS=$'\n' read -ra LABEL_ARRAY <<< "${{ steps.meta.outputs.labels }}"
 
-            - name: Install Syft
-              uses: anchore/sbom-action/download-syft@a930d0ac434e3182448fe678398ba5713717112a # v0.21.0
-              with:
-                syft-version: ${{ env.SYFT_VERSION }}
+          # Validate that we have tags
+          if [ ${#TAG_ARRAY[@]} -eq 0 ] || [ -z "${TAG_ARRAY[0]}" ]; then
+            echo "Error: No tags generated"
+            exit 1
+          fi
 
-            - name: Sign and Push
-              env:
-                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
-                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
-                GITHUB_TOKEN: ${{ github.token }}
-                SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
-              run: |
-                for tag in ${IMAGE_TAGS}; do
-                  image="${tag}@${IMAGE_DIGEST}"
-                  original_name="sbom-${tag}.json"
-                  sanitized_name=$(echo "$original_name" | sed 's|[/:]|_|g' | tr '_-' '-_')
-                  echo "Signing the image: ${image}"
-                  echo "Using the original name: $original_name"
-                  echo "Using the sanitized name: $sanitized_name"
-                  echo "Signing and pushing ${tag}@${IMAGE_DIGEST}"
-                  cosign sign --yes ${image}
-                  echo "Generating Software Bill of Materials for ${image}"
-                  syft ${image} -o spdx-json=${sanitized_name} -v
-                  echo "Attesting the Software Bill of Materials for ${image}"
-                  cosign attest --type=spdxjson --yes --predicate ${sanitized_name} ${image}
-                  echo "Done signing and pushing ${tag}@${IMAGE_DIGEST} with SBOM"
-                done
-              shell: bash
+          # Create explicit manifest with localhost name to decouple build from distribution
+          MANIFEST="localhost/${REPOSITORY_NAME}:build-manifest"
+          echo "Creating manifest: ${MANIFEST}"
+          podman manifest create "${MANIFEST}"
+          echo "Total tags to create: ${#TAG_ARRAY[@]}"
 
-            - name: Verify Signatures
-              env:
-                IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
-                IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
-                GITHUB_TOKEN: ${{ github.token }}
-                SOURCE_DATE_EPOCH: ${{ env.SOURCE_DATE_EPOCH }}
-              run: |
-                for tag in ${IMAGE_TAGS}; do
-                  mkdir -p /tmp/cosign-verifications
-                  image="${tag}@${IMAGE_DIGEST}"
-                  echo "Verifying ${image}"
-                  cosign verify ${image} --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" --output-file="/tmp/cosign-verifications/cosign-verify.json"
-                  echo "Verifying SBOM Attestation for ${image}"
-                  cosign verify-attestation ${image} --type=spdxjson --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" --output-file="/tmp/cosign-verifications/cosign-verify-attestation.json"
-                  echo "Done verifying ${image}"
-                done
-              shell: bash
+          # Build label flags for podman
+          LABEL_FLAGS=()
+          for label in "${LABEL_ARRAY[@]}"; do
+            if [ -n "${label}" ]; then
+              LABEL_FLAGS+=("--label" "${label}")
+            fi
+          done
 
-            - name: Upload verification results
-              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-              with:
-                path: /tmp/cosign-verifications
-                name: cosign-verifications
-                compression-level: 9
+          # Build for each platform
+          for PLATFORM in "${PLATFORM_ARRAY[@]}"; do
+            ARCH=$(echo $PLATFORM | cut -d'/' -f2)
+            echo "Building for platform: ${PLATFORM} (${ARCH})"
+
+            if ! podman build \
+              --platform="${PLATFORM}" \
+              --timestamp="${SOURCE_DATE_EPOCH}" \
+              "${LABEL_FLAGS[@]}" \
+              --manifest="${MANIFEST}" \
+              -f Containerfile \
+              . ; then
+              echo "Error: Build failed for platform ${PLATFORM}"
+              exit 1
+            fi
+
+            echo "Successfully built for platform: ${PLATFORM}"
+          done
+
+          # Only push if not a PR
+          if [[ "${{ github.event_name }}" != "pull_request" ]]; then
+            # Push the manifest to all tag destinations
+            for TAG in "${TAG_ARRAY[@]}"; do
+              echo "Pushing manifest to: ${TAG}"
+              # Push the same manifest to each destination
+              podman manifest push --all "${MANIFEST}" docker://${TAG}
+            done
+
+            # Get the manifest list digest from the first pushed tag
+            FIRST_TAG="${TAG_ARRAY[0]}"
+            echo "Extracting digest from registry for: ${FIRST_TAG}"
+            DIGEST=$(skopeo inspect --format '{{.Digest}}' docker://${FIRST_TAG} 2>/dev/null || \
+                     podman manifest inspect "${MANIFEST}" | jq -r '.digest')
+            echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
+            echo "Manifest list digest: ${DIGEST}"
+          else
+            echo "Skipping push for pull request"
+            # For PRs, still output a placeholder digest for workflow continuity
+            echo "digest=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug Build
+        run: echo "${{join(steps.build.outputs.*, '\n')}}"
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+        with:
+          cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@43a17d6e7add2b5535efe4dcae9952337c479a93 # v0.20.11
+        with:
+          syft-version: ${{ env.SYFT_VERSION }}
+
+      - name: Sign and Push
+        if: github.event_name != 'pull_request'
+        env:
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${IMAGE_DIGEST}" ]]; then
+            echo "Error: No digest available for signing"
+            exit 1
+          fi
+
+          # Generate SBOM once for the manifest digest
+          IFS=$'\n' read -ra TAG_ARRAY <<< "${IMAGE_TAGS}"
+          FIRST_TAG="${TAG_ARRAY[0]}"
+          MANIFEST_REF="${FIRST_TAG}@${IMAGE_DIGEST}"
+
+          echo "Generating SBOM for manifest: ${MANIFEST_REF}"
+          syft "${MANIFEST_REF}" -o spdx-json=sbom.json -v
+
+          # Sign and attest each tag with the same SBOM
+          for tag in "${TAG_ARRAY[@]}"; do
+            image="${tag}@${IMAGE_DIGEST}"
+            echo "Signing image: ${image}"
+            cosign sign --yes "${image}"
+
+            echo "Attesting SBOM for: ${image}"
+            cosign attest --type=spdxjson --yes --predicate sbom.json "${image}"
+            echo "Done signing and attesting ${image}"
+          done
+        shell: bash
+
+      - name: Verify Signatures
+        if: github.event_name != 'pull_request'
+        env:
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p /tmp/cosign-verifications
+          IFS=$'\n' read -ra TAG_ARRAY <<< "${IMAGE_TAGS}"
+
+          VERIFICATION_FAILED=0
+          for tag in "${TAG_ARRAY[@]}"; do
+            image="${tag}@${IMAGE_DIGEST}"
+            # Sanitize tag for filename
+            safe_tag=$(echo "${tag}" | sed 's|[/:]|_|g')
+
+            echo "Verifying signature for: ${image}"
+            if ! cosign verify "${image}" \
+              --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" \
+              --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" \
+              --output-file="/tmp/cosign-verifications/${safe_tag}-verify.json"; then
+              echo "Error: Signature verification failed for ${image}"
+              VERIFICATION_FAILED=1
+            fi
+
+            echo "Verifying SBOM attestation for: ${image}"
+            if ! cosign verify-attestation "${image}" \
+              --type=spdxjson \
+              --certificate-identity-regexp="${{vars.COSIGN_CERTIFICATE_IDENTITY}}" \
+              --certificate-oidc-issuer-regexp="${{vars.COSIGN_CERTIFICATE_OIDC_ISSUER}}" \
+              --output-file="/tmp/cosign-verifications/${safe_tag}-attestation.json"; then
+              echo "Error: Attestation verification failed for ${image}"
+              VERIFICATION_FAILED=1
+            fi
+
+            echo "Successfully verified ${image}"
+          done
+
+          if [ ${VERIFICATION_FAILED} -eq 1 ]; then
+            echo "Error: One or more verifications failed"
+            exit 1
+          fi
+
+          echo "All verifications passed successfully"
+        shell: bash
+
+      - name: Upload verification results
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          path: /tmp/cosign-verifications
+          name: cosign-verifications
+          compression-level: 9

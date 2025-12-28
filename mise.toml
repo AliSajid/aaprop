@@ -3,5 +3,36 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-License-Identifier: MIT
 
+# Mise configuration for aaprop project
+# All tools and tasks consolidated in one place
+
 [tools]
+rust = "stable"
+"cargo:bacon" = "3.7.0"
+"cargo:cargo-about" = "0.6.6"
+"cargo:cargo-audit" = "0.21.0"
+"cargo:cargo-llvm-cov" = "0.6.16"
+"cargo:cargo-nextest" = "0.9.87"
+"cargo:cargo-toml-lint" = "0.1.1"
+"cargo:cross" = "0.2.5"
 "cargo:mdbook" = "0.5.0"
+"cargo:mdbook-inline-highlighting" = "0.1.0"
+"cargo:semantic-release-cargo" = "2.4.0"
+node = "22.14.0"
+"npm:semantic-release" = "24.2.1"
+"npm:vercel" = "latest"
+"pipx:pre-commit" = "4.0.1"
+"ubi:rust-lang/mdbook" = "latest"
+"pipx:pre-commit/pre-commit" = "v4.2.0"
+
+[settings]
+experimental = true
+lockfile = true
+
+[tasks.coverage]
+description = "Generate test coverage information"
+run = [
+    "cargo llvm-cov --no-report nextest --config-file nextest.toml",
+    "cargo llvm-cov --no-report --doc",
+    "cargo llvm-cov report --doctests --lcov --output-path lcov.info",
+]

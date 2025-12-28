@@ -6,43 +6,44 @@
 ---
 name: Code Coverage
 on:
-    workflow_call:
+  workflow_call:
 
 jobs:
-    test:
-        name: Generate Coverage
-        runs-on: ubuntu-latest
-        container:
-            image: xd009642/tarpaulin:develop-nightly@sha256:005c4e5c56fd37057104868cb3c6473ef5d03c2c7b70722fe7d6c45507aa8d31
-            options: --security-opt seccomp=unconfined
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
-              with:
-                egress-policy: audit
+  test:
+    name: Generate Coverage
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop-nightly@sha256:8bf6bd3e239f3eb5114391e80c4ada495d241b4cafe94f220e7c2641c967aeaf
+      options: --security-opt seccomp=unconfined
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
 
-            - name: Checkout repository
-              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-            - uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # nightly
-              with:
-                toolchain: nightly
-                components: llvm-tools-preview
+      - uses: dtolnay/rust-toolchain@0b1efabc08b657293548b77fb76cc02d26091c7e # nightly
+        with:
+          toolchain: nightly
+          components: llvm-tools-preview
 
-            - uses: taiki-e/install-action@45a93d9c71692daf99a53feb97366fb6f4c3757f # v2.65.5
-              with:
-                tool: cargo-llvm-cov,nextest
+      - uses: taiki-e/install-action@d850aa816998e5cf15f67a78c7b933f2a5033f8a # v2.63.3
+        with:
+          tool: cargo-llvm-cov,nextest
 
-            - name: Collect coverage data (including doctests)
-              run: |
-                cargo llvm-cov --no-report nextest --config-file nextest.toml
-                cargo llvm-cov --no-report --doc
-                cargo llvm-cov report --doctests --lcov --output-path lcov.info
+      - name: Collect coverage data (including doctests)
+        run: |
+          cargo llvm-cov --no-report nextest --config-file nextest.toml
+          cargo llvm-cov --no-report --doc
+          cargo llvm-cov report --doctests --lcov --output-path lcov.info
 
-            - name: Upload to codecov.io
-              uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
-              with:
-                file: lcov.info
-                token: ${{ secrets.CODECOV_TOKEN }}
-                verbose: true
-                working-directory: .
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          files: ./lcov.info
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
+          working-directory: .

@@ -37,6 +37,8 @@ get_amino_acid_short_name
 clippy
 (?i)json
 Dockerfile
+Containerfile
+(?i)podman
 amino_acid
 side_chain
 axum

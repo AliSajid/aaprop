@@ -5,174 +5,172 @@
 
 ---
 on:
-    workflow_call:
+  workflow_call:
 
 name: Semantic Release
 env:
-    RUST_BACKTRACE: 1
-    SEMREL_RUST_VERSION: 2.3.71
-concurrency:
-    group: ${{ github.event.ref }}
+  RUST_BACKTRACE: 1
+  SEMREL_RUST_VERSION: 2.3.71
 jobs:
-    build_application:
-        name: Build CLI ${{ matrix.build.target }}
-        runs-on: ${{ matrix.build.os }}
+  build_application:
+    name: Build CLI ${{ matrix.build.target }}
+    runs-on: ${{ matrix.build.os }}
+    env:
+      CARGO: cargo
+    strategy:
+      matrix:
+        bin:
+          - aaprop
+        build:
+          # alphabatized by target
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            cross: true
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            cross: true
+          - os: ubuntu-latest
+            target: i686-unknown-linux-gnu
+            cross: true
+          - os: ubuntu-latest
+            target: i686-unknown-linux-musl
+            cross: true
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            cross: false
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            cross: false
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Install tree
+        if: runner.os == 'Linux'
+        run: sudo apt install tree
+      - name: Install build inputs
+        if: runner.os == 'Linux' && !matrix.build.cross
+        run: sudo apt install musl-tools mingw-w64
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@0b1efabc08b657293548b77fb76cc02d26091c7e # master
+        id: rust-toolchain
+        with:
+          toolchain: stable
+          target: ${{ matrix.build.target }}
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2.8.2
+      - name: Install cross
+        uses: taiki-e/install-action@d850aa816998e5cf15f67a78c7b933f2a5033f8a # v2.63.3
+        with:
+          tool: cross
+      - name: Configure cross
+        if: matrix.build.cross
+        run: echo "CARGO=cross" >> "$GITHUB_ENV"
+      - name: Compile release binary
+        run: ${{ env.CARGO }} build --bin ${{ matrix.bin }} --release --target ${{ matrix.build.target }} --verbose
+      - name: Show generated binary
+        if: runner.os == 'Linux'
+        run: tree target/
+      - name: Create release archive - windows
+        if: matrix.build.target == 'x86_64-pc-windows-gnu' || matrix.build.target == 'i686-pc-windows-gnu'
+        run: |
+          mkdir dist
+          cp target/${{ matrix.build.target }}/release/${{ matrix.bin }}.exe dist/${{ matrix.bin }}-${{ matrix.build.target }}
+      - name: Create release archive - non-windows
+        if: matrix.build.target != 'x86_64-pc-windows-gnu' && matrix.build.target != 'i686-pc-windows-gnu'
+        run: |
+          mkdir dist
+          cp target/${{ matrix.build.target }}/release/${{ matrix.bin }} dist/${{ matrix.bin }}-${{ matrix.build.target }}
+      - name: Create binary checksum
+        run: |
+          shasum --algorithm 256 \
+          --binary ${{ matrix.bin }}-${{ matrix.build.target }} | tee ${{ matrix.bin }}-${{ matrix.build.target }}-SHA256SUM.txt
+        working-directory: ./dist
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: ${{ matrix.build.target }}
+          path: |
+            dist/${{ matrix.bin }}-${{ matrix.build.target }}
+            dist/${{ matrix.bin }}-${{ matrix.build.target }}-SHA256SUM.txt
+          if-no-files-found: error
+          retention-days: 1
+
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    needs: build_application
+    outputs:
+      new_release_version: ${{steps.semantic.outputs.new_release_version}}
+      new_release_published: ${{steps.semantic.outputs.new_release_published}}
+      new_release_notes: ${{steps.semantic.outputs.new_release_notes}}
+      new_release_channel: ${{steps.semantic.outputs.new_release_channel}}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_KEY_PASSPHRASE }}
+          fingerprint: ${{ secrets.GPG_SUBKEY_FINGERPRINT }}
+          trust_level: 5
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: false
+          git_committer_name: ${{ vars.GIT_AUTHOR_NAME }}
+          git_committer_email: ${{ vars.GIT_AUTHOR_EMAIL }}
+
+      - name: Test GPG Key Import
+        run: gpg --list-keys --keyid-format LONG
+
+      - name: Install dependencies
+        run: sudo apt install tree
+
+      - name: Install semantic-release-cargo
+        uses: taiki-e/install-action@d850aa816998e5cf15f67a78c7b933f2a5033f8a # v2.63.3
+        with:
+          tool: semantic-release-cargo@${{env.SEMREL_RUST_VERSION}}
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          path: artifacts
+
+      - name: ls artifacts
+        run: tree ./artifacts
+
+      - name: Prepare GitHub Release artifacts
+        run: ./scripts/build.sh
+
+      - name: Install Conventional Commit preset
+        run: npm install conventional-changelog-conventionalcommits
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
+        id: semantic
+        with:
+          semantic_version: 24.0.0
+          extra_plugins: |
+            @semantic-release/exec@6
+            @semantic-release/git@10
         env:
-            CARGO: cargo
-        strategy:
-            matrix:
-                bin:
-                    - aaprop
-                build:
-                    # alphabatized by target
-                    - os: ubuntu-latest
-                      target: aarch64-unknown-linux-gnu
-                      cross: true
-                    - os: ubuntu-latest
-                      target: aarch64-unknown-linux-musl
-                      cross: true
-                    - os: ubuntu-latest
-                      target: i686-unknown-linux-gnu
-                      cross: true
-                    - os: ubuntu-latest
-                      target: i686-unknown-linux-musl
-                      cross: true
-                    - os: ubuntu-latest
-                      target: x86_64-unknown-linux-gnu
-                      cross: false
-                    - os: ubuntu-latest
-                      target: x86_64-unknown-linux-musl
-                      cross: false
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
-              with:
-                egress-policy: audit
-
-            - name: Checkout
-              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-            - name: Install tree
-              if: runner.os == 'Linux'
-              run: sudo apt install tree
-            - name: Install build inputs
-              if: runner.os == 'Linux' && !matrix.build.cross
-              run: sudo apt install musl-tools mingw-w64
-            - name: Install Rust toolchain
-              uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master
-              id: rust-toolchain
-              with:
-                toolchain: stable
-                target: ${{ matrix.build.target }}
-            - name: Cache dependencies
-              uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2.8.2
-            - name: Install cross
-              uses: taiki-e/install-action@45a93d9c71692daf99a53feb97366fb6f4c3757f # v2.65.5
-              with:
-                tool: cross
-            - name: Configure cross
-              if: matrix.build.cross
-              run: echo "CARGO=cross" >> "$GITHUB_ENV"
-            - name: Compile release binary
-              run: ${{ env.CARGO }} build --bin ${{ matrix.bin }} --release --target ${{ matrix.build.target }} --verbose
-            - name: Show generated binary
-              if: runner.os == 'Linux'
-              run: tree target/
-            - name: Create release archive - windows
-              if: matrix.build.target == 'x86_64-pc-windows-gnu' || matrix.build.target == 'i686-pc-windows-gnu'
-              run: |
-                mkdir dist
-                cp target/${{ matrix.build.target }}/release/${{ matrix.bin }}.exe dist/${{ matrix.bin }}-${{ matrix.build.target }}
-            - name: Create release archive - non-windows
-              if: matrix.build.target != 'x86_64-pc-windows-gnu' && matrix.build.target != 'i686-pc-windows-gnu'
-              run: |
-                mkdir dist
-                cp target/${{ matrix.build.target }}/release/${{ matrix.bin }} dist/${{ matrix.bin }}-${{ matrix.build.target }}
-            - name: Create binary checksum
-              run: |
-                shasum --algorithm 256 \
-                --binary ${{ matrix.bin }}-${{ matrix.build.target }} | tee ${{ matrix.bin }}-${{ matrix.build.target }}-SHA256SUM.txt
-              working-directory: ./dist
-            - name: Upload release artifacts
-              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-              with:
-                name: ${{ matrix.build.target }}
-                path: |
-                    dist/${{ matrix.bin }}-${{ matrix.build.target }}
-                    dist/${{ matrix.bin }}-${{ matrix.build.target }}-SHA256SUM.txt
-                if-no-files-found: error
-                retention-days: 1
-
-    release:
-        name: Semantic Release
-        runs-on: ubuntu-latest
-        needs: build_application
-        outputs:
-            new_release_version: ${{steps.semantic.outputs.new_release_version}}
-            new_release_published: ${{steps.semantic.outputs.new_release_published}}
-            new_release_notes: ${{steps.semantic.outputs.new_release_notes}}
-            new_release_channel: ${{steps.semantic.outputs.new_release_channel}}
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
-              with:
-                egress-policy: audit
-
-            - name: Checkout
-              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-              with:
-                fetch-depth: 0
-                persist-credentials: false
-
-            - name: Import GPG key
-              uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
-              with:
-                gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-                passphrase: ${{ secrets.GPG_KEY_PASSPHRASE }}
-                fingerprint: ${{ secrets.GPG_SUBKEY_FINGERPRINT }}
-                trust_level: 5
-                git_user_signingkey: true
-                git_commit_gpgsign: true
-                git_tag_gpgsign: false
-                git_committer_name: ${{ vars.GIT_AUTHOR_NAME }}
-                git_committer_email: ${{ vars.GIT_AUTHOR_EMAIL }}
-
-            - name: Test GPG Key Import
-              run: gpg --list-keys --keyid-format LONG
-
-            - name: Install dependencies
-              run: sudo apt install tree
-
-            - name: Install semantic-release-cargo
-              uses: taiki-e/install-action@45a93d9c71692daf99a53feb97366fb6f4c3757f # v2.65.5
-              with:
-                tool: semantic-release-cargo@${{env.SEMREL_RUST_VERSION}}
-
-            - name: Download release artifacts
-              uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-              with:
-                path: artifacts
-
-            - name: ls artifacts
-              run: tree ./artifacts
-
-            - name: Prepare GitHub Release artifacts
-              run: ./scripts/build.sh
-
-            - name: Install Conventional Commit preset
-              run: npm install conventional-changelog-conventionalcommits
-
-            - name: Semantic Release
-              uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
-              id: semantic
-              with:
-                semantic_version: 24.0.0
-                extra_plugins: |
-                    @semantic-release/exec@6
-                    @semantic-release/git@10
-              env:
-                GITHUB_TOKEN: ${{secrets.ACTIONS_PAT_GITHUB}}
-                CARGO_REGISTRY_TOKEN: ${{secrets.SEMREL_CRATES_IO}}
-                GIT_AUTHOR_NAME: ${{vars.GIT_AUTHOR_NAME}}
-                GIT_AUTHOR_EMAIL: ${{vars.GIT_AUTHOR_EMAIL}}
-                GIT_COMMITTER_NAME: ${{vars.GIT_AUTHOR_NAME}}
-                GIT_COMMITTER_EMAIL: ${{vars.GIT_AUTHOR_EMAIL}}
+          GITHUB_TOKEN: ${{secrets.ACTIONS_PAT_GITHUB}}
+          CARGO_REGISTRY_TOKEN: ${{secrets.SEMREL_CRATES_IO}}
+          GIT_AUTHOR_NAME: ${{vars.GIT_AUTHOR_NAME}}
+          GIT_AUTHOR_EMAIL: ${{vars.GIT_AUTHOR_EMAIL}}
+          GIT_COMMITTER_NAME: ${{vars.GIT_AUTHOR_NAME}}
+          GIT_COMMITTER_EMAIL: ${{vars.GIT_AUTHOR_EMAIL}}

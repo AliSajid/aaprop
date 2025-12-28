@@ -6,63 +6,54 @@
 ---
 name: Next semantic-release version
 on:
-    workflow_call:
-        outputs:
-            new-release-published:
-                description: Indicates whether a new release will be published. The value is a string, either 'true' or 'false'.
-                value: ${{ jobs.get-next-version.outputs.new-release-published }}
+  workflow_call:
+    outputs:
+      new-release-published:
+        description: Indicates whether a new release will be published. The value is a string, either 'true' or 'false'.
+        value: ${{ jobs.get-next-version.outputs.new-release-published }}
 
 jobs:
-    get-next-version:
-        name: Get next release version
-        runs-on: ubuntu-latest
-        outputs:
-            new-release-published: ${{ steps.get-next-version.outputs.new-release-published }}
-        steps:
-            - name: Harden Runner
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
-              with:
-                egress-policy: audit
+  get-next-version:
+    name: Get next release version
+    runs-on: ubuntu-latest
+    outputs:
+      new-release-published: ${{ steps.get-next-version.outputs.new-release-published }}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
 
-            - name: Checkout
-              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-              with:
-                fetch-depth: 0
-                persist-credentials: false
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-            - name: Install mise-en-place
-              uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
-              with:
-                node-version: lts/*
+      - name: Install mise-en-place
+        uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
+        with:
+          experimental: true
 
-            - name: Cache action npm dependencies
-              uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-              id: cache-node-modules
-              with:
-                path: ${{ runner.temp }}/.semantic-release-action_next-release-version/node_modules
-                key: |
-                    semantic-release-action/next-release-version-${{ runner.os }}-node-${{ hashFiles('${{ github.action_path }}/package-lock.json') }}
+      - name: Install the necessary plugin
+        run: |
+          npm install semantic-release-export-data
+        shell: bash
 
-            - name: Install dependencies on cache miss
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: |
-                npm install -g semantic-release semantic-release-export-data
-              shell: bash
-
-            - name: Get next release version
-              id: get-next-version
-              env:
-                GITHUB_TOKEN: ${{secrets.ACTIONS_PAT_GITHUB}}
-              run: |
-                : calculate next semantic-release version
-                semantic-release \
-                --dry-run \
-                --plugins semantic-release-export-data \
-                --verify-conditions semantic-release-export-data \
-                --verify-release '' \
-                --generate-notes semantic-release-export-data \
-                --prepare '' \
-                --publish '' \
-                --success '' \
-                --fail ''
-              shell: bash
+      - name: Get next release version
+        id: get-next-version
+        env:
+          GITHUB_TOKEN: ${{secrets.ACTIONS_PAT_GITHUB}}
+        run: |
+          : calculate next semantic-release version
+          semantic-release \
+          --dry-run \
+          --plugins semantic-release-export-data \
+          --verify-conditions semantic-release-export-data \
+          --verify-release '' \
+          --generate-notes semantic-release-export-data \
+          --prepare '' \
+          --publish '' \
+          --success '' \
+          --fail ''
+        shell: bash

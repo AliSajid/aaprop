@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
 This document provides a comprehensive guide for deploying the **AAProp** API using different methods. The API can be deployed in the following ways:  
 
 1. **Self-Hosted Deployment** – Utilizing precompiled binaries available in the [GitHub Releases](https://github.com/alisajid/aaprop/releases) section.  
-2. **Docker-Based Deployment** – Running the API within a containerized environment using images from [Docker Hub](https://hub.docker.com/r/imamiland/aaprop) or the [GitHub Container Registry](https://ghcr.io/alisajid/aaprop).  
-3. **Docker-Compose Deployment** – Deploying the API alongside a reverse proxy and/or database using `docker-compose`.  
+2. **Container-Based Deployment** – Running the API within a containerized environment using Docker or Podman with images from [Docker Hub](https://hub.docker.com/r/imamiland/aaprop) or the [GitHub Container Registry](https://ghcr.io/alisajid/aaprop).  
+3. **Docker-Compose / Podman-Compose Deployment** – Deploying the API alongside a reverse proxy and/or database using `docker-compose` or `podman-compose`.  
 
 ## **1. Self-Hosted Deployment**  
 
@@ -85,16 +85,17 @@ aaprop
 
 ---
 
-## **2. Docker Deployment**  
+## **2. Container Deployment (Docker/Podman)**  
 
 ### **2.1 Prerequisites**  
 
-Ensure the following requirements are met before deploying via Docker:  
+Ensure the following requirements are met before deploying via container:  
 
-1. **Docker Installed**  
-   - Install Docker from [official documentation](https://docs.docker.com/get-docker/).  
+1. **Container Engine Installed**  
+   - Install Docker from [official documentation](https://docs.docker.com/get-docker/), or  
+   - Install Podman from [official documentation](https://podman.io/getting-started/installation)  
 
-2. **Pull the `AAProp` Docker Image**  
+2. **Pull the `AAProp` Container Image**  
    - Available on **Docker Hub** or **GitHub Container Registry**  
 
 3. **(Optional) Reverse Proxy**  
@@ -102,22 +103,46 @@ Ensure the following requirements are met before deploying via Docker:
 
 ### **2.2 Deployment Steps**  
 
-#### **Step 1: Pull the Docker Image**  
+#### **Step 1: Pull the Container Image**  
+
+**Using Docker:**
 
 ```bash
 docker pull imamiland/aaprop:latest
 ```  
 
+**Using Podman:**
+
+```bash
+podman pull imamiland/aaprop:latest
+```  
+
 #### **Step 2: Run the API as a Container**  
+
+**Using Docker:**
 
 ```bash
 docker run -d -p 8080:8080 --name aaprop imamiland/aaprop:latest
 ```  
 
+**Using Podman:**
+
+```bash
+podman run -d -p 8080:8080 --name aaprop imamiland/aaprop:latest
+```  
+
 #### **Step 3: Verify the Running Container**  
+
+**Using Docker:**
 
 ```bash
 docker ps
+```
+
+**Using Podman:**
+
+```bash
+podman ps
 ```  
 
 #### **Step 4: Access the API**  
@@ -154,16 +179,17 @@ sudo systemctl restart nginx
 
 ---
 
-## **3. Docker-Compose Deployment**  
+## **3. Compose Deployment (Docker Compose / Podman Compose)**  
 
-For **multi-container** deployments, `docker-compose` simplifies managing services such as the **AAProp API** and a **reverse proxy**.  
+For **multi-container** deployments, `docker-compose` or `podman-compose` simplifies managing services such as the **AAProp API** and a **reverse proxy**.  
 
 ### **3.1 Prerequisites**  
 
 Ensure the following:  
 
-- **Docker** and **docker-compose** are installed  
-- A valid `docker-compose.yml` file  
+- **Docker** and **docker-compose** are installed, or  
+- **Podman** and **podman-compose** are installed  
+- A valid `docker-compose.yml` or `compose.yaml` file  
 
 ### **3.2 Deployment Steps**  
 
@@ -216,16 +242,32 @@ http {
 
 Run the following command to start both **AAProp** and **Nginx**:  
 
+**Using Docker Compose:**
+
 ```bash
 docker-compose up -d
+```  
+
+**Using Podman Compose:**
+
+```bash
+podman-compose up -d
 ```  
 
 #### **Step 4: Verify Deployment**  
 
 Check that the services are running:
 
+**Using Docker Compose:**
+
 ```bash
 docker-compose ps
+```
+
+**Using Podman Compose:**
+
+```bash
+podman-compose ps
 ```  
 
 ---
@@ -235,8 +277,8 @@ docker-compose ps
 This guide provides three distinct deployment methods for the **AAProp** API:  
 
 1. **Self-Hosting** – Suitable for lightweight deployments on personal servers.  
-2. **Docker Deployment** – Ideal for running the API in an isolated, containerized environment.  
-3. **Docker-Compose Deployment** – A more scalable approach allowing multi-container orchestration with a reverse proxy.  
+2. **Container Deployment (Docker/Podman)** – Ideal for running the API in an isolated, containerized environment.  
+3. **Compose Deployment (Docker Compose/Podman Compose)** – A more scalable approach allowing multi-container orchestration with a reverse proxy.  
 
 Depending on your infrastructure requirements, choose the most suitable method. If deploying in production, consider **securing your API with HTTPS** using **Let's Encrypt** with **Nginx** or **Caddy**.  
 

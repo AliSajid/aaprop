@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
 
 ## Introduction
 
-This project is a small server app that provides a REST API to access the properties of amino acids. The project is written in Rust and uses the `actix-web` framework to handle the HTTP requests. The project is in its initial stages of development and is not yet ready for production use. The project is also designed with dual-deployment in mind. It can either be deployed to [Shuttle](https://shuttle.dev) or to a traditional cloud provider. For traditional cloud providers, we provide both a binary and a Docker image.
+This project is a small server app that provides a REST API to access the properties of amino acids. The project is written in Rust and uses the `actix-web` framework to handle the HTTP requests. The project is in its initial stages of development and is not yet ready for production use. The project is also designed with dual-deployment in mind. It can either be deployed to [Shuttle](https://shuttle.dev) or to a traditional cloud provider. For traditional cloud providers, we provide both a binary and a container image (compatible with Docker and Podman).
 
 ## Build Status
 
@@ -28,7 +28,7 @@ This project is a small server app that provides a REST API to access the proper
 | Nightly       | ![Ubuntu x Nightly Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-nightly.json) |
 | MSRV (1.78.0) | ![Ubuntu x MSRV Rust](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/AliSajid/625c1d8a63a7cbb926f8828d97d850b1/raw/ubuntu-msrv.json)       |
 
-**Note: We have stopped testing builds on Windows and macos for expediency. We recommend you use the docker image should you need to run the project on these platforms.**
+**Note: We have stopped testing builds on Windows and macos for expediency. We recommend you use the container image (Docker or Podman) should you need to run the project on these platforms.**
 
 ## Roadmap
 
@@ -49,7 +49,7 @@ Contributions to the project are welcome. Please see the [Contributing Guideline
 
 This project is dual-licensed under the [MIT License](LICENSES/MIT.txt) and the [Apache License (Version 2.0)](LICENSES/Apache-2.0.txt). You may choose to use this project under either license, at your discretion. Other, ancillary files are under the [CC0 License](LICENSES/CC0-1.0.txt) and are dedicated to the Public Domain. Please see the [LICENSES](LICENSES) directory for more information.
 
-This project is REUSE compliant. You can find more information about REUSE [here](https://reuse.software/).
+This project is REUSE compliant. You can find more information about [the REUSE project here](https://reuse.software/).
 
 ## Code of Conduct
 
