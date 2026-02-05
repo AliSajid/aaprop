@@ -28,7 +28,7 @@ jobs:
           packages: write
         steps:
             - name: Harden Runner
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+              uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
               with:
                 egress-policy: audit
 
@@ -60,13 +60,13 @@ jobs:
               run: echo "${{ steps.meta.outputs.json }}"
 
             - name: Login to DockerHub
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
               with:
                   username: ${{ env.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_TOKEN }}
 
             - name: Login to GitHub Container Registry
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
@@ -106,7 +106,7 @@ jobs:
                 cosign-release: ${{ env.COSIGN_RELEASE_VERSION }}
 
             - name: Install Syft
-              uses: anchore/sbom-action/download-syft@62ad5284b8ced813296287a0b63906cb364b73ee # v0.22.0
+              uses: anchore/sbom-action/download-syft@28d71544de8eaf1b958d335707167c5f783590ad # v0.22.2
               with:
                 syft-version: ${{ env.SYFT_VERSION }}
 
