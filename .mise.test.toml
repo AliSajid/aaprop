@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: MIT
 
 [tools]
-"cargo:cargo-llvm-cov" = "0.6.16"
+"cargo:cargo-llvm-cov" = "0.9.0"
 "cargo:cargo-nextest" = "0.9.87"
 
 [tasks.coverage]
